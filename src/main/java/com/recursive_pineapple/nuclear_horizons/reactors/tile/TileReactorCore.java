@@ -2,6 +2,7 @@ package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -16,7 +17,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.Column;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -31,9 +31,12 @@ import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.IReactorBlock.ReactorEnableState;
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
+import cofh.api.energy.IEnergyReceiver;
+import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +54,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
-public class TileReactorCore extends TileEntity implements IInventory, IReactorGrid, ITileWithModularUI {
+public class TileReactorCore extends TileEntity implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
     
     private static final int ROW_COUNT = 6;
     private static final int COL_COUNT = 9;
@@ -74,7 +77,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     int addedHeat = 0;
 
     int voltage = 0;
-    int carryoverEU = 0;
+    int maxStoredEU = 4_194_304; // 2 ^ 22
     int storedEU = 0;
     int addedEU = 0;
 
@@ -395,7 +398,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         if(!this.worldObj.isRemote) {
             this.tickCounter++;
-    
+
             if(this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 this.isActive = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
     
@@ -435,6 +438,8 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
             if(this.tickCounter % REACTOR_STRUCTURE_CHECK_PERIOD == 0) {
                 doStructureCheck();
             }
+
+            this.emitEnergy();
         }
     }
 
@@ -497,6 +502,88 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     //#endregion
 
     //#region Energy Logic
+
+    @Override
+    public byte getColorization() {
+        return -1;
+    }
+
+    @Override
+    public byte setColorization(byte arg0) {
+        return -1;
+    }
+
+    @Override
+    public long injectEnergyUnits(ForgeDirection arg0, long arg1, long arg2) {
+        return 0;
+    }
+
+    @Override
+    public boolean inputEnergyFrom(ForgeDirection arg0) {
+        return false;
+    }
+
+    @Override
+    public boolean outputsEnergyTo(ForgeDirection arg0) {
+        return true;
+    }
+
+    private void emitEnergy() {
+        if(this.voltage == 0) this.voltage = 32;
+
+        int availableAmps = this.storedEU / this.voltage;
+
+        if(availableAmps > 0) {
+            long consumedAmps = emitEnergyToNetwork(this.voltage, availableAmps, this);
+
+            for(var dir : DirectionUtil.values()) {
+                if((availableAmps - consumedAmps) <= 0) {
+                    break;
+                }
+
+                if(dir.getTileEntity(worldObj, xCoord, yCoord, zCoord) instanceof TileReactorChamber chamber) {
+                    consumedAmps += emitEnergyToNetwork(this.voltage, availableAmps - consumedAmps, chamber);
+                }
+            }
+    
+            this.storedEU -= consumedAmps * this.voltage;
+        }
+    }
+
+    private static long emitEnergyToNetwork(long voltage, long amperage, TileEntity emitter) {
+        long usedAmperes = 0;
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (usedAmperes > amperage) break;
+
+            ForgeDirection oppositeSide = Objects.requireNonNull(side.getOpposite());
+            TileEntity tTileEntity = emitter.getWorldObj().getTileEntity(emitter.xCoord + side.offsetX, emitter.yCoord + side.offsetY, emitter.zCoord + side.offsetZ);
+            if (tTileEntity instanceof PowerLogicHost host) {
+
+                PowerLogic logic = host.getPowerLogic(oppositeSide);
+                if (logic == null || logic.isEnergyReceiver()) {
+                    continue;
+                }
+
+                usedAmperes += logic.injectEnergy(voltage, amperage - usedAmperes);
+            } else if (tTileEntity instanceof IEnergyConnected energyConnected) {
+                usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
+
+            } else if (tTileEntity instanceof ic2.api.energy.tile.IEnergySink sink) {
+                if (sink.acceptsEnergyFrom(emitter, oppositeSide)) {
+                    while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
+                        && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
+                }
+            } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
+                final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+                if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
+                    receiver.receiveEnergy(oppositeSide, rfOut, false);
+                    usedAmperes++;
+                }
+            }
+        }
+        return usedAmperes;
+    }
 
     //#endregion
 
@@ -643,8 +730,6 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     }
 
     private void doEUTick() {
-        this.carryoverEU = this.storedEU;
-        this.storedEU = 0;
         this.addedEU = 0;
 
         for(int row = 0; row < ROW_COUNT; row++) {
@@ -658,6 +743,10 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         for(var reactorBlock : reactorBlocks) {
             reactorBlock.onEnergyTick(this);
+        }
+
+        if(this.storedEU > this.maxStoredEU) {
+            this.storedEU = this.maxStoredEU;
         }
 
         int perTick = this.addedEU / 20;
@@ -817,6 +906,10 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         for(int relX = -2; relX < 3; relX++) {
             for(int relY = -2; relY < 3; relY++) {
                 for(int relZ = -2; relZ < 3; relZ++) {
+                    if(relX == 0 && relY == 0 && relZ == 0) {
+                        continue;
+                    }
+
                     int insideCubeCount = 0;
 
                     if(isInsideCube(relX)) insideCubeCount++;
@@ -855,6 +948,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                         continue;
                     }
 
+                    // a face can be any IReactorBlock
                     if(block.hasTileEntity(worldObj.getBlockMetadata(x, y, z))) {
                         if(worldObj.getTileEntity(x, y, z) instanceof IReactorBlock reactorBlock) {
                             reactorBlock.setReactor(this);

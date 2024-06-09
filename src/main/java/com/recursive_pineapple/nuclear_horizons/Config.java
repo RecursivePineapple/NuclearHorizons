@@ -6,7 +6,8 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 
-    public static int ROD_EU_MULTIPLIER = 1;
+    public static double ROD_EU_MULTIPLIER = 1;
+    public static double ROD_HU_MULTIPLIER = 1;
     public static double MOX_EU_COEFFICIENT = 4;
 
     public static void synchronizeConfiguration(File configFile) {

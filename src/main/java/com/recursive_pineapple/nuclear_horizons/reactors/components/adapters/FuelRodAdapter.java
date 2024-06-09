@@ -51,7 +51,7 @@ public class FuelRodAdapter implements IComponentAdapter {
         }
 
         int pulses = this.getPulseCount();
-        int heat = (int) (fuelRod.getHeatMult(itemStack) * pulses * (pulses + 1));
+        int heat = (int) (fuelRod.getHeatMult(itemStack) * pulses * (pulses + 1) * Config.ROD_HU_MULTIPLIER);
 
         if(fuelRod.isMox(itemStack) && reactor.isFluid() && (reactor.getHullHeat() / reactor.getMaxHullHeat()) >= 0.5) {
             heat *= 2;

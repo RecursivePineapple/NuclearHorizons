@@ -88,7 +88,7 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             desc.add("Every two seconds, this component will:");
             
-            desc.add(String.format("Generate %,d * n * (n + 1) HU", (int)this.heatMult));
+            desc.add(String.format("Generate %,d * n * (n + 1) HU", (int)(this.heatMult * Config.ROD_HU_MULTIPLIER)));
             desc.add(String.format("Generate %,d * n * (n + 1) EU", (int)(this.energyMult * Config.ROD_EU_MULTIPLIER)));
 
             desc.add(String.format("Where n = %d + Number of adjacent rods and reflectors", 1 + this.rodCount / 2));
