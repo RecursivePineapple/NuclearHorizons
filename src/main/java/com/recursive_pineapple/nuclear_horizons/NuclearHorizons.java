@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -24,6 +25,9 @@ public class NuclearHorizons {
         clientSide = "com.recursive_pineapple.nuclear_horizons.ClientProxy",
         serverSide = "com.recursive_pineapple.nuclear_horizons.CommonProxy")
     public static CommonProxy proxy;
+
+    @Instance
+    public static NuclearHorizons instance = new NuclearHorizons();
 
     @Mod.EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the

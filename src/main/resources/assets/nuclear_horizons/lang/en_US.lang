@@ -1,0 +1,36 @@
+tile.reactor_core.name=Reactor Core
+tile.reactor_chamber.name=Reactor Chamber
+tile.pressure_vessel.name=Reactor Pressure Vessel
+tile.reactor_fluid_port.name=Reactor Fluid Port
+tile.reactor_access_hatch.name=Reactor Access Hatch
+tile.reactor_redstone_port.name=Reactor Redstone Port
+tile.reactor_thermal_sensor.name=Reactor Thermal Sensor
+
+gui.reactor.name=Nuclear Reactor
+
+item.fuelRodUranium.name=Fuel Rod (Uranium)
+item.dualFuelRodUranium.name=Dual Fuel Rod (Uranium)
+item.quadFuelRodUranium.name=Quad Fuel Rod (Uranium)
+item.fuelRodMOX.name=Fuel Rod (MOX)
+item.dualFuelRodMOX.name=Dual Fuel Rod (MOX)
+item.quadFuelRodMOX.name=Quad Fuel Rod (MOX)
+item.heatVent.name=Heat Vent
+item.advancedHeatVent.name=Advanced Heat Vent
+item.reactorHeatVent.name=Reactor Heat Vent
+item.componentHeatVent.name=Component Heat Vent
+item.overclockedHeatVent.name=Overclocked Heat Vent
+item.heatExchanger.name=Heat Exchanger
+item.advancedHeatExchanger.name=Advanced Heat Exchanger
+item.coreHeatExchanger.name=Reactor Heat Exchanger
+item.componentHeatExchanger.name=Component Heat Exchanger
+item.coolantCell10k.name=10k Coolant Cell
+item.coolantCell30k.name=30k Coolant Cell
+item.coolantCell60k.name=60k Coolant Cell
+item.rshCondensator.name=RSH-Condensator
+item.lzhCondensator.name=LZH-Condensator
+item.neutronReflector.name=Neutron Reflector
+item.thickNeutronReflector.name=Thick Neutron Reflector
+item.iridiumNeutronReflector.name=Iridium Neutron Reflector
+
+fluid.nh_coolant=Coolant
+fluid.nh_hot_coolant=Hot Coolant
