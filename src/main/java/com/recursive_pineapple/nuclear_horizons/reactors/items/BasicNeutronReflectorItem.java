@@ -13,6 +13,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.NeutronReflectorAdapter;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,12 +72,12 @@ public class BasicNeutronReflectorItem extends Item implements INeutronReflector
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc, boolean advancedItemTooltips) {
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
-        if(!advancedItemTooltips) {
-            if(this.maxHealth > 0) {
-                desc.add(String.format("Durability: %,d / %,d", this.getRemainingHealth(itemStack), this.maxHealth));
-            } else {
-                desc.add("Invulnerable");
+        if(this.maxHealth > 0) {
+            if(!advancedItemTooltips || itemStack.getItemDamage() == 0) {
+                desc.add(I18n.format("nh_tooltip.durability", this.getRemainingHealth(itemStack), this.maxHealth));
             }
+        } else {
+            desc.add(I18n.format("nh_tooltip.undestructable"));
         }
     }
 }

@@ -34,3 +34,93 @@ item.iridiumNeutronReflector.name=Iridium Neutron Reflector
 
 fluid.nh_coolant=Coolant
 fluid.nh_hot_coolant=Hot Coolant
+
+death.attack.hot_fluid.player=%1$s was fried to crisp
+
+nh_tooltip.durability=Durability: %1$,d / %2$,d
+nh_tooltip.undestructable=Undestructable
+nh_tooltip.stored_heat=Stored Heat: %1$,d / %2$,d
+nh_tooltip.prelude=Every two seconds, this component will:
+nh_tooltip.more_info=Hold Shift for more info.
+
+nh_tooltip.fuel_rod.gen_stats=Generate %1$,d * n * (n + 1) HU\nGenerate %2$,d * n * (n + 1) EU\nWhere n = %3$d + Number of adjacent rods and reflectors
+nh_tooltip.fuel_rod.mox_stats=\nIf the reactor's hull heat is above 50%, the HU output will be multiplied by 2.\nThe EU output will always be multiplied by 1 + %1$f * (Current Heat / Max Heat).
+nh_tooltip.fuel_rod.heat_epilogue=\nIf there are adjacent components which can contain heat, heat will be spread among them evenly.\nOtherwise, heat will be added to the reactor hull.
+
+nh_tooltip.mover.reactor_xfer=Transfer up to %d HU between the reactor and itself.
+nh_tooltip.exchanger.comp_xfer=Transfer up to %d HU between its neighbours and itself.
+nh_tooltip.vent.void_self=Dissipate up to %d HU from itself.
+nh_tooltip.vent.void_adj=Dissipate up to %d HU from its neighbours.
+nh_tooltip.vent.fluid_disclaimer=Note: In a fluid reactor, each HU vented is converted to 2 HU (2mB) of hot coolant.
+
+nh_tooltip.results.title=\nSimulation Results:
+nh_tooltip.sim.results.avg_temp=Avg Temp: %s
+nh_tooltip.sim.results.min_temp=Min Temp: %s
+nh_tooltip.sim.results.max_temp=Max Temp: %s
+nh_tooltip.sim.results.avg_hull_cooling=Avg Hull Cooling: %s
+nh_tooltip.sim.results.avg_hull_cooling_with_max=Avg Hull Cooling: %s / %s
+nh_tooltip.sim.results.avg_hull_heating=Avg Hull Heating: %s
+nh_tooltip.sim.results.heating_per_item=HU Per Item (Hull Only): %s
+nh_tooltip.sim.results.avg_heat_output=Avg Heat Output: %s
+nh_tooltip.sim.results.avg_heat_output_with_max=Avg Heat Output: %s / %s
+nh_tooltip.sim.results.replace_count=Replaced %d times
+nh_tooltip.sim.results.avg_power=Avg Power: %s
+nh_tooltip.sim.results.power_per_item=Power Per Item: %s
+
+nh_gui.reactor.title=Nuclear Reactor
+nh_gui.reactor.player_inv=Inventory
+nh_gui.reactor.stored_hu=HU: %,d
+nh_gui.reactor.eu_output=EU/t: %,d
+nh_gui.reactor.hu_output=HU/s: %,d
+
+nh_gui.sim.results.title=Simulation Results
+nh_gui.sim.results.no_results=No simulation results available
+nh_gui.sim.results.runtime=Simulation ran for %s
+nh_gui.sim.results.time_to_normal=Reached a normal temp. at %s
+nh_gui.sim.results.time_to_burn=Reached burn threshold at %s
+nh_gui.sim.results.time_to_evaporate=Reached evaporate threshold at %s
+nh_gui.sim.results.time_to_hurt=Reached hurt threshold at %s
+nh_gui.sim.results.time_to_lava=Reached lava threshold at %s
+nh_gui.sim.results.time_to_explosion=Exploded at %s
+
+nh_gui.sim.title=Nuclear Reactor Simulator
+
+nh_gui.sim.actions.start=Start
+nh_gui.sim.actions.cancel=Cancel
+nh_gui.sim.actions.edit_comp_automation=right click to edit automation
+
+nh_gui.sim.results.none=N/A
+nh_gui.sim.results.seconds=%,ds
+nh_gui.sim.results.eu_per_tick=%,d EU/t
+nh_gui.sim.results.hu_per_sec=%,d HU/s
+nh_gui.sim.results.hu_total=%,d HU
+nh_gui.sim.results.eu_total=%,d EU
+
+nh_gui.sim.results.active_time=Active time: %s
+nh_gui.sim.results.inactive_time=Inactive time: %s
+nh_gui.sim.results.avg_power=Avg Power: %s
+nh_gui.sim.results.min_power=Min Power: %s
+nh_gui.sim.results.max_power=Max Power: %s
+nh_gui.sim.results.avg_vent_cooling=Avg Vent Cooling: %s
+nh_gui.sim.results.min_vent_cooling=Min Vent Cooling: %s
+nh_gui.sim.results.max_vent_cooling=Max Vent Cooling: %s
+nh_gui.sim.results.avg_hull_temp=Avg Hull Temp: %s
+nh_gui.sim.results.min_hull_temp=Min Hull Temp: %s
+nh_gui.sim.results.max_hull_temp=Max Hull Temp: %s
+
+nh_gui.sim.settings.title=Reactor Settings
+nh_gui.sim.settings.true=True
+nh_gui.sim.settings.false=False
+nh_gui.sim.settings.planner_code=Planner Code: 
+nh_gui.sim.settings.max_simulation_ticks=Max Simulation Ticks: 
+nh_gui.sim.settings.fluid=Fluid: 
+nh_gui.sim.settings.pulsed=Pulsed: 
+nh_gui.sim.settings.on_pulse=On Pulse: 
+nh_gui.sim.settings.off_pulse=Off Pulse: 
+nh_gui.sim.settings.suspend_temp=Suspend Temp: 
+nh_gui.sim.settings.resume_temp=Resume Temp: 
+nh_gui.sim.settings.initial_reactor_heat=Initial Reactor Heat: 
+
+nh_gui.sim.comp_settings.title=Component Automation Settings
+nh_gui.sim.comp_settings.active=Active Component: %s
+nh_gui.sim.comp_settings.xy=X=%1$d Y=%2$d (Name=%3$s)

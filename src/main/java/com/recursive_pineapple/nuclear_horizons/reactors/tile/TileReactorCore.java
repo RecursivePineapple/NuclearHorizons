@@ -38,6 +38,7 @@ import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -56,8 +57,8 @@ import net.minecraftforge.fluids.IFluidTank;
 
 public class TileReactorCore extends TileEntity implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
     
-    private static final int ROW_COUNT = 6;
-    private static final int COL_COUNT = 9;
+    public static final int ROW_COUNT = 6;
+    public static final int COL_COUNT = 9;
 
     private static final int REACTOR_TICK_SPEED = 20;
     private static final int REACTOR_STRUCTURE_CHECK_PERIOD = 10 * 20;
@@ -217,7 +218,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                 .setAlignment(CrossAxisAlignment.CENTER)
                 .widgets(
                     padding(7, 7),
-                    new TextWidget("Nuclear Reactor").setSize(150, 16),
+                    new TextWidget(I18n.format("nh_gui.reactor.title")).setSize(150, 16),
                     new Row()
                         .setAlignment(MainAxisAlignment.CENTER, CrossAxisAlignment.CENTER)
                         .widgets(
@@ -240,21 +241,21 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                                 .setAlignment(MainAxisAlignment.START)
                                 .widgets(
                                     padding(7 + 16, 16),
-                                    new TextWidget("Inventory").setSize(50, 16)
+                                    new TextWidget(I18n.format("nh_gui.reactor.player_inv")).setSize(50, 16)
                                 )
                         )
                         .addChild(
                             new Row()
                                 .setAlignment(MainAxisAlignment.END)
                                 .widgets(
-                                    TextWidget.dynamicString(() -> String.format("HU: %,d", this.storedHeat))
+                                    TextWidget.dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
                                         .setSize(50, 16),
-                                    TextWidget.dynamicString(() -> String.format("EU/t: %,d", this.addedEU / 20))
-                                        .setSizeProvider((s, w, p) -> isFluid ? new Size(0, 0) : new Size(50, 16))
-                                        .setEnabled(w -> !isFluid),
-                                    TextWidget.dynamicString(() -> String.format("HU/s: %,d", this.addedHeat))
-                                        .setSizeProvider((s, w, p) -> !isFluid ? new Size(0, 0) : new Size(50, 16))
-                                        .setEnabled(w -> isFluid),
+                                    TextWidget.dynamicString(() -> (
+                                            !isFluid
+                                                ? I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
+                                                : I18n.format("nh_gui.reactor.hu_output", this.addedHeat)
+                                        ))
+                                        .setSize(50, 16),
                                     padding(7 + 16, 16)
                                 )
                         )
@@ -400,6 +401,8 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
             this.tickCounter++;
 
             if(this.tickCounter % REACTOR_TICK_SPEED == 0) {
+                boolean wasActive = isActive;
+
                 this.isActive = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
     
                 for(var dir : DirectionUtil.values()) {
@@ -432,6 +435,10 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                     this.doEUTick();
                 }
 
+                if(wasActive != isActive) {
+                    worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isActive ? 1 : 0, 3);
+                }
+                
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
 
@@ -673,7 +680,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public String getInventoryName() {
-        return "gui.reactor.name";
+        return BlockList.REACTOR_CORE_NAME;
     }
 
     @Override

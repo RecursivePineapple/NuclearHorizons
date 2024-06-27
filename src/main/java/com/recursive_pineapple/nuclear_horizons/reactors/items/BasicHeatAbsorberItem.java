@@ -10,6 +10,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatAbsorberAdapter;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,6 +72,6 @@ public class BasicHeatAbsorberItem extends Item implements IHeatContainer, IComp
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc, boolean advancedItemTooltips) {
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
-        desc.add(String.format("Stored Heat: %,d / %,d", itemStack.getItemDamage(), this.maxHeat));
+        desc.add(I18n.format("nh_tooltip.durability", itemStack.getItemDamage(), this.maxHeat));
     }
 }

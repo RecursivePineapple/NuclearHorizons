@@ -2,6 +2,8 @@ package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import javax.annotation.Nullable;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -135,24 +137,12 @@ public class TileAccessHatch extends TileEntity implements IInventory, IReactorB
 
     @Override
     public String getInventoryName() {
-        var reactor = getReactor();
-
-        if(reactor != null) {
-            return reactor.getInventoryName();
-        } else {
-            return "Reactor Access Hatch";
-        }
+        return BlockList.REACTOR_ACCESS_HATCH_NAME;
     }
 
     @Override
     public boolean hasCustomInventoryName() {
-        var reactor = getReactor();
-
-        if(reactor != null) {
-            return reactor.hasCustomInventoryName();
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override

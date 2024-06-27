@@ -1,8 +1,10 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.lwjgl.input.Keyboard;
 
@@ -13,6 +15,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +27,7 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
     private final int rodCount;
     private final boolean isMox;
     private final int maxHealth;
+    private ItemStack product;
 
     public BasicFuelRodItem(String name, String textureName, double energyMult, double heatMult, int rodCount, boolean isMox, int maxHealth) {
         setUnlocalizedName(name);
@@ -68,6 +72,16 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
     }
 
     @Override
+    public ItemStack getProduct(@Nonnull ItemStack itemStack) {
+        return product;
+    }
+
+    public BasicFuelRodItem setProduct(@Nullable ItemStack product) {
+        this.product = product;
+        return this;
+    }
+
+    @Override
     public boolean canAdaptItem(@Nonnull ItemStack itemStack) {
         return itemStack.getItem() == this;
     }
@@ -82,28 +96,42 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
         if(!advancedItemTooltips) {
-            desc.add(String.format("Durability: %,d / %,d", this.getRemainingHealth(itemStack), this.maxHealth));
+            desc.addAll(Arrays.asList(
+                I18n.format(
+                    "nh_tooltip.durability",
+                    this.getRemainingHealth(itemStack), this.maxHealth
+                ).split("\\n")
+            ));
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            desc.add("Every two seconds, this component will:");
+            desc.add(I18n.format("nh_tooltip.prelude"));
             
-            desc.add(String.format("Generate %,d * n * (n + 1) HU", (int)(this.heatMult * Config.ROD_HU_MULTIPLIER)));
-            desc.add(String.format("Generate %,d * n * (n + 1) EU", (int)(this.energyMult * Config.ROD_EU_MULTIPLIER)));
-
-            desc.add(String.format("Where n = %d + Number of adjacent rods and reflectors", 1 + this.rodCount / 2));
+            desc.addAll(Arrays.asList(
+                I18n.format(
+                    "nh_tooltip.fuel_rod.gen_stats",
+                    (int)(this.heatMult * Config.ROD_HU_MULTIPLIER),
+                    (int)(this.energyMult * Config.ROD_EU_MULTIPLIER),
+                    1 + this.rodCount / 2
+                ).split("\\n")
+            ));
 
             if(this.isMox) {
-                desc.add("");
-                desc.add("If the reactor's hull heat is above 50%, the HU output will be multiplied by 2.");
-                desc.add(String.format("The EU output will always be multiplied by 1 + %f * (Current Heat / Max Heat).", Config.MOX_EU_COEFFICIENT));
+                desc.addAll(Arrays.asList(
+                    I18n.format(
+                        "nh_tooltip.fuel_rod.mox_stats",
+                        Config.MOX_EU_COEFFICIENT
+                    ).split("\\n")
+                ));
             }
 
-            desc.add("");
-            desc.add("If there are adjacent components which can contain heat, heat will be spread among them evenly.");
-            desc.add("Otherwise, heat will be added to the reactor hull.");
+            desc.addAll(Arrays.asList(
+                I18n.format(
+                    "nh_tooltip.fuel_rod.heat_epilogue"
+                ).split("\\n")
+            ));
         } else {
-            desc.add("Hold Shift for more info.");
+            desc.add(I18n.format("nh_tooltip.more_info"));
         }
     }
 }

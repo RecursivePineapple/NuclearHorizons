@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option java_package = "com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator";
+option java_outer_classname = "SimulatorProtos";
+
+message SimulationConfig {
+  bool pulsed = 1;
+  bool automated = 2;
+  bool fluid = 3;
+  int32 initialHeat = 4;
+  int32 onPulse = 5;
+  int32 offPulse = 6;
+  int32 suspendTemp = 7;
+  int32 resumeTemp = 8;
+  int32 maxSimulationTicks = 9;
+  repeated ComponentConfig components = 10;
+}
+
+message ComponentConfig {
+  int32 index = 1;
+  int32 item = 2;
+  bool hasAutomation = 3;
+  int32 initialHeat = 4;
+  int32 replacementThreshold = 5;
+  int32 reactorPause = 6;
+}
+
+message SimulationResult {
+  int64 start = 1;
+  int64 end = 2;
+  int64 totalEU = 3;
+  int32 minEUpT = 4;
+  int32 maxEUpT = 5;
+  int64 totalHU = 6;
+  int32 minHUpS = 7;
+  int32 maxHUpS = 8;
+  int64 totalTempSecs = 9;
+  int32 minTemp = 10;
+  int32 maxTemp = 11;
+  int64 totalHullHeating = 12;
+  int64 totalHullCooling = 13;
+  int32 simTime = 14;
+  int32 activeTime = 15;
+  int32 pausedTime = 16;
+  optional int32 timeToNormal = 17;
+  optional int32 timeToBurn = 18;
+  optional int32 timeToEvaporate = 19;
+  optional int32 timeToHurt = 20;
+  optional int32 timeToLava = 21;
+  optional int32 timeToExplode = 22;
+  repeated ComponentResult components = 23;
+}
+
+message ComponentResult {
+  int32 index = 1;
+  int64 totalAirHeating = 2;
+  int64 totalHullHeating = 3;
+  int64 totalHullCooling = 4;
+  int64 totalTempSecs = 5;
+  int32 minTemp = 6;
+  int32 maxTemp = 7;
+  int32 replaceCount = 8;
+  int64 totalEUOutput = 9;
+}

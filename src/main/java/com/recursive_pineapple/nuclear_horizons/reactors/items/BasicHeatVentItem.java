@@ -12,6 +12,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatMoverAdapter;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -97,22 +98,26 @@ public class BasicHeatVentItem extends Item implements IHeatMover, IComponentAda
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
         if(this.maxHeat > 0) {
-            desc.add(String.format("Stored Heat: %,d / %,d", this.getStoredHeat(itemStack), this.maxHeat));
+            desc.add(I18n.format("nh_tooltip.stored_heat", this.getStoredHeat(itemStack), this.maxHeat));
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            desc.add("Every two seconds, this component will:");
+            desc.add(I18n.format("nh_tooltip.prelude"));
             
             if(this.maxHeatFromReactor > 0) {
-                desc.add(String.format("Transfer up to %d HU from the reactor to itself.", this.maxHeatFromReactor));
+                desc.add(I18n.format("nh_tooltip.mover.reactor_xfer", this.maxHeatFromReactor));
             }
 
             if(this.maxHeatToAir > 0) {
-                desc.add(String.format("Dissipate up to %d HU from itself.", this.maxHeatToAir));
+                desc.add(I18n.format("nh_tooltip.vent.void_self", this.maxHeatToAir));
             }
 
             if(this.maxNeighbourToAir > 0) {
-                desc.add(String.format("Dissipate up to %d HU from its neighbours.", this.maxNeighbourToAir));
+                desc.add(I18n.format("nh_tooltip.vent.void_adj", this.maxNeighbourToAir));
+            }
+
+            if(this.maxHeatToAir > 0) {
+                desc.add(I18n.format("nh_tooltip.vent.fluid_disclaimer"));
             }
         } else {
             desc.add("Hold Shift for more info.");

@@ -12,6 +12,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatMoverAdapter;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -86,21 +87,21 @@ public class BasicHeatExchangerItem extends Item implements IHeatMover, ICompone
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
         if(this.maxHeat > 0) {
-            desc.add(String.format("Stored Heat: %,d / %,d", this.getStoredHeat(itemStack), this.maxHeat));
+            desc.add(I18n.format("nh_tooltip.durability", this.getStoredHeat(itemStack), this.maxHeat));
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            desc.add("Every two seconds, this component will:");
+            desc.add(I18n.format("nh_tooltip.prelude"));
             
             if(this.maxHeatFromReactor > 0) {
-                desc.add(String.format("Transfer up to %d HU between the reactor and itself.", this.maxHeatFromReactor));
+                desc.add(I18n.format("nh_tooltip.mover.reactor_xfer", this.maxHeatFromReactor));
             }
 
             if(this.maxHeatFromNeighbour > 0) {
-                desc.add(String.format("Transfer up to %d HU between its neighbours and itself.", this.maxHeatFromNeighbour));
+                desc.add(I18n.format("nh_tooltip.exchanger.comp_xfer", this.maxHeatFromNeighbour));
             }
         } else {
-            desc.add("Hold Shift for more info.");
+            desc.add(I18n.format("nh_tooltip.more_info"));
         }
     }
 }

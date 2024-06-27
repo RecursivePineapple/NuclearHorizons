@@ -47,6 +47,8 @@ public class FuelRodAdapter implements IComponentAdapter {
         }
 
         if(fuelRod.getRemainingHealth(itemStack) <= 0) {
+            var product = fuelRod.getProduct(itemStack);
+            reactor.setItem(x, y, product != null ? product.copy() : null);
             return;
         }
 
@@ -83,7 +85,7 @@ public class FuelRodAdapter implements IComponentAdapter {
             return;
         }
 
-        if(fuelRod.getRemainingHealth(itemStack) == 0) {
+        if(fuelRod.getRemainingHealth(itemStack) <= 0) {
             return;
         }
 

@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
+
 import net.minecraft.item.ItemStack;
 
 public interface IComponentAdapter {
@@ -45,5 +47,9 @@ public interface IComponentAdapter {
 
     public default double getExplosionRadiusMult() {
         return 1.0;
+    }
+
+    public default void modifySimulationResults(SimulationResult result, int componentIndex) {
+
     }
 }

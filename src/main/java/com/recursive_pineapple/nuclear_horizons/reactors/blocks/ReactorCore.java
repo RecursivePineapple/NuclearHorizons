@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ReactorCore extends BlockContainer {
     
-    private IIcon iconTop, iconSide;
+    private IIcon iconTop, iconSideInactive, iconSideActive, iconBottom;
 
     public ReactorCore() {
         super(Material.iron);
@@ -25,13 +25,27 @@ public class ReactorCore extends BlockContainer {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        this.iconTop = reg.registerIcon("nuclear_horizons:reactor_chamber");
-        this.iconSide = reg.registerIcon("nuclear_horizons:reactor_core");
+        this.iconTop = reg.registerIcon("nuclear_horizons:reactor_chamber_side");
+        this.iconBottom = reg.registerIcon("nuclear_horizons:reactor_chamber_top");
+        this.iconSideInactive = reg.registerIcon("nuclear_horizons:reactor_core_side");
+        this.iconSideActive = reg.registerIcon("nuclear_horizons:reactor_core_side_active");
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return iconTop;
+        if(side == 1) {
+            return iconTop;
+        }
+
+        if(side == 0) {
+            return iconBottom;
+        }
+
+        if(meta == 1) {
+            return iconSideActive;
+        } else {
+            return iconSideInactive;
+        }
     }
 
     @Override

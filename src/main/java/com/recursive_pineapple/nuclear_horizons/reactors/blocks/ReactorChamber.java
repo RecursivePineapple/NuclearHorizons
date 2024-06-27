@@ -9,15 +9,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ReactorChamber extends BlockContainer {
     
+    private IIcon iconTop, iconSide;
+
     public ReactorChamber() {
         super(Material.iron);
         
@@ -25,6 +29,21 @@ public class ReactorChamber extends BlockContainer {
         setBlockName(BlockList.REACTOR_CHAMBER_NAME);
         setStepSound(soundTypeMetal);
         setBlockTextureName("nuclear_horizons:reactor_chamber");
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        this.iconTop = reg.registerIcon("nuclear_horizons:reactor_chamber_top");
+        this.iconSide = reg.registerIcon("nuclear_horizons:reactor_chamber_side");
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        if(side == 0 || side == 1) {
+            return iconTop;
+        } else {
+            return iconSide;
+        }
     }
 
     @Override

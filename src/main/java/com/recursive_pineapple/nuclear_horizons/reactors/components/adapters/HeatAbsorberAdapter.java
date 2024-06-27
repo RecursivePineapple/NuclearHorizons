@@ -47,13 +47,12 @@ public class HeatAbsorberAdapter implements IComponentAdapter {
 
     @Override
     public int addHeat(int delta) {
-        return this.heatContainer.addHeat(itemStack, delta);
-    }
+        int rejected = this.heatContainer.addHeat(itemStack, delta);
 
-    @Override
-    public void onHeatTick() {
         if(this.heatContainer.getRemainingHealth(itemStack) <= 0 && this.heatContainer.isConsumable(itemStack)) {
             this.reactor.setItem(x, y, null);
         }
+
+        return rejected;
     }
 }

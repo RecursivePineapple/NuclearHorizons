@@ -2,6 +2,8 @@ package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import javax.annotation.Nullable;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
+
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -162,24 +164,12 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
 
     @Override
     public String getInventoryName() {
-        var reactor = getReactor();
-
-        if(reactor != null) {
-            return reactor.getInventoryName();
-        } else {
-            return "Reactor Access Hatch";
-        }
+        return BlockList.REACTOR_CHAMBER_NAME;
     }
 
     @Override
     public boolean hasCustomInventoryName() {
-        var reactor = getReactor();
-
-        if(reactor != null) {
-            return reactor.hasCustomInventoryName();
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.InventoryDirection;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.IHeatMover;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
 
 import net.minecraft.item.ItemStack;
 
@@ -49,7 +50,23 @@ public class HeatMoverAdapter implements IComponentAdapter {
 
     @Override
     public int addHeat(int delta) {
-        return this.heatMover.addHeat(itemStack, delta);
+        int rejected = this.heatMover.addHeat(itemStack, delta);
+
+        if(this.heatMover.getRemainingHealth(itemStack) <= 0) {
+            this.reactor.setItem(this.x, this.y, null);
+        }
+        
+        return rejected;
+    }
+
+    @Override
+    public void modifySimulationResults(SimulationResult result, int componentIndex) {
+        // if(result.maxHullCooling == null) result.maxHullCooling = 0l;
+
+        // result.maxHullCooling += this.heatMover.getTransferFromReactor(itemStack, reactor);
+
+        // if(result.componentResults[componentIndex].maxAirHeating
+        // TODO: this
     }
 
     @Override
@@ -101,10 +118,6 @@ public class HeatMoverAdapter implements IComponentAdapter {
                     this.addHeat(fromNeighbour);
                 }
             }
-        }
-
-        if(this.heatMover.getRemainingHealth(itemStack) <= 0) {
-            this.reactor.setItem(this.x, this.y, null);
         }
     }
 }

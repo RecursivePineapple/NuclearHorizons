@@ -4,6 +4,7 @@ import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -24,8 +25,10 @@ public class CommonProxy {
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
-        // PacketDispatcher.registerPackets();
+        PacketDispatcher.registerPackets();
         // PacketDispatcher.TileEntityUpdatedMessage.init();
+
+        SimulationItems.init();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
