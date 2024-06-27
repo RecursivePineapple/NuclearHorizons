@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class PressureVessel extends Block {
-    
+
     public PressureVessel() {
         super(Material.rock);
         setBlockName(BlockList.PRESSURE_VESSEL_NAME);

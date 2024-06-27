@@ -6,6 +6,24 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.forge.InvWrapper;
@@ -37,26 +55,10 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
-public class TileReactorCore extends TileEntity implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
-    
+public class TileReactorCore extends TileEntity
+    implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
+
     public static final int ROW_COUNT = 6;
     public static final int COL_COUNT = 9;
 
@@ -84,19 +86,20 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     int storedCoolant = 0;
     int maxCoolant = 10_000;
-    
+
     int storedHotCoolant = 0;
     int maxHotCoolant = 10_000;
 
     private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
 
     public TileReactorCore() {
-        
+
     }
 
-    //#region Fluid Tanks
+    // #region Fluid Tanks
 
     IFluidTank coolantTank = new IFluidTank() {
+
         @Override
         public FluidStack getFluid() {
             return new FluidStack(FluidList.COOLANT, storedCoolant);
@@ -119,15 +122,15 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(resource.getFluid() == FluidList.COOLANT) {
+            if (resource.getFluid() == FluidList.COOLANT) {
                 int remaining = maxCoolant - storedCoolant;
-    
+
                 int consumed = Math.min(remaining, resource.amount);
-    
-                if(doFill) {
+
+                if (doFill) {
                     storedCoolant += consumed;
                 }
-    
+
                 return consumed;
             } else {
                 return 0;
@@ -137,16 +140,17 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
             int consumed = Math.min(storedCoolant, maxDrain);
-    
-            if(doDrain) {
+
+            if (doDrain) {
                 storedCoolant -= consumed;
             }
-    
+
             return new FluidStack(FluidList.COOLANT, consumed);
         }
     };
 
     IFluidTank hotCoolantTank = new IFluidTank() {
+
         @Override
         public FluidStack getFluid() {
             return new FluidStack(FluidList.HOT_COOLANT, storedHotCoolant);
@@ -169,15 +173,15 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(resource.getFluid() == FluidList.HOT_COOLANT) {
+            if (resource.getFluid() == FluidList.HOT_COOLANT) {
                 int remaining = getCapacity() - getFluidAmount();
-    
+
                 int consumed = Math.min(remaining, resource.amount);
-    
-                if(doFill) {
+
+                if (doFill) {
                     storedHotCoolant += consumed;
                 }
-    
+
                 return consumed;
             } else {
                 return 0;
@@ -187,80 +191,72 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
             int consumed = Math.min(getFluidAmount(), maxDrain);
-    
-            if(doDrain) {
+
+            if (doDrain) {
                 storedHotCoolant -= consumed;
             }
-    
+
             return new FluidStack(FluidList.HOT_COOLANT, consumed);
         }
     };
 
-    //#endregion
+    // #endregion
 
-    //#region UI
+    // #region UI
 
     private static Widget padding(int width, int height) {
         return new TextWidget().setSize(width, height);
     }
 
-    private static final AdaptableUITexture MISSING_CHAMBER =
-        AdaptableUITexture.of("nuclear_horizons:textures/gui/reactor_missing_chamber.png", 18, 108, 0);
+    private static final AdaptableUITexture MISSING_CHAMBER = AdaptableUITexture
+        .of("nuclear_horizons:textures/gui/reactor_missing_chamber.png", 18, 108, 0);
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
         ModularWindow.Builder builder = ModularWindow.builder(new Size(212, 234));
-        
-        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND).bindPlayerInventory(buildContext.getPlayer());
+
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND)
+            .bindPlayerInventory(buildContext.getPlayer());
 
         builder.widgets(
-            new Column()
-                .setAlignment(CrossAxisAlignment.CENTER)
+            new Column().setAlignment(CrossAxisAlignment.CENTER)
                 .widgets(
                     padding(7, 7),
                     new TextWidget(I18n.format("nh_gui.reactor.title")).setSize(150, 16),
-                    new Row()
-                        .setAlignment(MainAxisAlignment.CENTER, CrossAxisAlignment.CENTER)
+                    new Row().setAlignment(MainAxisAlignment.CENTER, CrossAxisAlignment.CENTER)
                         .widgets(
                             new FluidSlotWidget(coolantTank).setEnabled(w -> isFluid),
                             padding(2, 0),
-                            SlotGroup.ofItemHandler(new InvWrapper(this), getColumnCount()).build(),
-                            new Row()
-                                .setAlignment(MainAxisAlignment.START, CrossAxisAlignment.CENTER)
+                            SlotGroup.ofItemHandler(new InvWrapper(this), getColumnCount())
+                                .build(),
+                            new Row().setAlignment(MainAxisAlignment.START, CrossAxisAlignment.CENTER)
                                 .consume(w -> {
-                                    for(int i = getColumnCount(); i < COL_COUNT; i++) {
-                                        ((Row)w).widget(MISSING_CHAMBER.withFixedSize(18, 108).asWidget().setSize(18, 108));
+                                    for (int i = getColumnCount(); i < COL_COUNT; i++) {
+                                        ((Row) w).widget(
+                                            MISSING_CHAMBER.withFixedSize(18, 108)
+                                                .asWidget()
+                                                .setSize(18, 108));
                                     }
                                 }),
                             padding(2, 0),
-                            new FluidSlotWidget(hotCoolantTank).setEnabled(w -> isFluid)
-                        ),
-                    new MultiChildWidget()
+                            new FluidSlotWidget(hotCoolantTank).setEnabled(w -> isFluid)),
+                    new MultiChildWidget().addChild(
+                        new Row().setAlignment(MainAxisAlignment.START)
+                            .widgets(
+                                padding(7 + 16, 16),
+                                new TextWidget(I18n.format("nh_gui.reactor.player_inv")).setSize(50, 16)))
                         .addChild(
-                            new Row()
-                                .setAlignment(MainAxisAlignment.START)
+                            new Row().setAlignment(MainAxisAlignment.END)
                                 .widgets(
-                                    padding(7 + 16, 16),
-                                    new TextWidget(I18n.format("nh_gui.reactor.player_inv")).setSize(50, 16)
-                                )
-                        )
-                        .addChild(
-                            new Row()
-                                .setAlignment(MainAxisAlignment.END)
-                                .widgets(
-                                    TextWidget.dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
+                                    TextWidget
+                                        .dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
                                         .setSize(50, 16),
-                                    TextWidget.dynamicString(() -> (
-                                            !isFluid
-                                                ? I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
-                                                : I18n.format("nh_gui.reactor.hu_output", this.addedHeat)
-                                        ))
+                                    TextWidget
+                                        .dynamicString(
+                                            () -> (!isFluid ? I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
+                                                : I18n.format("nh_gui.reactor.hu_output", this.addedHeat)))
                                         .setSize(50, 16),
-                                    padding(7 + 16, 16)
-                                )
-                        )
-                )
-        );
+                                    padding(7 + 16, 16)))));
 
         builder.widgets(
             new FakeSyncWidget.BooleanSyncer(() -> this.isActive, v -> this.isActive = v),
@@ -270,40 +266,40 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
             new FakeSyncWidget.IntegerSyncer(() -> this.storedCoolant, v -> this.storedCoolant = v),
             new FakeSyncWidget.IntegerSyncer(() -> this.storedHotCoolant, v -> this.storedHotCoolant = v),
             new FakeSyncWidget.IntegerSyncer(() -> this.maxCoolant, v -> this.maxCoolant = v),
-            new FakeSyncWidget.IntegerSyncer(() -> this.maxHotCoolant, v -> this.maxHotCoolant = v)
-        );
+            new FakeSyncWidget.IntegerSyncer(() -> this.maxHotCoolant, v -> this.maxHotCoolant = v));
 
         return builder.build();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Tile Entity Logic
+    // #region Tile Entity Logic
 
     public int getColumnCount() {
         return chambers + 3;
     }
 
     public void setChamberCount(int chambers) {
-        if(chambers == this.chambers) {
+        if (chambers == this.chambers) {
             return;
         }
 
         this.chambers = chambers;
 
-        for(var player : viewingPlayers.toArray(new EntityPlayer[viewingPlayers.size()])) {
+        for (var player : viewingPlayers.toArray(new EntityPlayer[viewingPlayers.size()])) {
             player.closeScreen();
         }
 
         viewingPlayers.clear();
 
-        for(int row = 0; row < ROW_COUNT; row++) {
-            for(int col = 0; col < COL_COUNT; col++) {
-                if(col >= this.getColumnCount()) {
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
+                if (col >= this.getColumnCount()) {
                     var item = contents[row * COL_COUNT + col];
                     contents[row * COL_COUNT + col] = null;
-                    if(item != null && !worldObj.isRemote) {
-                        worldObj.spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
+                    if (item != null && !worldObj.isRemote) {
+                        worldObj
+                            .spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
                     }
                 }
             }
@@ -311,11 +307,11 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     }
 
     public void dropInventory() {
-        for(int row = 0; row < ROW_COUNT; row++) {
-            for(int col = 0; col < COL_COUNT; col++) {
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
                 var item = contents[row * COL_COUNT + col];
                 contents[row * COL_COUNT + col] = null;
-                if(item != null && !worldObj.isRemote) {
+                if (item != null && !worldObj.isRemote) {
                     worldObj.spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
                 }
             }
@@ -341,9 +337,9 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         var grid = new NBTTagCompound();
 
-        for(int i = 0; i < contents.length; i++) {
+        for (int i = 0; i < contents.length; i++) {
             var item = contents[i];
-            if(item != null) {
+            if (item != null) {
                 grid.setTag(Integer.toString(i), item.writeToNBT(new NBTTagCompound()));
             }
         }
@@ -357,7 +353,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         int version = compound.getInteger("version");
 
-        switch(version) {
+        switch (version) {
             case 1: {
                 this.storedHeat = compound.getInteger("heat");
                 this.storedEU = compound.getInteger("storedEU");
@@ -369,18 +365,18 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                 this.storedHotCoolant = compound.getInteger("storedHotCoolant");
                 this.maxCoolant = compound.getInteger("maxCoolant");
                 this.maxHotCoolant = compound.getInteger("maxHotCoolant");
-        
+
                 var grid = compound.getCompoundTag("grid");
 
                 Arrays.fill(this.contents, null);
                 Arrays.fill(this.components, null);
 
-                for(int i = 0; i < contents.length; i++) {
-                    if(grid.hasKey(Integer.toString(i))) {
+                for (int i = 0; i < contents.length; i++) {
+                    if (grid.hasKey(Integer.toString(i))) {
                         contents[i] = new ItemStack(Blocks.air);
                         contents[i].readFromNBT(grid.getCompoundTag(Integer.toString(i)));
 
-                        if(contents[i].getItem() == null) {
+                        if (contents[i].getItem() == null) {
                             contents[i] = null;
                         }
                     }
@@ -397,26 +393,28 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         this.setChamberCount(getAttachedChambers(worldObj, xCoord, yCoord, zCoord));
 
-        if(!this.worldObj.isRemote) {
+        if (!this.worldObj.isRemote) {
             this.tickCounter++;
 
-            if(this.tickCounter % REACTOR_TICK_SPEED == 0) {
+            if (this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 boolean wasActive = isActive;
 
                 this.isActive = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
-    
-                for(var dir : DirectionUtil.values()) {
+
+                for (var dir : DirectionUtil.values()) {
+                    // spotless:off
                     this.isActive |= worldObj.getBlockPowerInput(
                         dir.offsetX + xCoord,
                         dir.offsetY + yCoord,
                         dir.offsetZ + zCoord
                     ) > 0;
+                    // spotless:on
                 }
 
-                if(this.isFluid) {
+                if (this.isFluid) {
                     boolean anyActive = false, anyInhibiting = false;
 
-                    for(var block : reactorBlocks) {
+                    for (var block : reactorBlocks) {
                         var state = block.getEnableState();
                         anyActive |= state == ReactorEnableState.Active;
                         anyInhibiting |= state == ReactorEnableState.Inhibiting;
@@ -424,25 +422,25 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
                     isActive |= anyActive;
 
-                    if(anyInhibiting) {
+                    if (anyInhibiting) {
                         isActive = false;
                     }
                 }
 
-                if((this.tickCounter / REACTOR_TICK_SPEED) % 2 == 0) {
+                if ((this.tickCounter / REACTOR_TICK_SPEED) % 2 == 0) {
                     this.doHeatTick();
                 } else {
                     this.doEUTick();
                 }
 
-                if(wasActive != isActive) {
+                if (wasActive != isActive) {
                     worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isActive ? 1 : 0, 3);
                 }
-                
+
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
 
-            if(this.tickCounter % REACTOR_STRUCTURE_CHECK_PERIOD == 0) {
+            if (this.tickCounter % REACTOR_STRUCTURE_CHECK_PERIOD == 0) {
                 doStructureCheck();
             }
 
@@ -489,8 +487,8 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     public static int getAttachedChambers(World worldIn, int x, int y, int z) {
         int chamberCount = 0;
 
-        for(var d : DirectionUtil.values()) {
-            if(d.getBlock(worldIn, x, y, z) == BlockList.REACTOR_CHAMBER) {
+        for (var d : DirectionUtil.values()) {
+            if (d.getBlock(worldIn, x, y, z) == BlockList.REACTOR_CHAMBER) {
                 chamberCount++;
             }
         }
@@ -506,9 +504,9 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         this.viewingPlayers.remove(player);
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Energy Logic
+    // #region Energy Logic
 
     @Override
     public byte getColorization() {
@@ -536,23 +534,23 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     }
 
     private void emitEnergy() {
-        if(this.voltage == 0) this.voltage = 32;
+        if (this.voltage == 0) this.voltage = 32;
 
         int availableAmps = this.storedEU / this.voltage;
 
-        if(availableAmps > 0) {
+        if (availableAmps > 0) {
             long consumedAmps = emitEnergyToNetwork(this.voltage, availableAmps, this);
 
-            for(var dir : DirectionUtil.values()) {
-                if((availableAmps - consumedAmps) <= 0) {
+            for (var dir : DirectionUtil.values()) {
+                if ((availableAmps - consumedAmps) <= 0) {
                     break;
                 }
 
-                if(dir.getTileEntity(worldObj, xCoord, yCoord, zCoord) instanceof TileReactorChamber chamber) {
+                if (dir.getTileEntity(worldObj, xCoord, yCoord, zCoord) instanceof TileReactorChamber chamber) {
                     consumedAmps += emitEnergyToNetwork(this.voltage, availableAmps - consumedAmps, chamber);
                 }
             }
-    
+
             this.storedEU -= consumedAmps * this.voltage;
         }
     }
@@ -564,7 +562,11 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
             if (usedAmperes > amperage) break;
 
             ForgeDirection oppositeSide = Objects.requireNonNull(side.getOpposite());
-            TileEntity tTileEntity = emitter.getWorldObj().getTileEntity(emitter.xCoord + side.offsetX, emitter.yCoord + side.offsetY, emitter.zCoord + side.offsetZ);
+            TileEntity tTileEntity = emitter.getWorldObj()
+                .getTileEntity(
+                    emitter.xCoord + side.offsetX,
+                    emitter.yCoord + side.offsetY,
+                    emitter.zCoord + side.offsetZ);
             if (tTileEntity instanceof PowerLogicHost host) {
 
                 PowerLogic logic = host.getPowerLogic(oppositeSide);
@@ -592,9 +594,9 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         return usedAmperes;
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Inventory Logic
+    // #region Inventory Logic
 
     private int transformSlotIndex(int invSlot) {
         int cols = this.getColumnCount();
@@ -623,7 +625,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         var item = this.contents[index];
 
-        if(item == null) {
+        if (item == null) {
             return null;
         }
 
@@ -635,7 +637,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
         var out = item.splitStack(consumed);
 
-        if(item.stackSize <= 0) {
+        if (item.stackSize <= 0) {
             this.contents[index] = null;
         }
 
@@ -647,8 +649,8 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         index = transformSlotIndex(index);
 
         var item = this.contents[index];
-        
-        if(item == null) {
+
+        if (item == null) {
             return null;
         }
 
@@ -664,7 +666,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     public void setInventorySlotContents(int index, ItemStack stack) {
         index = transformSlotIndex(index);
 
-        if(stack != null && stack.stackSize <= 0) {
+        if (stack != null && stack.stackSize <= 0) {
             stack = null;
         }
 
@@ -700,12 +702,12 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public void openInventory() {
-        
+
     }
 
     @Override
     public void closeInventory() {
-        
+
     }
 
     @Override
@@ -713,25 +715,25 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         return ComponentRegistry.isReactorItem(stack);
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Reactor Grid Logic
+    // #region Reactor Grid Logic
 
     private void doHeatTick() {
         this.storedCoolant = 10000;
         this.storedHotCoolant = 0;
         this.addedHeat = 0;
 
-        for(int row = 0; row < ROW_COUNT; row++) {
-            for(int col = 0; col < COL_COUNT; col++) {
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
                 var component = getComponent(col, row);
-                if(component != null) {
+                if (component != null) {
                     component.onHeatTick();
                 }
             }
         }
 
-        for(var reactorBlock : reactorBlocks) {
+        for (var reactorBlock : reactorBlocks) {
             reactorBlock.onHeatTick(this);
         }
     }
@@ -739,20 +741,20 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     private void doEUTick() {
         this.addedEU = 0;
 
-        for(int row = 0; row < ROW_COUNT; row++) {
-            for(int col = 0; col < COL_COUNT; col++) {
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
                 var component = getComponent(col, row);
-                if(component != null) {
+                if (component != null) {
                     component.onEnergyTick();
                 }
             }
         }
 
-        for(var reactorBlock : reactorBlocks) {
+        for (var reactorBlock : reactorBlocks) {
             reactorBlock.onEnergyTick(this);
         }
 
-        if(this.storedEU > this.maxStoredEU) {
+        if (this.storedEU > this.maxStoredEU) {
             this.storedEU = this.maxStoredEU;
         }
 
@@ -775,23 +777,25 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public @Nullable IComponentAdapter getComponent(int x, int y) {
-        if(x < 0 || x >= COL_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+        if (x < 0 || x >= COL_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
         }
 
-        if(y < 0 || y >= ROW_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+        if (y < 0 || y >= ROW_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
         }
 
         int index = y * COL_COUNT + x;
 
         var adapter = this.components[index];
-        if(adapter != null) {
+        if (adapter != null) {
             return adapter;
         }
 
         var item = this.contents[index];
-        if(item != null) {
+        if (item != null) {
             adapter = ComponentRegistry.getAdapter(item, this, x, y);
             this.components[index] = adapter;
         }
@@ -801,12 +805,14 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public @Nullable ItemStack getItem(int x, int y) {
-        if(x < 0 || x >= COL_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+        if (x < 0 || x >= COL_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
         }
 
-        if(y < 0 || y >= ROW_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+        if (y < 0 || y >= ROW_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
         }
 
         int index = y * COL_COUNT + x;
@@ -816,12 +822,14 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public void setItem(int x, int y, @Nullable ItemStack item) {
-        if(x < 0 || x >= COL_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+        if (x < 0 || x >= COL_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
         }
 
-        if(y < 0 || y >= ROW_COUNT) {
-            throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+        if (y < 0 || y >= ROW_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
         }
 
         int index = y * COL_COUNT + x;
@@ -846,10 +854,10 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     public int getMaxHullHeat() {
         int maxHeat = 5000;
 
-        for(int row = 0; row < ROW_COUNT; row++) {
-            for(int col = 0; col < COL_COUNT; col++) {
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
                 var component = getComponent(col, row);
-                if(component != null) {
+                if (component != null) {
                     maxHeat += component.getReactorMaxHeatIncrease();
                 }
             }
@@ -870,7 +878,7 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
 
     @Override
     public int addAirHeat(int delta) {
-        if(this.isFluid) {
+        if (this.isFluid) {
             int emptyHotCoolant = this.maxHotCoolant - this.storedHotCoolant;
             int consumed = Math.min(Math.min(delta, this.storedCoolant / 2), emptyHotCoolant / 2);
 
@@ -887,8 +895,8 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
     @Override
     public void addEU(double eu) {
         this.storedEU += eu;
-        
-        if(eu > 0) {
+
+        if (eu > 0) {
             this.addedEU += eu;
         }
     }
@@ -898,9 +906,9 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         return isFluid;
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Reactor Structure Logic
+    // #region Reactor Structure Logic
 
     private static boolean isInsideCube(int coord) {
         return coord == -1 || coord == 0 || coord == 1;
@@ -910,18 +918,18 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         this.isFluid = true;
         this.reactorBlocks.clear();
 
-        for(int relX = -2; relX < 3; relX++) {
-            for(int relY = -2; relY < 3; relY++) {
-                for(int relZ = -2; relZ < 3; relZ++) {
-                    if(relX == 0 && relY == 0 && relZ == 0) {
+        for (int relX = -2; relX < 3; relX++) {
+            for (int relY = -2; relY < 3; relY++) {
+                for (int relZ = -2; relZ < 3; relZ++) {
+                    if (relX == 0 && relY == 0 && relZ == 0) {
                         continue;
                     }
 
                     int insideCubeCount = 0;
 
-                    if(isInsideCube(relX)) insideCubeCount++;
-                    if(isInsideCube(relY)) insideCubeCount++;
-                    if(isInsideCube(relZ)) insideCubeCount++;
+                    if (isInsideCube(relX)) insideCubeCount++;
+                    if (isInsideCube(relY)) insideCubeCount++;
+                    if (isInsideCube(relZ)) insideCubeCount++;
 
                     boolean isInternal = insideCubeCount == 3;
                     // boolean isFace = insideCubeCount == 2;
@@ -929,13 +937,13 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                     boolean isCorner = insideCubeCount == 0;
 
                     // within the center 3x3x3
-                    if(isInternal) {
+                    if (isInternal) {
                         continue;
                     }
 
                     int x = xCoord + relX, y = yCoord + relY, z = zCoord + relZ;
 
-                    if(!worldObj.blockExists(x, y, z)) {
+                    if (!worldObj.blockExists(x, y, z)) {
                         this.isFluid = false;
                         continue;
                     }
@@ -943,21 +951,21 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
                     Block block = worldObj.getBlock(x, y, z);
 
                     // valid in any spot on the surface
-                    if(block == BlockList.PRESSURE_VESSEL) {
+                    if (block == BlockList.PRESSURE_VESSEL) {
                         continue;
                     }
 
                     // edges & corners must be pressure vessels
-                    if(isEdge || isCorner) {
-                        if(block != BlockList.PRESSURE_VESSEL) {
+                    if (isEdge || isCorner) {
+                        if (block != BlockList.PRESSURE_VESSEL) {
                             this.isFluid = false;
                         }
                         continue;
                     }
 
                     // a face can be any IReactorBlock
-                    if(block.hasTileEntity(worldObj.getBlockMetadata(x, y, z))) {
-                        if(worldObj.getTileEntity(x, y, z) instanceof IReactorBlock reactorBlock) {
+                    if (block.hasTileEntity(worldObj.getBlockMetadata(x, y, z))) {
+                        if (worldObj.getTileEntity(x, y, z) instanceof IReactorBlock reactorBlock) {
                             reactorBlock.setReactor(this);
                             reactorBlocks.add(reactorBlock);
                             continue;
@@ -970,5 +978,5 @@ public class TileReactorCore extends TileEntity implements IInventory, IReactorG
         }
     }
 
-    //#endregion
+    // #endregion
 }

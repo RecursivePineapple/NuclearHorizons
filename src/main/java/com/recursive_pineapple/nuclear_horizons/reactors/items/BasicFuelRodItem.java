@@ -6,6 +6,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 
 import com.recursive_pineapple.nuclear_horizons.Config;
@@ -14,11 +19,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
-
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentAdapterFactory {
 
@@ -29,7 +29,8 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
     private final int maxHealth;
     private ItemStack product;
 
-    public BasicFuelRodItem(String name, String textureName, double energyMult, double heatMult, int rodCount, boolean isMox, int maxHealth) {
+    public BasicFuelRodItem(String name, String textureName, double energyMult, double heatMult, int rodCount,
+        boolean isMox, int maxHealth) {
         setUnlocalizedName(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(maxHealth);
@@ -87,49 +88,46 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
     }
 
     @Override
-    public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x, int y) {
+    public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
+        int y) {
         return new FuelRodAdapter(reactor, x, y, itemStack, this);
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc, boolean advancedItemTooltips) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc,
+        boolean advancedItemTooltips) {
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
-        if(!advancedItemTooltips) {
-            desc.addAll(Arrays.asList(
-                I18n.format(
-                    "nh_tooltip.durability",
-                    this.getRemainingHealth(itemStack), this.maxHealth
-                ).split("\\n")
-            ));
+        if (!advancedItemTooltips) {
+            desc.addAll(
+                Arrays.asList(
+                    I18n.format("nh_tooltip.durability", this.getRemainingHealth(itemStack), this.maxHealth)
+                        .split("\\n")));
         }
 
-        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             desc.add(I18n.format("nh_tooltip.prelude"));
-            
-            desc.addAll(Arrays.asList(
-                I18n.format(
-                    "nh_tooltip.fuel_rod.gen_stats",
-                    (int)(this.heatMult * Config.ROD_HU_MULTIPLIER),
-                    (int)(this.energyMult * Config.ROD_EU_MULTIPLIER),
-                    1 + this.rodCount / 2
-                ).split("\\n")
-            ));
 
-            if(this.isMox) {
-                desc.addAll(Arrays.asList(
+            desc.addAll(
+                Arrays.asList(
                     I18n.format(
-                        "nh_tooltip.fuel_rod.mox_stats",
-                        Config.MOX_EU_COEFFICIENT
-                    ).split("\\n")
-                ));
+                        "nh_tooltip.fuel_rod.gen_stats",
+                        (int) (this.heatMult * Config.ROD_HU_MULTIPLIER),
+                        (int) (this.energyMult * Config.ROD_EU_MULTIPLIER),
+                        1 + this.rodCount / 2)
+                        .split("\\n")));
+
+            if (this.isMox) {
+                desc.addAll(
+                    Arrays.asList(
+                        I18n.format("nh_tooltip.fuel_rod.mox_stats", Config.MOX_EU_COEFFICIENT)
+                            .split("\\n")));
             }
 
-            desc.addAll(Arrays.asList(
-                I18n.format(
-                    "nh_tooltip.fuel_rod.heat_epilogue"
-                ).split("\\n")
-            ));
+            desc.addAll(
+                Arrays.asList(
+                    I18n.format("nh_tooltip.fuel_rod.heat_epilogue")
+                        .split("\\n")));
         } else {
             desc.add(I18n.format("nh_tooltip.more_info"));
         }

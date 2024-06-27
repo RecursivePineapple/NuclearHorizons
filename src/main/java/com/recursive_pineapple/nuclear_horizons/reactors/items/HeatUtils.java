@@ -1,8 +1,8 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
 public class HeatUtils {
-    
-    private HeatUtils() { }
+
+    private HeatUtils() {}
 
     public static int getTransferAmount(int sourceHeat, int destHeat, int max) {
         // positive = source > dest: pull, negative = source < dest: push
@@ -11,7 +11,7 @@ public class HeatUtils {
         int signum = delta < 0 ? -1 : 1;
         delta *= signum;
 
-        if(delta > max) {
+        if (delta > max) {
             return signum * max;
         } else {
             int balance = delta / 2;
@@ -25,7 +25,7 @@ public class HeatUtils {
         // 50 stored - 75 removed = 50 removed
         // 25 out of 50 + 50 added = 25 added
 
-        if(addedHeat > 0) {
+        if (addedHeat > 0) {
             int remaining = maxHeat - currentHeat;
 
             return Math.min(addedHeat, remaining);

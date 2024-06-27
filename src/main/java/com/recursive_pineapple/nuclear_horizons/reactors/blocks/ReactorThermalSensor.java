@@ -1,18 +1,14 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
-import java.util.Random;
-
-import com.gtnewhorizons.modularui.api.UIInfos;
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileAccessHatch;
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileThermalSensor;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileThermalSensor;
 
 public class ReactorThermalSensor extends BlockContainer {
 
@@ -34,7 +30,7 @@ public class ReactorThermalSensor extends BlockContainer {
 
     @Override
     public int isProvidingWeakPower(IBlockAccess worldIn, int x, int y, int z, int side) {
-        var te = (TileThermalSensor)worldIn.getTileEntity(x, y, z);
+        var te = (TileThermalSensor) worldIn.getTileEntity(x, y, z);
 
         return te.isActive() ? 15 : 0;
     }
@@ -43,10 +39,11 @@ public class ReactorThermalSensor extends BlockContainer {
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileThermalSensor();
     }
-    
+
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
-        if(!worldIn.isRemote) {
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        if (!worldIn.isRemote) {
             UIInfos.TILE_MODULAR_UI.open(player, worldIn, x, y, z);
         }
 

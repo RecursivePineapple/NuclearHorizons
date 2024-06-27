@@ -1,7 +1,14 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import java.util.Arrays;
+
 import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -15,16 +22,10 @@ import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
 public class TileThermalSensor extends TileEntity implements ITileWithModularUI, IReactorBlock {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
-    
+
     private int threshold;
 
     private ThermalSensorOp op = ThermalSensorOp.GTE;
@@ -32,13 +33,14 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
     private Boolean wasActive = null;
 
     private static enum ThermalSensorOp {
+
         LT,
         LTE,
         GT,
         GTE;
 
         public String getDisplayString() {
-            return switch(this) {
+            return switch (this) {
                 case LT -> "<";
                 case LTE -> "<=";
                 case GT -> ">";
@@ -58,16 +60,18 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
 
     @Override
     public @Nullable TileReactorCore getReactor() {
-        if(worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
+        // spotless:off
+        if (worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
             return reactor;
         } else {
             return null;
         }
+        // spotless:on
     }
 
     @Override
     public void setReactor(TileReactorCore reactor) {
-        if(getReactor() != reactor) {
+        if (getReactor() != reactor) {
             this.reactorRelX = reactor.xCoord - xCoord;
             this.reactorRelY = reactor.yCoord - yCoord;
             this.reactorRelZ = reactor.zCoord - zCoord;
@@ -80,7 +84,7 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
     public void onHeatTick(IReactorGrid reactor) {
         var shouldBeActive = op.test(threshold, reactor.getHullHeat());
 
-        if(wasActive == null || shouldBeActive != wasActive) {
+        if (wasActive == null || shouldBeActive != wasActive) {
             wasActive = shouldBeActive;
             worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         }
@@ -109,7 +113,7 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        switch(compound.getInteger("version")) {
+        switch (compound.getInteger("version")) {
             case 1: {
                 this.reactorRelX = compound.getInteger("reactorRelX");
                 this.reactorRelY = compound.getInteger("reactorRelY");
@@ -145,7 +149,8 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
         this.op = ThermalSensorOp.valueOf(data.getString("op"));
     }
 
-    private static final AdaptableUITexture DISPLAY = AdaptableUITexture.of("modularui:gui/background/display", 143, 75, 2);
+    private static final AdaptableUITexture DISPLAY = AdaptableUITexture
+        .of("modularui:gui/background/display", 143, 75, 2);
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
@@ -154,13 +159,11 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
 
         builder.widgets(
-                new TextWidget("Reactor Thermal Sensor")
-                    .setPos(8, 8),
-            new VanillaButtonWidget()
-                .setDisplayString(this.op.getDisplayString())
+            new TextWidget("Reactor Thermal Sensor").setPos(8, 8),
+            new VanillaButtonWidget().setDisplayString(this.op.getDisplayString())
                 .setOnClick((t, u) -> {
                     this.op = ThermalSensorOp.values()[(this.op.ordinal() + 1) % ThermalSensorOp.values().length];
-                    ((VanillaButtonWidget)u).setDisplayString(op.getDisplayString());
+                    ((VanillaButtonWidget) u).setDisplayString(op.getDisplayString());
                     u.notifyTooltipChange();
 
                     this.markDirty();
@@ -169,34 +172,30 @@ public class TileThermalSensor extends TileEntity implements ITileWithModularUI,
                 })
                 .dynamicTooltipShift(() -> {
                     return Arrays.asList(
-                        String.format(
-                            "Emit a redstone signal when reactor temperature is %s the threshold",
-                            switch(op) {
-                                case LT -> "less than";
-                                case LTE -> "less than or equal to";
-                                case GT -> "greater than";
-                                case GTE -> "greater than or equal to";
-                            }
-                        )
-                    );
+                        String
+                            .format("Emit a redstone signal when reactor temperature is %s the threshold", switch (op) {
+                        case LT -> "less than";
+                        case LTE -> "less than or equal to";
+                        case GT -> "greater than";
+                        case GTE -> "greater than or equal to";
+                    }));
                 })
                 .setSize(24, 16)
                 .setPos(8, 24),
-            new NumericWidget()
-                .setGetter(() -> this.threshold)
+            new NumericWidget().setGetter(() -> this.threshold)
                 .setSetter(v -> {
-                    this.threshold = (int)v;
+                    this.threshold = (int) v;
 
                     this.markDirty();
                     this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     this.onHeatTick(getReactor());
                 })
                 .setBounds(0, Double.MAX_VALUE)
-                .setTextColor(Color.WHITE.dark(1)).setBackground(DISPLAY.withOffset(-2, -2, 4, 4))
+                .setTextColor(Color.WHITE.dark(1))
+                .setBackground(DISPLAY.withOffset(-2, -2, 4, 4))
                 .setSize(96, 16)
-                .setPos(40, 24)
-        );
-        
+                .setPos(40, 24));
+
         return builder.build();
     }
 }

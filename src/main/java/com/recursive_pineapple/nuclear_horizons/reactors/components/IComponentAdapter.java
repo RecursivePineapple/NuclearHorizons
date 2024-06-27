@@ -1,11 +1,13 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
-
 import net.minecraft.item.ItemStack;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
+
 public interface IComponentAdapter {
+
     public int getX();
+
     public int getY();
 
     public ItemStack getItemStack();

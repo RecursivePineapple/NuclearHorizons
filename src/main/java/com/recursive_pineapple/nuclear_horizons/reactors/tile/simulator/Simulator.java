@@ -11,6 +11,11 @@ import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher;
 import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher.ReactorSimulationFinishedMessage;
@@ -19,11 +24,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorSimulator;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 
 public class Simulator {
 
@@ -41,7 +41,7 @@ public class Simulator {
     }
 
     public void start(SimulationConfig config) {
-        if(simulation != null) {
+        if (simulation != null) {
             simulation.cancel(true);
         }
 
@@ -56,34 +56,32 @@ public class Simulator {
     private SimulationResult runSimulation(SimulationConfig config) {
         SimulatedReactor reactor = new SimulatedReactor();
         reactor.config = config;
-        
-        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-            new ChatComponentText(
-                EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC.toString()
-                + "Started reactor simulation."
-            )
-        );
+
+        Minecraft.getMinecraft().ingameGUI.getChatGUI()
+            .printChatMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC.toString()
+                        + "Started reactor simulation."));
 
         reactor.run();
 
-        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-            new ChatComponentText(
-                EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC.toString()
-                + "Reactor simulation finished after "
-                + String.format("%.3f seconds.", reactor.result.duration())
-            )
-        );
+        Minecraft.getMinecraft().ingameGUI.getChatGUI()
+            .printChatMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC.toString()
+                        + "Reactor simulation finished after "
+                        + String.format("%.3f seconds.", reactor.result.duration())));
 
         reactor.result.config = config;
         return reactor.result;
     }
 
     public void pollFinished() {
-        if(simulation != null && simulation.isDone()) {
+        if (simulation != null && simulation.isDone()) {
             try {
                 var result = simulation.get(0l, TimeUnit.NANOSECONDS);
                 simulation = null;
-                
+
                 var msg = new ReactorSimulationFinishedMessage();
 
                 msg.dimensionId = parent.getWorldObj().provider.dimensionId;
@@ -92,19 +90,22 @@ public class Simulator {
                 msg.z = parent.zCoord;
                 msg.result = result;
 
-                NuclearHorizons.LOG.info(String.format("Simulation finished after %.3fs (%.3fns per tick)", result.duration(), (result.duration() * 1e9d / result.simTime)));
+                NuclearHorizons.LOG.info(
+                    String.format(
+                        "Simulation finished after %.3fs (%.3fns per tick)",
+                        result.duration(),
+                        (result.duration() * 1e9d / result.simTime)));
                 PacketDispatcher.DISPATCHER.sendToServer(msg);
             } catch (InterruptedException | CancellationException | ExecutionException e) {
                 NuclearHorizons.LOG.warn("Simulation did not finish", e);
-                Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-                    new ChatComponentText(
-                        EnumChatFormatting.RED
-                        + "Simulation crashed, check the server logs for more details. ("
-                        + e.getClass().getName()
-                        + ")"
-                    )
-                );
-        
+                Minecraft.getMinecraft().ingameGUI.getChatGUI()
+                    .printChatMessage(
+                        new ChatComponentText(
+                            EnumChatFormatting.RED + "Simulation crashed, check the server logs for more details. ("
+                                + e.getClass()
+                                    .getName()
+                                + ")"));
+
                 simulation = null;
             } catch (TimeoutException e) {
                 // do nothing
@@ -116,7 +117,7 @@ public class Simulator {
 
         private static final int COL_COUNT = TileReactorCore.COL_COUNT;
         private static final int ROW_COUNT = TileReactorCore.ROW_COUNT;
-        
+
         public ItemStack[] contents = new ItemStack[COL_COUNT * ROW_COUNT];
         public IComponentAdapter[] components = new IComponentAdapter[COL_COUNT * ROW_COUNT];
 
@@ -143,23 +144,25 @@ public class Simulator {
 
         @Override
         public @Nullable IComponentAdapter getComponent(int x, int y) {
-            if(x < 0 || x >= COL_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+            if (x < 0 || x >= COL_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
             }
 
-            if(y < 0 || y >= ROW_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+            if (y < 0 || y >= ROW_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
             }
 
             int index = y * COL_COUNT + x;
 
             var adapter = this.components[index];
-            if(adapter != null) {
+            if (adapter != null) {
                 return adapter;
             }
 
             var item = this.contents[index];
-            if(item != null) {
+            if (item != null) {
                 adapter = ComponentRegistry.getAdapter(item, this, x, y);
                 this.components[index] = adapter;
             }
@@ -169,12 +172,14 @@ public class Simulator {
 
         @Override
         public @Nullable ItemStack getItem(int x, int y) {
-            if(x < 0 || x >= COL_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+            if (x < 0 || x >= COL_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
             }
 
-            if(y < 0 || y >= ROW_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+            if (y < 0 || y >= ROW_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
             }
 
             int index = y * COL_COUNT + x;
@@ -184,12 +189,14 @@ public class Simulator {
 
         @Override
         public void setItem(int x, int y, @Nullable ItemStack item) {
-            if(x < 0 || x >= COL_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
+            if (x < 0 || x >= COL_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for x: %d, must conform to x >= 0, x < %d", x, COL_COUNT));
             }
 
-            if(y < 0 || y >= ROW_COUNT) {
-                throw new IllegalArgumentException(String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
+            if (y < 0 || y >= ROW_COUNT) {
+                throw new IllegalArgumentException(
+                    String.format("Illegal value for y: %d, must conform to y >= 0, y < %d", y, ROW_COUNT));
             }
 
             int index = y * COL_COUNT + x;
@@ -202,15 +209,15 @@ public class Simulator {
 
         @Override
         public boolean isActive() {
-            if(suspended) {
+            if (suspended) {
                 return false;
             }
-            
-            if(nextUnpause != null && reactorTickCounter < nextUnpause) {
+
+            if (nextUnpause != null && reactorTickCounter < nextUnpause) {
                 return false;
             }
-            
-            if(config.pulsed) {
+
+            if (config.pulsed) {
                 return pulseActive;
             }
 
@@ -226,10 +233,10 @@ public class Simulator {
         public int getMaxHullHeat() {
             int maxHeat = 5000;
 
-            for(int row = 0; row < ROW_COUNT; row++) {
-                for(int col = 0; col < COL_COUNT; col++) {
+            for (int row = 0; row < ROW_COUNT; row++) {
+                for (int col = 0; col < COL_COUNT; col++) {
                     var component = getComponent(col, row);
-                    if(component != null) {
+                    if (component != null) {
                         maxHeat += component.getReactorMaxHeatIncrease();
                     }
                 }
@@ -247,7 +254,7 @@ public class Simulator {
         public void addHullHeat(int delta) {
             this.storedHeat += delta;
 
-            if(delta > 0) {
+            if (delta > 0) {
                 currentComponent.totalHullHeating += delta;
             } else {
                 currentComponent.totalHullCooling += -delta;
@@ -281,12 +288,12 @@ public class Simulator {
             Arrays.fill(components, null);
             Arrays.fill(contents, null);
 
-            for(int i = 0; i < components.length; i++) {
+            for (int i = 0; i < components.length; i++) {
                 contents[i] = config.getStackInSlot(i);
                 componentResults[i] = new SimulationComponentResult();
 
                 var comp = getComponent(i % COL_COUNT, i / COL_COUNT);
-                if(comp != null) {
+                if (comp != null) {
                     comp.addHeat(config.components[i].initialHeat);
                 }
             }
@@ -296,23 +303,23 @@ public class Simulator {
             this.pulseActive = true;
             this.storedHeat = config.initialHeat;
 
-            while(reactorTickCounter < config.maxSimulationTicks) {
-                if(reactorTickCounter % 2 == 0) {
+            while (reactorTickCounter < config.maxSimulationTicks) {
+                if (reactorTickCounter % 2 == 0) {
                     this.addedEU = 0;
                 } else {
                     this.addedHU = 0;
                 }
 
-                for(int row = 0; row < ROW_COUNT; row++) {
-                    for(int col = 0; col < COL_COUNT; col++) {
+                for (int row = 0; row < ROW_COUNT; row++) {
+                    for (int col = 0; col < COL_COUNT; col++) {
                         int index = row * COL_COUNT + col;
 
                         var component = getComponent(col, row);
 
-                        if(component != null) {
+                        if (component != null) {
                             currentComponent = componentResults[index];
 
-                            if(reactorTickCounter % 2 == 0) {
+                            if (reactorTickCounter % 2 == 0) {
                                 component.onEnergyTick();
                             } else {
                                 component.onHeatTick();
@@ -322,23 +329,24 @@ public class Simulator {
 
                             currentComponent.totalTempSecs += heat * 2;
 
-                            if(heat < currentComponent.minTemp) {
+                            if (heat < currentComponent.minTemp) {
                                 currentComponent.minTemp = heat;
                             }
 
-                            if(heat > currentComponent.maxTemp) {
+                            if (heat > currentComponent.maxTemp) {
                                 currentComponent.maxTemp = heat;
                             }
 
                             var compConfig = config.components[index];
 
-                            if(compConfig.hasAutomation && component.getStoredHeat() > compConfig.replacementThreshold) {
+                            if (compConfig.hasAutomation
+                                && component.getStoredHeat() > compConfig.replacementThreshold) {
                                 components[index] = null;
                                 contents[index] = null;
                             }
 
                             // may be set to null by the component itself, or to e.g. a depleted fuel rod
-                            if(contents[index] == null || contents[index].getItem() != compConfig.item) {
+                            if (contents[index] == null || contents[index].getItem() != compConfig.item) {
                                 currentComponent.replaceCount++;
                                 contents[index] = new ItemStack(compConfig.item);
                             }
@@ -346,81 +354,81 @@ public class Simulator {
                     }
                 }
 
-                if(reactorTickCounter % 2 == 0) {
+                if (reactorTickCounter % 2 == 0) {
                     int eupt = (int) (this.addedEU / 20);
 
-                    if(eupt < result.minEUpT) {
+                    if (eupt < result.minEUpT) {
                         result.minEUpT = eupt;
                     }
-    
-                    if(eupt > result.maxEUpT) {
+
+                    if (eupt > result.maxEUpT) {
                         result.maxEUpT = eupt;
                     }
                 } else {
                     int hups = this.addedHU;
 
-                    if(hups < result.minHUpS) {
+                    if (hups < result.minHUpS) {
                         result.minHUpS = hups;
                     }
-    
-                    if(hups > result.maxHUpS) {
+
+                    if (hups > result.maxHUpS) {
                         result.maxHUpS = hups;
                     }
 
-                    if(storedHeat < result.minTemp) {
+                    if (storedHeat < result.minTemp) {
                         result.minTemp = storedHeat;
                     }
-    
-                    if(storedHeat > result.maxTemp) {
+
+                    if (storedHeat > result.maxTemp) {
                         result.maxTemp = storedHeat;
                     }
 
                     result.totalTempSecs += storedHeat * 2;
 
-                    double ratio = storedHeat / (double)getMaxHullHeat();
+                    double ratio = storedHeat / (double) getMaxHullHeat();
 
-                    if(result.timeToEvaporate != null && result.timeToNormal == null && ratio < 0.5) {
+                    if (result.timeToEvaporate != null && result.timeToNormal == null && ratio < 0.5) {
                         result.timeToNormal = reactorTickCounter;
                     }
 
-                    if(result.timeToBurn == null && ratio >= 0.4) {
+                    if (result.timeToBurn == null && ratio >= 0.4) {
                         result.timeToBurn = reactorTickCounter;
                     }
 
-                    if(result.timeToEvaporate == null && ratio >= 0.5) {
+                    if (result.timeToEvaporate == null && ratio >= 0.5) {
                         result.timeToEvaporate = reactorTickCounter;
                     }
 
-                    if(result.timeToHurt == null && ratio >= 0.7) {
+                    if (result.timeToHurt == null && ratio >= 0.7) {
                         result.timeToHurt = reactorTickCounter;
                     }
 
-                    if(result.timeToLava == null && ratio >= 0.85) {
+                    if (result.timeToLava == null && ratio >= 0.85) {
                         result.timeToLava = reactorTickCounter;
                     }
 
-                    if(result.timeToExplode == null && ratio >= 1) {
+                    if (result.timeToExplode == null && ratio >= 1) {
                         result.timeToExplode = reactorTickCounter;
                         break;
                     }
                 }
 
-                if(isActive()) {
+                if (isActive()) {
                     result.activeTime++;
                 } else {
                     result.pausedTime++;
                 }
 
-                if(config.pulsed) {
+                if (config.pulsed) {
                     pulseCounter++;
 
-                    if(pulseActive) {
-                        if(pulseCounter >= config.onPulse) {
+                    if (pulseActive) {
+                        if (pulseCounter >= config.onPulse) {
                             pulseActive = false;
                             pulseCounter -= config.onPulse;
                         }
                     } else {
-                        if(pulseCounter >= config.offPulse) {
+                        if (pulseCounter >= config.offPulse) {
                             pulseActive = true;
                             pulseCounter -= config.offPulse;
                         }
@@ -434,10 +442,10 @@ public class Simulator {
 
             result.end = System.nanoTime();
 
-            for(int i = 0; i < components.length; i++) {
+            for (int i = 0; i < components.length; i++) {
                 var c = getComponent(i % COL_COUNT, i / COL_COUNT);
 
-                if(c != null) {
+                if (c != null) {
                     c.modifySimulationResults(result, i);
                 }
             }

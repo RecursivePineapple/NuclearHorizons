@@ -3,6 +3,8 @@ package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 import static cpw.mods.fml.common.registry.GameRegistry.registerBlock;
 import static cpw.mods.fml.common.registry.GameRegistry.registerTileEntity;
 
+import net.minecraft.block.material.Material;
+
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileAccessHatch;
@@ -13,10 +15,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorSimulat
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileRedstonePort;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileThermalSensor;
 
-import net.minecraft.block.material.Material;
-
 public class BlockList {
-    
+
     public static final String REACTOR_CORE_NAME = "reactor_core";
     public static final String REACTOR_CHAMBER_NAME = "reactor_chamber";
     public static final String PRESSURE_VESSEL_NAME = "pressure_vessel";
@@ -54,16 +54,14 @@ public class BlockList {
             FluidList.COOLANT,
             Material.water,
             NuclearHorizons.MODID + ":coolant_still",
-            NuclearHorizons.MODID + ":coolant_flow"
-        );
+            NuclearHorizons.MODID + ":coolant_flow");
         COOLANT_BLOCK.setBlockName(COOLANT_BLOCK_NAME);
 
         HOT_COOLANT_BLOCK = new FluidBlock(
             FluidList.HOT_COOLANT,
             Material.water,
             NuclearHorizons.MODID + ":hot_coolant_still",
-            NuclearHorizons.MODID + ":hot_coolant_flow"
-        );
+            NuclearHorizons.MODID + ":hot_coolant_flow");
         HOT_COOLANT_BLOCK.setBurnsEntities(true);
         HOT_COOLANT_BLOCK.setBlockName(HOT_COOLANT_BLOCK_NAME);
 

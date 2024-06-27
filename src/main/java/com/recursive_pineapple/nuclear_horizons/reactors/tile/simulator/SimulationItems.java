@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
-
 import net.minecraft.item.Item;
+
+import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
 
 public class SimulationItems {
 

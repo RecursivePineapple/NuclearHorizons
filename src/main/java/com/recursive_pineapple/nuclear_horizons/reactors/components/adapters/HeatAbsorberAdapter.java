@@ -1,12 +1,13 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components.adapters;
 
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.IHeatContainer;
 
-import net.minecraft.item.ItemStack;
-
 public class HeatAbsorberAdapter implements IComponentAdapter {
+
     private final IReactorGrid reactor;
     private final int x, y;
     private final ItemStack itemStack;
@@ -49,7 +50,7 @@ public class HeatAbsorberAdapter implements IComponentAdapter {
     public int addHeat(int delta) {
         int rejected = this.heatContainer.addHeat(itemStack, delta);
 
-        if(this.heatContainer.getRemainingHealth(itemStack) <= 0 && this.heatContainer.isConsumable(itemStack)) {
+        if (this.heatContainer.getRemainingHealth(itemStack) <= 0 && this.heatContainer.isConsumable(itemStack)) {
             this.reactor.setItem(x, y, null);
         }
 

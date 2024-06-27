@@ -1,10 +1,5 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorChamber;
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
-import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -18,13 +13,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorChamber;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
+import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
+
 public class ReactorChamber extends BlockContainer {
-    
+
     private IIcon iconTop, iconSide;
 
     public ReactorChamber() {
         super(Material.iron);
-        
+
         setHardness(5.0f);
         setBlockName(BlockList.REACTOR_CHAMBER_NAME);
         setStepSound(soundTypeMetal);
@@ -39,7 +39,7 @@ public class ReactorChamber extends BlockContainer {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        if(side == 0 || side == 1) {
+        if (side == 0 || side == 1) {
             return iconTop;
         } else {
             return iconSide;
@@ -67,19 +67,20 @@ public class ReactorChamber extends BlockContainer {
     }
 
     private void onBlocksChanged(World worldIn, int x, int y, int z) {
-        if(getAttachedReactors(worldIn, x, y, z) != 1) {
+        if (getAttachedReactors(worldIn, x, y, z) != 1) {
             worldIn.setBlock(x, y, z, Blocks.air);
             worldIn.spawnEntityInWorld(new EntityItem(worldIn, x + 0.5, y + 0.5, z + 0.5, new ItemStack(this, 1)));
 
             var worldclient = Minecraft.getMinecraft().theWorld;
 
-            worldclient.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(this) + (worldclient.getBlockMetadata(x, y, z) << 12));
+            worldclient
+                .playAuxSFX(2001, x, y, z, Block.getIdFromBlock(this) + (worldclient.getBlockMetadata(x, y, z) << 12));
         } else {
-            ((TileReactorChamber)worldIn.getTileEntity(x, y, z)).setReactor(null);
+            ((TileReactorChamber) worldIn.getTileEntity(x, y, z)).setReactor(null);
 
-            for(var d : DirectionUtil.values()) {
-                if(d.getTileEntity(worldIn, x, y, z) instanceof TileReactorCore reactor) {
-                    ((TileReactorChamber)worldIn.getTileEntity(x, y, z)).setReactor(reactor);
+            for (var d : DirectionUtil.values()) {
+                if (d.getTileEntity(worldIn, x, y, z) instanceof TileReactorCore reactor) {
+                    ((TileReactorChamber) worldIn.getTileEntity(x, y, z)).setReactor(reactor);
                     break;
                 }
             }
@@ -87,11 +88,12 @@ public class ReactorChamber extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
-        var reactor = ((TileReactorChamber)worldIn.getTileEntity(x, y, z)).getReactor();
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        var reactor = ((TileReactorChamber) worldIn.getTileEntity(x, y, z)).getReactor();
 
-        if(reactor != null) {
-            if(!worldIn.isRemote) {
+        if (reactor != null) {
+            if (!worldIn.isRemote) {
                 UIInfos.TILE_MODULAR_UI.open(player, worldIn, reactor.xCoord, reactor.yCoord, reactor.zCoord);
             }
 
@@ -104,8 +106,8 @@ public class ReactorChamber extends BlockContainer {
     private static int getAttachedReactors(World worldIn, int x, int y, int z) {
         int reactorCount = 0;
 
-        for(var d : DirectionUtil.values()) {
-            if(d.getBlock(worldIn, x, y, z) == BlockList.REACTOR_CORE) {
+        for (var d : DirectionUtil.values()) {
+            if (d.getBlock(worldIn, x, y, z) == BlockList.REACTOR_CORE) {
                 reactorCount++;
             }
         }

@@ -6,15 +6,6 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
-
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -25,8 +16,20 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
+
+import io.netty.buffer.ByteBuf;
+
 public class SimulationConfig implements IItemHandlerModifiable {
 
+    // spotless:off
+    
     public boolean
         pulsed = false,
         automated = true,
@@ -43,6 +46,8 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
     public SimComponentConfig[] components = new SimComponentConfig[TileReactorCore.COL_COUNT * TileReactorCore.ROW_COUNT];
 
+    // spotless:on
+
     @Nullable
     public transient SimulationResult result;
 
@@ -57,7 +62,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
         storage.store(usingReactorCoolantInjectors ? 1 : 0, 1);
         storage.store(fluid ? 1 : 0, 1);
 
-        if(pulsed) {
+        if (pulsed) {
             storage.store(resumeTemp, 120000);
             storage.store(suspendTemp, 120000);
             storage.store(offPulse, 5000000);
@@ -68,30 +73,34 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
         final int maxComponentHeat = 1000000000;
 
-        for(int i = components.length - 1; i >= 0; i--) {
+        for (int i = components.length - 1; i >= 0; i--) {
             var c = components[i];
 
-            if(c == null) {
+            if (c == null) {
                 storage.store(0, 72);
                 continue;
             }
 
             Integer componentId = SimulationItems.getSimulationItemId(c.item);
 
-            if(componentId == null) {
+            if (componentId == null) {
                 storage.store(0, 72);
-                NuclearHorizons.LOG.warn("Could not save reactor item " + c.item + " into config code because it does not have a simulation item ID");
+                NuclearHorizons.LOG.warn(
+                    "Could not save reactor item " + c.item
+                        + " into config code because it does not have a simulation item ID");
                 continue;
             }
 
-            if(componentId > 72) {
+            if (componentId > 72) {
                 storage.store(0, 72);
-                NuclearHorizons.LOG.warn("Could not save reactor item " + c.item + " into config code because its simulation item ID was greater than 72");
+                NuclearHorizons.LOG.warn(
+                    "Could not save reactor item " + c.item
+                        + " into config code because its simulation item ID was greater than 72");
                 continue;
             }
 
-            if(c.hasAutomation) {
-                if(automated) {
+            if (c.hasAutomation) {
+                if (automated) {
                     storage.store(c.reactorPause, 10000);
                     storage.store(c.replacementThreshold, maxComponentHeat);
                 }
@@ -114,69 +123,68 @@ public class SimulationConfig implements IItemHandlerModifiable {
     public static SimulationConfig fromCode(String code) {
         SimulationConfig config = new SimulationConfig();
 
-        if(code == null || code.isEmpty()) {
+        if (code == null || code.isEmpty()) {
             return config;
         }
 
-        if(code.startsWith("erp=")) {
+        if (code.startsWith("erp=")) {
             code = code.substring(4);
         }
 
         BigintStorage storage = null;
         try {
             storage = BigintStorage.inputBase64(code);
-        } catch(Throwable t) {
-            Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-                new ChatComponentText(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
-                    + "Could not load invalid reactor code."
-                )
-            );
+        } catch (Throwable t) {
+            Minecraft.getMinecraft().ingameGUI.getChatGUI()
+                .printChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
+                            + "Could not load invalid reactor code."));
             NuclearHorizons.LOG.error("Could not parse reactor code into BigInteger", t);
             return new SimulationConfig();
         }
 
         int revision = storage.extract(255);
 
-        if(revision < 0 || revision > 4) {
-            Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-                new ChatComponentText(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
-                    + "Could not load invalid reactor code."
-                )
-            );
-            NuclearHorizons.LOG.error("Reactor code had incorrect revision (was " + revision + ", should be 4 >= x >= 0)");
+        if (revision < 0 || revision > 4) {
+            Minecraft.getMinecraft().ingameGUI.getChatGUI()
+                .printChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
+                            + "Could not load invalid reactor code."));
+            NuclearHorizons.LOG
+                .error("Reactor code had incorrect revision (was " + revision + ", should be 4 >= x >= 0)");
             return new SimulationConfig();
         }
 
-        if(revision >= 1) {
+        if (revision >= 1) {
             config.pulsed = storage.extract(1) > 0;
             config.automated = storage.extract(1) > 0;
         }
 
-        int maxComponentHeat = switch(revision) {
+        int maxComponentHeat = switch (revision) {
             case 4 -> 1000000000;
             case 3 -> 1080000;
             default -> 360000;
         };
 
-        for(int row = 0; row < TileReactorCore.ROW_COUNT; row++) {
-            for(int col = 0; col < TileReactorCore.COL_COUNT; col++) {
-                int componentId = switch(revision) {
+        for (int row = 0; row < TileReactorCore.ROW_COUNT; row++) {
+            for (int col = 0; col < TileReactorCore.COL_COUNT; col++) {
+                int componentId = switch (revision) {
                     case 0, 1 -> storage.extract(38);
                     case 2 -> storage.extract(44);
                     case 3 -> storage.extract(58);
                     default -> storage.extract(72);
                 };
 
-                if(componentId != 0) {
+                if (componentId != 0) {
                     var compConfig = new SimComponentConfig();
                     compConfig.hasAutomation = storage.extract(1) > 0;
 
-                    if(compConfig.hasAutomation) {
+                    if (compConfig.hasAutomation) {
                         compConfig.initialHeat = storage.extract(maxComponentHeat);
 
-                        if(revision == 0 || (revision >= 1 && config.automated)) {
+                        if (revision == 0 || (revision >= 1 && config.automated)) {
                             compConfig.replacementThreshold = storage.extract(maxComponentHeat);
                             compConfig.reactorPause = storage.extract(10000);
                         }
@@ -184,7 +192,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
                     compConfig.item = SimulationItems.getSimulationItem(componentId);
 
-                    if(compConfig.item == null) {
+                    if (compConfig.item == null) {
                         NuclearHorizons.LOG.warn("Could not find simulation item with component id " + componentId);
                         continue;
                     }
@@ -196,7 +204,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
         config.initialHeat = storage.extract(120000);
 
-        if(revision == 0 || (revision >= 1 && config.pulsed)) {
+        if (revision == 0 || (revision >= 1 && config.pulsed)) {
             config.onPulse = storage.extract(5000000);
             config.offPulse = storage.extract(5000000);
             config.suspendTemp = storage.extract(120000);
@@ -206,21 +214,21 @@ public class SimulationConfig implements IItemHandlerModifiable {
         config.fluid = storage.extract(1) > 0;
         config.usingReactorCoolantInjectors = storage.extract(1) > 0;
 
-        if(revision == 0) {
+        if (revision == 0) {
             config.pulsed = storage.extract(1) > 0;
             config.automated = storage.extract(1) > 0;
         }
 
         config.maxSimulationTicks = storage.extract(5000000);
 
-        if(!storage.isEmpty()) {
-            Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-                new ChatComponentText(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
-                    + "Could not load invalid reactor code."
-                )
-            );
-            NuclearHorizons.LOG.error("Reactor code had left over data after reading all fields: assuming something has gone wrong.");
+        if (!storage.isEmpty()) {
+            Minecraft.getMinecraft().ingameGUI.getChatGUI()
+                .printChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC.toString()
+                            + "Could not load invalid reactor code."));
+            NuclearHorizons.LOG
+                .error("Reactor code had left over data after reading all fields: assuming something has gone wrong.");
             return new SimulationConfig();
         }
 
@@ -230,7 +238,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
     public static @Nonnull SimulationConfig read(ByteBuf buffer) {
         byte[] data = new byte[buffer.readInt()];
 
-        if(data.length == 0) {
+        if (data.length == 0) {
             return new SimulationConfig();
         }
 
@@ -245,10 +253,11 @@ public class SimulationConfig implements IItemHandlerModifiable {
     }
 
     public static void write(ByteBuf buffer, SimulationConfig result) {
-        if(result == null) {
+        if (result == null) {
             buffer.writeInt(0);
         } else {
-            var data = result.save().toByteArray();
+            var data = result.save()
+                .toByteArray();
             buffer.writeInt(data.length);
             buffer.writeBytes(data);
         }
@@ -270,13 +279,13 @@ public class SimulationConfig implements IItemHandlerModifiable {
                     .mapToObj(i -> {
                         var c = components[i];
 
-                        if(c == null) {
+                        if (c == null) {
                             return null;
                         }
 
                         Integer id = SimulationItems.getSimulationItemId(c.item);
 
-                        if(id == null) {
+                        if (id == null) {
                             return null;
                         } else {
                             return SimulatorProtos.ComponentConfig.newBuilder()
@@ -290,8 +299,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
                         }
                     })
                     .filter(i -> i != null)
-                    .collect(Collectors.toList())
-            )
+                    .collect(Collectors.toList()))
             .build();
     }
 
@@ -308,14 +316,14 @@ public class SimulationConfig implements IItemHandlerModifiable {
         config.resumeTemp = data.getResumeTemp();
         config.maxSimulationTicks = data.getMaxSimulationTicks();
 
-        for(int i = 0; i < data.getComponentsCount(); i++) {
+        for (int i = 0; i < data.getComponentsCount(); i++) {
             var c = data.getComponents(i);
 
             var comp = new SimComponentConfig();
 
             comp.item = SimulationItems.getSimulationItem(c.getItem());
 
-            if(comp.item == null) {
+            if (comp.item == null) {
                 config.components[c.getIndex()] = null;
                 continue;
             }
@@ -342,12 +350,12 @@ public class SimulationConfig implements IItemHandlerModifiable {
         this.resumeTemp = source.resumeTemp;
         this.maxSimulationTicks = source.maxSimulationTicks;
 
-        for(int i = 0; i < source.components.length; i++) {
+        for (int i = 0; i < source.components.length; i++) {
             this.components[i] = null;
 
             var c = source.components[i];
 
-            if(c != null) {
+            if (c != null) {
                 var dest = new SimComponentConfig();
 
                 dest.item = c.item;
@@ -366,11 +374,11 @@ public class SimulationConfig implements IItemHandlerModifiable {
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         var item = components[slot];
 
-        if(item == null || amount < 1) {
+        if (item == null || amount < 1) {
             return null;
         }
 
-        if(!simulate) {
+        if (!simulate) {
             components[slot] = null;
         }
 
@@ -395,18 +403,18 @@ public class SimulationConfig implements IItemHandlerModifiable {
     @Override
     @Nullable
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if(components[slot] != null || stack == null || !ComponentRegistry.isReactorItem(stack)) {
+        if (components[slot] != null || stack == null || !ComponentRegistry.isReactorItem(stack)) {
             return stack;
         }
 
         var result = stack.copy();
         var stored = result.splitStack(1);
 
-        if(!simulate) {
+        if (!simulate) {
             setStackInSlot(slot, stored);
         }
 
-        if(result.stackSize <= 0) {
+        if (result.stackSize <= 0) {
             return null;
         } else {
             return result;
@@ -415,7 +423,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
     @Override
     public void setStackInSlot(int slot, ItemStack stack) {
-        if(stack == null || !ComponentRegistry.isReactorItem(stack)) {
+        if (stack == null || !ComponentRegistry.isReactorItem(stack)) {
             components[slot] = null;
         } else {
             var config = new SimComponentConfig();
@@ -429,15 +437,12 @@ public class SimulationConfig implements IItemHandlerModifiable {
         var text = I18n.format(
             "nh_tooltip.sim.results." + name,
             unit != null
-                ? I18n.format(
-                    value == null ? "nh_gui.sim.results.none" : ("nh_gui.sim.results." + unit),
-                    value
-                )
-                : value
-        );
+                ? I18n.format(value == null ? "nh_gui.sim.results.none" : ("nh_gui.sim.results." + unit), value)
+                : value);
 
-        for(var line : text.split("\\n")) {
-            lines.appendTag(new NBTTagString(EnumChatFormatting.RESET.toString() + EnumChatFormatting.BLUE.toString() + line));
+        for (var line : text.split("\\n")) {
+            lines.appendTag(
+                new NBTTagString(EnumChatFormatting.RESET.toString() + EnumChatFormatting.BLUE.toString() + line));
         }
     }
 
@@ -446,39 +451,39 @@ public class SimulationConfig implements IItemHandlerModifiable {
         String format = EnumChatFormatting.RESET.toString() + EnumChatFormatting.BLUE.toString();
 
         var res = result;
-        
-        if(res != null) {
+
+        if (res != null) {
             var r = res.componentResults[slot];
 
-            if(r != null) {
+            if (r != null) {
                 var lore = new NBTTagList();
 
                 lore.appendTag(new NBTTagString(""));
 
                 lore.appendTag(new NBTTagString(format + I18n.format("nh_tooltip.results.title")));
 
-                if(r.totalTempSecs > 0) {
+                if (r.totalTempSecs > 0) {
                     addResultLine(lore, "avg_temp", "hu_total", r.totalTempSecs / res.simTime);
                     addResultLine(lore, "min_temp", "hu_total", r.minTemp);
                     addResultLine(lore, "max_temp", "hu_total", r.maxTemp);
                 }
 
-                if(r.totalHullCooling > 0) {
+                if (r.totalHullCooling > 0) {
                     addResultLine(lore, "avg_hull_cooling", "hu_per_second", r.totalHullCooling / res.simTime);
                 }
 
-                if(r.totalHullHeating > 0) {
+                if (r.totalHullHeating > 0) {
                     addResultLine(lore, "avg_hull_heating", "hu_per_second", r.totalHullHeating / res.simTime);
                     addResultLine(lore, "heating_per_item", "hu_total", r.totalHullHeating / (r.replaceCount + 1));
                 }
 
-                if(r.totalAirHeating != 0) {
+                if (r.totalAirHeating != 0) {
                     addResultLine(lore, "avg_heat_output", "hu_total", r.totalAirHeating / res.simTime);
                 }
 
                 addResultLine(lore, "replace_count", null, r.replaceCount);
 
-                if(r.totalEUOutput > 0) {
+                if (r.totalEUOutput > 0) {
                     addResultLine(lore, "avg_power", "eu_per_tick", r.totalEUOutput * 2 / 20 / res.simTime);
                     addResultLine(lore, "power_per_item", "eu_total", r.totalEUOutput / (r.replaceCount + 1));
                 }
@@ -492,7 +497,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
             }
         }
 
-        if(!hasResults) {
+        if (!hasResults) {
             var lore = new NBTTagList();
 
             lore.appendTag(new NBTTagString(""));
@@ -508,6 +513,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
     }
 
     public static class SimComponentConfig {
+
         public Item item;
         public boolean hasAutomation;
         public int initialHeat;

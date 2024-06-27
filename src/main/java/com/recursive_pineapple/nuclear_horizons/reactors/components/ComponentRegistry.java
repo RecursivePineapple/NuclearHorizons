@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ComponentRegistry {
-    
+
     private static final HashMap<Item, IComponentAdapterFactory> adapterFactories = new HashMap<>();
 
     public static void registerAdapter(Item item, IComponentAdapterFactory adapterFactory) {
@@ -22,10 +22,11 @@ public class ComponentRegistry {
         return factory != null && factory.canAdaptItem(itemStack);
     }
 
-    public static @Nullable IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x, int y) {
+    public static @Nullable IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor,
+        int x, int y) {
         IComponentAdapterFactory factory = adapterFactories.get(itemStack.getItem());
 
-        if(factory != null && factory.canAdaptItem(itemStack)) {
+        if (factory != null && factory.canAdaptItem(itemStack)) {
             return factory.getAdapter(itemStack, reactor, x, y);
         } else {
             return null;

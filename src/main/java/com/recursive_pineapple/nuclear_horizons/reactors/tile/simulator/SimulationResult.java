@@ -12,7 +12,10 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
 import io.netty.buffer.ByteBuf;
 
 public class SimulationResult {
+
     public SimulationConfig config;
+
+    // spotless:off
 
     public long
         start = System.nanoTime(),
@@ -42,10 +45,12 @@ public class SimulationResult {
 
     public SimulationComponentResult[] componentResults = new SimulationComponentResult[TileReactorCore.COL_COUNT * TileReactorCore.ROW_COUNT];
 
+    // spotless:on
+
     public static @Nullable SimulationResult read(ByteBuf buffer) {
         byte[] data = new byte[buffer.readInt()];
 
-        if(data.length == 0) {
+        if (data.length == 0) {
             return null;
         }
 
@@ -60,10 +65,11 @@ public class SimulationResult {
     }
 
     public static void write(ByteBuf buffer, SimulationResult result) {
-        if(result == null) {
+        if (result == null) {
             buffer.writeInt(0);
         } else {
-            var data = result.save().toByteArray();
+            var data = result.save()
+                .toByteArray();
             buffer.writeInt(data.length);
             buffer.writeBytes(data);
         }
@@ -92,7 +98,7 @@ public class SimulationResult {
                     .mapToObj(i -> {
                         var c = componentResults[i];
 
-                        if(c == null) {
+                        if (c == null) {
                             return null;
                         } else {
                             return SimulatorProtos.ComponentResult.newBuilder()
@@ -109,15 +115,14 @@ public class SimulationResult {
                         }
                     })
                     .filter(i -> i != null)
-                    .collect(Collectors.toList())
-            );
+                    .collect(Collectors.toList()));
 
-        if(timeToNormal != null) builder.setTimeToNormal(timeToNormal);
-        if(timeToBurn != null) builder.setTimeToBurn(timeToBurn);
-        if(timeToEvaporate != null) builder.setTimeToEvaporate(timeToEvaporate);
-        if(timeToHurt != null) builder.setTimeToHurt(timeToHurt);
-        if(timeToLava != null) builder.setTimeToLava(timeToLava);
-        if(timeToExplode != null) builder.setTimeToExplode(timeToExplode);
+        if (timeToNormal != null) builder.setTimeToNormal(timeToNormal);
+        if (timeToBurn != null) builder.setTimeToBurn(timeToBurn);
+        if (timeToEvaporate != null) builder.setTimeToEvaporate(timeToEvaporate);
+        if (timeToHurt != null) builder.setTimeToHurt(timeToHurt);
+        if (timeToLava != null) builder.setTimeToLava(timeToLava);
+        if (timeToExplode != null) builder.setTimeToExplode(timeToExplode);
 
         return builder.build();
     }
@@ -142,7 +147,7 @@ public class SimulationResult {
         result.activeTime = data.getActiveTime();
         result.pausedTime = data.getPausedTime();
 
-        for(int i = 0; i < data.getComponentsCount(); i++) {
+        for (int i = 0; i < data.getComponentsCount(); i++) {
             var c = data.getComponents(i);
 
             var comp = new SimulationComponentResult();
@@ -159,12 +164,12 @@ public class SimulationResult {
             result.componentResults[c.getIndex()] = comp;
         }
 
-        if(data.hasTimeToNormal()) result.timeToNormal = data.getTimeToNormal();
-        if(data.hasTimeToBurn()) result.timeToBurn = data.getTimeToBurn();
-        if(data.hasTimeToEvaporate()) result.timeToEvaporate = data.getTimeToEvaporate();
-        if(data.hasTimeToHurt()) result.timeToHurt = data.getTimeToHurt();
-        if(data.hasTimeToLava()) result.timeToLava = data.getTimeToLava();
-        if(data.hasTimeToExplode()) result.timeToExplode = data.getTimeToExplode();
+        if (data.hasTimeToNormal()) result.timeToNormal = data.getTimeToNormal();
+        if (data.hasTimeToBurn()) result.timeToBurn = data.getTimeToBurn();
+        if (data.hasTimeToEvaporate()) result.timeToEvaporate = data.getTimeToEvaporate();
+        if (data.hasTimeToHurt()) result.timeToHurt = data.getTimeToHurt();
+        if (data.hasTimeToLava()) result.timeToLava = data.getTimeToLava();
+        if (data.hasTimeToExplode()) result.timeToExplode = data.getTimeToExplode();
 
         return result;
     }

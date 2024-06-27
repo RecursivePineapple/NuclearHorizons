@@ -2,8 +2,6 @@ package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import javax.annotation.Nullable;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -15,22 +13,26 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
+
 public class TileFluidPort extends TileEntity implements IFluidHandler, IReactorBlock {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
 
     @Override
     public @Nullable TileReactorCore getReactor() {
-        if(worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
+        // spotless:off
+        if (worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
             return reactor;
         } else {
             return null;
         }
+        // spotless:on
     }
 
     @Override
     public void setReactor(TileReactorCore reactor) {
-        if(getReactor() != reactor) {
+        if (getReactor() != reactor) {
             this.reactorRelX = reactor.xCoord - xCoord;
             this.reactorRelY = reactor.yCoord - yCoord;
             this.reactorRelZ = reactor.zCoord - zCoord;
@@ -74,7 +76,7 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        switch(compound.getInteger("version")) {
+        switch (compound.getInteger("version")) {
             case 1: {
                 this.reactorRelX = compound.getInteger("reactorRelX");
                 this.reactorRelY = compound.getInteger("reactorRelY");
@@ -88,16 +90,16 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         var reactor = this.getReactor();
 
-        if(reactor == null) {
+        if (reactor == null) {
             return 0;
         }
 
-        if(resource.getFluid() == FluidList.COOLANT) {
+        if (resource.getFluid() == FluidList.COOLANT) {
             int remaining = reactor.maxCoolant - reactor.storedCoolant;
 
             int consumed = Math.min(remaining, resource.amount);
 
-            if(doFill) {
+            if (doFill) {
                 reactor.storedCoolant += consumed;
             }
 
@@ -111,14 +113,14 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         var reactor = this.getReactor();
 
-        if(reactor == null) {
+        if (reactor == null) {
             return null;
         }
 
-        if(resource.getFluid() == FluidList.HOT_COOLANT) {
+        if (resource.getFluid() == FluidList.HOT_COOLANT) {
             int consumed = Math.min(reactor.storedHotCoolant, resource.amount);
 
-            if(doDrain) {
+            if (doDrain) {
                 reactor.storedHotCoolant -= consumed;
             }
 
@@ -132,13 +134,13 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         var reactor = this.getReactor();
 
-        if(reactor == null) {
+        if (reactor == null) {
             return null;
         }
 
         int consumed = Math.min(reactor.storedHotCoolant, maxDrain);
 
-        if(doDrain) {
+        if (doDrain) {
             reactor.storedHotCoolant -= consumed;
         }
 
@@ -159,13 +161,14 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         var reactor = this.getReactor();
 
-        if(reactor == null) {
+        if (reactor == null) {
             return new FluidTankInfo[0];
         }
 
         return new FluidTankInfo[] {
             new FluidTankInfo(new FluidStack(FluidList.COOLANT, reactor.storedCoolant), reactor.maxCoolant),
-            new FluidTankInfo(new FluidStack(FluidList.HOT_COOLANT, reactor.storedHotCoolant), reactor.maxHotCoolant),
-        };
+            new FluidTankInfo(
+                new FluidStack(FluidList.HOT_COOLANT, reactor.storedHotCoolant),
+                reactor.maxHotCoolant), };
     }
 }

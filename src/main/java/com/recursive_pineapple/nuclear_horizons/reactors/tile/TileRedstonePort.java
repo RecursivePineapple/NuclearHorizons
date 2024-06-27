@@ -11,21 +11,23 @@ import net.minecraft.tileentity.TileEntity;
 public class TileRedstonePort extends TileEntity implements IReactorBlock {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
-    
+
     private boolean inverted, hasSignal;
 
     @Override
     public @Nullable TileReactorCore getReactor() {
-        if(worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
+        // spotless:off
+        if (worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
             return reactor;
         } else {
             return null;
         }
+        // spotless:on
     }
 
     @Override
     public void setReactor(TileReactorCore reactor) {
-        if(getReactor() != reactor) {
+        if (getReactor() != reactor) {
             this.reactorRelX = reactor.xCoord - xCoord;
             this.reactorRelY = reactor.yCoord - yCoord;
             this.reactorRelZ = reactor.zCoord - zCoord;
@@ -38,14 +40,14 @@ public class TileRedstonePort extends TileEntity implements IReactorBlock {
     public ReactorEnableState getEnableState() {
         boolean hasSignal = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
 
-        if(inverted) {
-            if(hasSignal) {
+        if (inverted) {
+            if (hasSignal) {
                 return ReactorEnableState.Inhibiting;
             } else {
                 return ReactorEnableState.Active;
             }
         } else {
-            if(hasSignal) {
+            if (hasSignal) {
                 return ReactorEnableState.Active;
             } else {
                 return ReactorEnableState.Idle;
@@ -90,7 +92,7 @@ public class TileRedstonePort extends TileEntity implements IReactorBlock {
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        switch(compound.getInteger("version")) {
+        switch (compound.getInteger("version")) {
             case 1: {
                 this.reactorRelX = compound.getInteger("reactorRelX");
                 this.reactorRelY = compound.getInteger("reactorRelY");

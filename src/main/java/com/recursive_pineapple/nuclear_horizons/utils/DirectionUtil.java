@@ -5,13 +5,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public enum DirectionUtil {
+
     Up(0, 1, 0),
     Down(0, -1, 0),
     North(0, 0, -1),
     South(0, 0, 1),
     East(1, 0, 0),
     West(-1, 0, 0);
-    
+
     public final int offsetX;
     public final int offsetY;
     public final int offsetZ;

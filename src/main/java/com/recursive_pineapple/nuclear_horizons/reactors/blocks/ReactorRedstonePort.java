@@ -1,14 +1,15 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileRedstonePort;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileRedstonePort;
+
 public class ReactorRedstonePort extends BlockContainer {
+
     public ReactorRedstonePort() {
         super(Material.rock);
         setBlockName(BlockList.REACTOR_REDSTONE_PORT_NAME);
@@ -32,6 +33,6 @@ public class ReactorRedstonePort extends BlockContainer {
 
     @Override
     public int getComparatorInputOverride(World worldIn, int x, int y, int z, int side) {
-        return ((TileRedstonePort)worldIn.getTileEntity(x, y, z)).isReactorActive() ? 15 : 0;
+        return ((TileRedstonePort) worldIn.getTileEntity(x, y, z)).isReactorActive() ? 15 : 0;
     }
 }

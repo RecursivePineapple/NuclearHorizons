@@ -2,9 +2,6 @@ package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
 import javax.annotation.Nullable;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
-
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,22 +12,28 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
+
+import gregtech.api.interfaces.tileentity.IEnergyConnected;
+
 public class TileReactorChamber extends TileEntity implements IReactorBlock, IInventory, IEnergyConnected {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
 
     @Override
     public @Nullable TileReactorCore getReactor() {
-        if(worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
+        // spotless:off
+        if (worldObj.getTileEntity(xCoord + reactorRelX, yCoord + reactorRelY, zCoord + reactorRelZ) instanceof TileReactorCore reactor) {
             return reactor;
         } else {
             return null;
         }
+        // spotless:on
     }
 
     @Override
     public void setReactor(TileReactorCore reactor) {
-        if(getReactor() != reactor) {
+        if (getReactor() != reactor) {
             this.reactorRelX = reactor != null ? reactor.xCoord - xCoord : 0;
             this.reactorRelY = reactor != null ? reactor.yCoord - yCoord : 0;
             this.reactorRelZ = reactor != null ? reactor.zCoord - zCoord : 0;
@@ -74,7 +77,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        switch(compound.getInteger("version")) {
+        switch (compound.getInteger("version")) {
             case 1: {
                 this.reactorRelX = compound.getInteger("reactorRelX");
                 this.reactorRelY = compound.getInteger("reactorRelY");
@@ -113,7 +116,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public int getSizeInventory() {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.getSizeInventory();
         } else {
             return 0;
@@ -124,7 +127,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public ItemStack getStackInSlot(int slotIn) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.getStackInSlot(slotIn);
         } else {
             return null;
@@ -135,7 +138,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public ItemStack decrStackSize(int index, int count) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.decrStackSize(index, count);
         } else {
             return null;
@@ -146,7 +149,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public ItemStack getStackInSlotOnClosing(int index) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.getStackInSlotOnClosing(index);
         } else {
             return null;
@@ -157,7 +160,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public void setInventorySlotContents(int index, ItemStack stack) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             reactor.setInventorySlotContents(index, stack);;
         }
     }
@@ -176,7 +179,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public int getInventoryStackLimit() {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.getInventoryStackLimit();
         } else {
             return 0;
@@ -187,7 +190,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public boolean isUseableByPlayer(EntityPlayer player) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.isUseableByPlayer(player);
         } else {
             return false;
@@ -198,7 +201,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public void openInventory() {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             reactor.openInventory();
         }
     }
@@ -207,7 +210,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public void closeInventory() {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             reactor.closeInventory();
         }
     }
@@ -216,7 +219,7 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         var reactor = getReactor();
 
-        if(reactor != null) {
+        if (reactor != null) {
             return reactor.isItemValidForSlot(index, stack);
         } else {
             return false;

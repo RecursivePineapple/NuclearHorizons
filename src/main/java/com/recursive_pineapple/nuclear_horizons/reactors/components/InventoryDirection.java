@@ -1,13 +1,14 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components;
 
 public enum InventoryDirection {
+
     Up,
     Down,
     Left,
     Right;
 
     public int offsetX(int x) {
-        switch(this) {
+        switch (this) {
             case Up:
             case Down: {
                 return x;
@@ -25,7 +26,7 @@ public enum InventoryDirection {
     }
 
     public int offsetY(int y) {
-        switch(this) {
+        switch (this) {
             case Up: {
                 return y - 1;
             }
