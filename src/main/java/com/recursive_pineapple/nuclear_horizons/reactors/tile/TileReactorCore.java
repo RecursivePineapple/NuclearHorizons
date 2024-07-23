@@ -21,8 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.FluidTank;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -45,7 +44,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
-import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
+import com.recursive_pineapple.nuclear_horizons.reactors.fluids.CoolantRegistry;
+import com.recursive_pineapple.nuclear_horizons.reactors.fluids.CoolantRegistry.Coolant;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.IReactorBlock.ReactorEnableState;
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
@@ -78,129 +78,22 @@ public class TileReactorCore extends TileEntity
 
     int storedHeat = 0;
     int addedHeat = 0;
+    int roundedHeat = 0;
 
     int voltage = 0;
     int maxStoredEU = 4_194_304; // 2 ^ 22
     int storedEU = 0;
     int addedEU = 0;
 
-    int storedCoolant = 0;
-    int maxCoolant = 10_000;
-
-    int storedHotCoolant = 0;
-    int maxHotCoolant = 10_000;
+    Coolant coolantCache;
+    FluidTank coolantTank = new FluidTank(10_000);
+    FluidTank hotCoolantTank = new FluidTank(10_000);
 
     private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
 
     public TileReactorCore() {
 
     }
-
-    // #region Fluid Tanks
-
-    IFluidTank coolantTank = new IFluidTank() {
-
-        @Override
-        public FluidStack getFluid() {
-            return new FluidStack(FluidList.COOLANT, storedCoolant);
-        }
-
-        @Override
-        public int getFluidAmount() {
-            return storedCoolant;
-        }
-
-        @Override
-        public int getCapacity() {
-            return maxCoolant;
-        }
-
-        @Override
-        public FluidTankInfo getInfo() {
-            return new FluidTankInfo(getFluid(), getCapacity());
-        }
-
-        @Override
-        public int fill(FluidStack resource, boolean doFill) {
-            if (resource.getFluid() == FluidList.COOLANT) {
-                int remaining = maxCoolant - storedCoolant;
-
-                int consumed = Math.min(remaining, resource.amount);
-
-                if (doFill) {
-                    storedCoolant += consumed;
-                }
-
-                return consumed;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
-            int consumed = Math.min(storedCoolant, maxDrain);
-
-            if (doDrain) {
-                storedCoolant -= consumed;
-            }
-
-            return new FluidStack(FluidList.COOLANT, consumed);
-        }
-    };
-
-    IFluidTank hotCoolantTank = new IFluidTank() {
-
-        @Override
-        public FluidStack getFluid() {
-            return new FluidStack(FluidList.HOT_COOLANT, storedHotCoolant);
-        }
-
-        @Override
-        public int getFluidAmount() {
-            return storedHotCoolant;
-        }
-
-        @Override
-        public int getCapacity() {
-            return maxHotCoolant;
-        }
-
-        @Override
-        public FluidTankInfo getInfo() {
-            return new FluidTankInfo(getFluid(), getCapacity());
-        }
-
-        @Override
-        public int fill(FluidStack resource, boolean doFill) {
-            if (resource.getFluid() == FluidList.HOT_COOLANT) {
-                int remaining = getCapacity() - getFluidAmount();
-
-                int consumed = Math.min(remaining, resource.amount);
-
-                if (doFill) {
-                    storedHotCoolant += consumed;
-                }
-
-                return consumed;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
-            int consumed = Math.min(getFluidAmount(), maxDrain);
-
-            if (doDrain) {
-                storedHotCoolant -= consumed;
-            }
-
-            return new FluidStack(FluidList.HOT_COOLANT, consumed);
-        }
-    };
-
-    // #endregion
 
     // #region UI
 
@@ -263,10 +156,8 @@ public class TileReactorCore extends TileEntity
             new FakeSyncWidget.IntegerSyncer(() -> this.storedHeat, v -> this.storedHeat = v),
             new FakeSyncWidget.IntegerSyncer(() -> this.addedEU, v -> this.addedEU = v),
             new FakeSyncWidget.BooleanSyncer(() -> this.isFluid, v -> this.isFluid = v),
-            new FakeSyncWidget.IntegerSyncer(() -> this.storedCoolant, v -> this.storedCoolant = v),
-            new FakeSyncWidget.IntegerSyncer(() -> this.storedHotCoolant, v -> this.storedHotCoolant = v),
-            new FakeSyncWidget.IntegerSyncer(() -> this.maxCoolant, v -> this.maxCoolant = v),
-            new FakeSyncWidget.IntegerSyncer(() -> this.maxHotCoolant, v -> this.maxHotCoolant = v));
+            new FakeSyncWidget.FluidStackSyncer(this.coolantTank::getFluid, this.coolantTank::setFluid),
+            new FakeSyncWidget.FluidStackSyncer(this.hotCoolantTank::getFluid, this.hotCoolantTank::setFluid));
 
         return builder.build();
     }
@@ -325,15 +216,14 @@ public class TileReactorCore extends TileEntity
         compound.setInteger("version", 1);
 
         compound.setInteger("heat", this.storedHeat);
+        compound.setInteger("roundedHeat", this.roundedHeat);
         compound.setInteger("storedEU", this.storedEU);
         compound.setInteger("tickCooldown", this.tickCounter);
         compound.setBoolean("isActive", this.isActive);
 
         compound.setBoolean("isFluid", this.isFluid);
-        compound.setInteger("storedCoolant", this.storedCoolant);
-        compound.setInteger("storedHotCoolant", this.storedHotCoolant);
-        compound.setInteger("maxCoolant", this.maxCoolant);
-        compound.setInteger("maxHotCoolant", this.maxHotCoolant);
+        compound.setTag("coolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
+        compound.setTag("hotCoolantTank", hotCoolantTank.writeToNBT(new NBTTagCompound()));
 
         var grid = new NBTTagCompound();
 
@@ -356,15 +246,23 @@ public class TileReactorCore extends TileEntity
         switch (version) {
             case 1: {
                 this.storedHeat = compound.getInteger("heat");
+                this.roundedHeat = compound.getInteger("roundedHeat");
                 this.storedEU = compound.getInteger("storedEU");
                 this.tickCounter = compound.getInteger("tickCooldown");
                 this.isActive = compound.getBoolean("isActive");
 
                 this.isFluid = compound.getBoolean("isFluid");
-                this.storedCoolant = compound.getInteger("storedCoolant");
-                this.storedHotCoolant = compound.getInteger("storedHotCoolant");
-                this.maxCoolant = compound.getInteger("maxCoolant");
-                this.maxHotCoolant = compound.getInteger("maxHotCoolant");
+                this.coolantTank.readFromNBT(compound.getCompoundTag("coolantTank"));
+                this.hotCoolantTank.readFromNBT(compound.getCompoundTag("hotCoolantTank"));
+
+                if(this.coolantTank.getFluid() != null && !CoolantRegistry.isColdCoolant(this.coolantTank.getFluid().getFluid())) {
+                    // TODO: figure out if there's a mechanism to migrate fluids
+                    this.coolantTank.setFluid(null);
+                }
+
+                if(this.hotCoolantTank.getFluid() != null && !CoolantRegistry.isHotCoolant(this.hotCoolantTank.getFluid().getFluid())) {
+                    this.hotCoolantTank.setFluid(null);
+                }
 
                 var grid = compound.getCompoundTag("grid");
 
@@ -456,13 +354,12 @@ public class TileReactorCore extends TileEntity
         data.setBoolean("isActive", isActive);
         data.setInteger("storedEU", storedEU);
         data.setInteger("storedHeat", storedHeat);
+        data.setInteger("roundedHeat", this.roundedHeat);
         data.setInteger("addedHeat", addedHeat);
         data.setInteger("addedEU", addedEU);
         data.setBoolean("isFluid", isFluid);
-        data.setInteger("storedCoolant", storedCoolant);
-        data.setInteger("storedHotCoolant", storedHotCoolant);
-        data.setInteger("maxCoolant", maxCoolant);
-        data.setInteger("maxHotCoolant", maxHotCoolant);
+        data.setTag("coolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
+        data.setTag("hotCoolantTank", hotCoolantTank.writeToNBT(new NBTTagCompound()));
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, data);
     }
@@ -475,13 +372,12 @@ public class TileReactorCore extends TileEntity
         this.isActive = data.getBoolean("isActive");
         this.storedEU = data.getInteger("storedEU");
         this.storedHeat = data.getInteger("storedHeat");
+        this.roundedHeat = data.getInteger("roundedHeat");
         this.addedHeat = data.getInteger("addedHeat");
         this.addedEU = data.getInteger("addedEU");
         this.isFluid = data.getBoolean("isFluid");
-        this.storedCoolant = data.getInteger("storedCoolant");
-        this.storedHotCoolant = data.getInteger("storedHotCoolant");
-        this.maxCoolant = data.getInteger("maxCoolant");
-        this.maxHotCoolant = data.getInteger("maxHotCoolant");
+        this.coolantTank.readFromNBT(data.getCompoundTag("coolantTank"));
+        this.hotCoolantTank.readFromNBT(data.getCompoundTag("hotCoolantTank"));
     }
 
     public static int getAttachedChambers(World worldIn, int x, int y, int z) {
@@ -720,8 +616,6 @@ public class TileReactorCore extends TileEntity
     // #region Reactor Grid Logic
 
     private void doHeatTick() {
-        this.storedCoolant = 10000;
-        this.storedHotCoolant = 0;
         this.addedHeat = 0;
 
         for (int row = 0; row < ROW_COUNT; row++) {
@@ -877,16 +771,40 @@ public class TileReactorCore extends TileEntity
     }
 
     @Override
-    public int addAirHeat(int delta) {
+    public int addAirHeat(int airHeat) {
         if (this.isFluid) {
-            int emptyHotCoolant = this.maxHotCoolant - this.storedHotCoolant;
-            int consumed = Math.min(Math.min(delta, this.storedCoolant / 2), emptyHotCoolant / 2);
+            if(this.coolantTank.getFluidAmount() == 0) {
+                return airHeat;
+            }
 
-            this.storedCoolant -= consumed * 2;
-            this.storedHotCoolant += consumed * 2;
-            this.addedHeat += consumed * 2;
+            // cache this because it will be called several times a second - may not be completely necessary though
+            if((coolantCache == null || coolantCache.cold != this.coolantTank.getFluid().getFluid())) {
+                if(this.coolantTank.getFluidAmount() == 0) {
+                    coolantCache = null;
+                } else {
+                    coolantCache = CoolantRegistry.getCoolantInfo(this.coolantTank.getFluid().getFluid());
+                }
+            }
 
-            return delta - consumed;
+            if(coolantCache == null) {
+                return airHeat;
+            }
+
+            this.roundedHeat += airHeat * 2;
+
+            int heatableCoolant = Math.min(
+                this.coolantTank.getFluidAmount(),
+                this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount()
+            );
+            
+            int consumedCoolant = Math.min(roundedHeat / coolantCache.specificHeatCapacity, heatableCoolant);
+            this.roundedHeat -= consumedCoolant * coolantCache.specificHeatCapacity;
+            this.addedHeat += consumedCoolant * coolantCache.specificHeatCapacity;
+
+            this.coolantTank.drain(consumedCoolant, true);
+            this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, consumedCoolant), true);
+
+            return 0;
         } else {
             return 0;
         }

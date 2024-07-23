@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
+import com.recursive_pineapple.nuclear_horizons.reactors.fluids.CoolantRegistry;
 
 public class TileFluidPort extends TileEntity implements IFluidHandler, IReactorBlock {
 
@@ -94,16 +94,15 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
             return 0;
         }
 
-        if (resource.getFluid() == FluidList.COOLANT) {
-            int remaining = reactor.maxCoolant - reactor.storedCoolant;
+        // this should only be called a few times a second, so we don't need to cache it
+        if(!CoolantRegistry.isColdCoolant(resource.getFluid())) {
+            return 0;
+        }
 
-            int consumed = Math.min(remaining, resource.amount);
+        var tank = reactor.coolantTank;
 
-            if (doFill) {
-                reactor.storedCoolant += consumed;
-            }
-
-            return consumed;
+        if(tank.getFluid() == null || resource.getFluid() == tank.getFluid().getFluid()) {
+            return tank.fill(resource, doFill);
         } else {
             return 0;
         }
@@ -117,14 +116,10 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
             return null;
         }
 
-        if (resource.getFluid() == FluidList.HOT_COOLANT) {
-            int consumed = Math.min(reactor.storedHotCoolant, resource.amount);
+        var tank = reactor.hotCoolantTank;
 
-            if (doDrain) {
-                reactor.storedHotCoolant -= consumed;
-            }
-
-            return new FluidStack(FluidList.HOT_COOLANT, consumed);
+        if(tank.getFluid() != null && resource.getFluid() == tank.getFluid().getFluid()) {
+            return tank.drain(resource.amount, doDrain);
         } else {
             return null;
         }
@@ -138,23 +133,23 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
             return null;
         }
 
-        int consumed = Math.min(reactor.storedHotCoolant, maxDrain);
+        var tank = reactor.hotCoolantTank;
 
-        if (doDrain) {
-            reactor.storedHotCoolant -= consumed;
+        if(tank.getFluid() != null) {
+            return tank.drain(maxDrain, doDrain);
+        } else {
+            return null;
         }
-
-        return new FluidStack(FluidList.HOT_COOLANT, consumed);
     }
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == FluidList.COOLANT;
+        return CoolantRegistry.isColdCoolant(fluid);
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return fluid == FluidList.HOT_COOLANT;
+        return CoolantRegistry.isHotCoolant(fluid);
     }
 
     @Override
@@ -166,9 +161,8 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
         }
 
         return new FluidTankInfo[] {
-            new FluidTankInfo(new FluidStack(FluidList.COOLANT, reactor.storedCoolant), reactor.maxCoolant),
-            new FluidTankInfo(
-                new FluidStack(FluidList.HOT_COOLANT, reactor.storedHotCoolant),
-                reactor.maxHotCoolant), };
+            reactor.coolantTank.getInfo(),
+            reactor.hotCoolantTank.getInfo()
+        };
     }
 }

@@ -29,6 +29,8 @@ public class CommonProxy {
         // PacketDispatcher.TileEntityUpdatedMessage.init();
 
         SimulationItems.init();
+
+        FluidList.registerCoolants();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
