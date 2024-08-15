@@ -155,6 +155,22 @@ public class ItemList {
         "iridiumNeutronReflector",
         "gt.neutronreflector");
 
+    public static final BasicReactorPlatingItem REACTOR_PLATING = new BasicReactorPlatingItem(
+        "reactorPlating",
+        "reactorPlating",
+        0.95,
+        1000);
+    public static final BasicReactorPlatingItem REACTOR_PLATING_HEAT = new BasicReactorPlatingItem(
+        "reactorPlatingHeat",
+        "reactorPlatingHeat",
+        0.99,
+        1700);
+    public static final BasicReactorPlatingItem REACTOR_PLATING_EXPLOSIVE = new BasicReactorPlatingItem(
+        "reactorPlatingExplosive",
+        "reactorPlatingExplosive",
+        0.9,
+        500);
+
     public static void registerItems() {
         register(URANIUM_1X_ROD);
         register(URANIUM_2X_ROD);
@@ -184,6 +200,10 @@ public class ItemList {
         register(NEUTRON_REFLECTOR);
         register(THICK_NEUTRON_REFLECTOR);
         register(IRIDIUM_NEUTRON_REFLECTOR);
+
+        register(REACTOR_PLATING);
+        register(REACTOR_PLATING_HEAT);
+        register(REACTOR_PLATING_EXPLOSIVE);
     }
 
     private static void register(BasicFuelRodItem fuelRod) {
@@ -224,5 +244,13 @@ public class ItemList {
             heatAbsorber.getUnlocalizedName()
                 .substring("item.".length()));
         ComponentRegistry.registerAdapter(heatAbsorber, heatAbsorber);
+    }
+
+    private static void register(BasicReactorPlatingItem reactorPlating) {
+        GameRegistry.registerItem(
+            reactorPlating,
+            reactorPlating.getUnlocalizedName()
+                .substring("item.".length()));
+        ComponentRegistry.registerAdapter(reactorPlating, reactorPlating);
     }
 }

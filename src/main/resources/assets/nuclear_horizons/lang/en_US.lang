@@ -31,11 +31,15 @@ item.lzhCondensator.name=LZH-Condensator
 item.neutronReflector.name=Neutron Reflector
 item.thickNeutronReflector.name=Thick Neutron Reflector
 item.iridiumNeutronReflector.name=Iridium Neutron Reflector
+item.reactorPlating.name=Reactor Plating
+item.reactorPlatingHeat.name=Heat-Capacity Reactor Plating
+item.reactorPlatingExplosive.name=Containment Reactor Plating
 
 fluid.nh_coolant=Coolant
 fluid.nh_hot_coolant=Hot Coolant
 
-death.attack.hot_fluid.player=%1$s was fried to crisp
+death.attack.nh_hot_fluid.player=%1$s was fried to crisp
+death.attack.nh_radiation.player=%1$s was irradiated to death
 
 nh_tooltip.durability=Durability: %1$,d / %2$,d
 nh_tooltip.undestructable=Undestructable
@@ -52,6 +56,8 @@ nh_tooltip.exchanger.comp_xfer=Transfer up to %d HU between its neighbours and i
 nh_tooltip.vent.void_self=Dissipate up to %d HU from itself.
 nh_tooltip.vent.void_adj=Dissipate up to %d HU from its neighbours.
 nh_tooltip.vent.fluid_disclaimer=Note: In a fluid reactor, each HU vented is converted to 2 HU (2mB) of hot coolant.
+nh_tooltip.plating_explosion=Decreases the reactor's explosion radius by %,d %% (multiplicative).
+nh_tooltip.plating_heat=Increases the reactor's maximum temperature by %,d HU.
 
 nh_tooltip.results.title=\nSimulation Results:
 nh_tooltip.sim.results.avg_temp=Avg Temp: %s
