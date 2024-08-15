@@ -1,9 +1,10 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.fluids;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
+
+// import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 
 public class FluidList {
 
@@ -62,6 +63,6 @@ public class FluidList {
     public static void registerCoolants() {
         CoolantRegistry.registerCoolant(COOLANT, HOT_COOLANT, 1);
 
-        CoolantRegistry.registerCoolant(FluidRegistry.getFluid("supercoolant"), HOT_SUPER_COOLANT, 5);
+        // CoolantRegistry.registerCoolant(Materials.Lead.mStandardMoltenFluid, HOT_SUPER_COOLANT, 10);
     }
 }

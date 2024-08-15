@@ -6,23 +6,6 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.forge.InvWrapper;
@@ -55,6 +38,26 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class TileReactorCore extends TileEntity
     implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
@@ -85,11 +88,15 @@ public class TileReactorCore extends TileEntity
     int storedEU = 0;
     int addedEU = 0;
 
+    private Integer hullHeatCache = null;
+
     Coolant coolantCache;
     FluidTank coolantTank = new FluidTank(10_000);
     FluidTank hotCoolantTank = new FluidTank(10_000);
 
     private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
+
+    private double heatRatio = 0;
 
     public TileReactorCore() {
 
@@ -291,9 +298,9 @@ public class TileReactorCore extends TileEntity
 
         this.setChamberCount(getAttachedChambers(worldObj, xCoord, yCoord, zCoord));
 
+        this.tickCounter++;
+        
         if (!this.worldObj.isRemote) {
-            this.tickCounter++;
-
             if (this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 boolean wasActive = isActive;
 
@@ -343,7 +350,25 @@ public class TileReactorCore extends TileEntity
             }
 
             this.emitEnergy();
+        } else {
+            if(heatRatio >= 0.4) {
+                spawnSmoke(xCoord, yCoord, zCoord);
+
+                for (var d : DirectionUtil.values()) {
+                    if (d.getBlock(worldObj, xCoord, yCoord, zCoord) == BlockList.REACTOR_CHAMBER) {
+                        spawnSmoke(xCoord + d.offsetX, yCoord + d.offsetY, zCoord + d.offsetZ);
+                    }
+                }
+            }
         }
+    }
+
+    private void spawnSmoke(int x, int y, int z) {
+        if(worldObj.getBlock(x, y + 1, z).isBlockNormalCube()) {
+            return;
+        }
+        
+        worldObj.spawnParticle("smoke", x + Math.random() * 0.8 + 0.1, y + 1.1, z + Math.random() * 0.8 + 0.1, 0, 0.01 * (Math.random() * 0.5 + 1), 0);
     }
 
     @Override
@@ -354,7 +379,8 @@ public class TileReactorCore extends TileEntity
         data.setBoolean("isActive", isActive);
         data.setInteger("storedEU", storedEU);
         data.setInteger("storedHeat", storedHeat);
-        data.setInteger("roundedHeat", this.roundedHeat);
+        data.setDouble("heatRatio", heatRatio);
+        data.setInteger("roundedHeat", roundedHeat);
         data.setInteger("addedHeat", addedHeat);
         data.setInteger("addedEU", addedEU);
         data.setBoolean("isFluid", isFluid);
@@ -372,6 +398,7 @@ public class TileReactorCore extends TileEntity
         this.isActive = data.getBoolean("isActive");
         this.storedEU = data.getInteger("storedEU");
         this.storedHeat = data.getInteger("storedHeat");
+        this.heatRatio = data.getDouble("heatRatio");
         this.roundedHeat = data.getInteger("roundedHeat");
         this.addedHeat = data.getInteger("addedHeat");
         this.addedEU = data.getInteger("addedEU");
@@ -494,6 +521,10 @@ public class TileReactorCore extends TileEntity
 
     // #region Inventory Logic
 
+    private void onComponentInvalidated(int index) {
+        this.components[index] = null;
+    }
+
     private int transformSlotIndex(int invSlot) {
         int cols = this.getColumnCount();
 
@@ -525,7 +556,7 @@ public class TileReactorCore extends TileEntity
             return null;
         }
 
-        this.components[index] = null;
+        this.onComponentInvalidated(index);
 
         this.markDirty();
 
@@ -551,7 +582,7 @@ public class TileReactorCore extends TileEntity
         }
 
         this.contents[index] = null;
-        this.components[index] = null;
+        this.onComponentInvalidated(index);
 
         this.markDirty();
 
@@ -567,7 +598,7 @@ public class TileReactorCore extends TileEntity
         }
 
         this.contents[index] = stack;
-        this.components[index] = null;
+        this.onComponentInvalidated(index);
 
         if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
             stack.stackSize = this.getInventoryStackLimit();
@@ -615,8 +646,15 @@ public class TileReactorCore extends TileEntity
 
     // #region Reactor Grid Logic
 
+    public void resetHullHeatCache() {
+        this.hullHeatCache = null;
+    }
+
     private void doHeatTick() {
         this.addedHeat = 0;
+
+        // a component could change their hull heat increase each tick, so we have to invalidate this here and not when components change
+        resetHullHeatCache();
 
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < COL_COUNT; col++) {
@@ -630,6 +668,10 @@ public class TileReactorCore extends TileEntity
         for (var reactorBlock : reactorBlocks) {
             reactorBlock.onHeatTick(this);
         }
+
+        heatRatio = ((double) storedHeat) / ((double) this.getMaxHullHeat());
+
+        doHeatDamage();
     }
 
     private void doEUTick() {
@@ -657,6 +699,102 @@ public class TileReactorCore extends TileEntity
         int voltageTier = (int) (Math.ceil(Math.log(perTick / 8) / Math.log(4)));
 
         this.voltage = (int) (Math.pow(4, voltageTier) * 8);
+    }
+
+    private static final DamageSource RADIATION_DAMAGE = new DamageSource("nh_radiation");
+
+    private static double map(double x, double in_min, double in_max, double out_min, double out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+    private void doHeatDamage() {
+        final int DAMAGE_RADIUS = 3;
+
+        // flames
+        if(heatRatio >= 0.4) {
+            for(int i = 0; i < 10; i++) {
+                int x = xCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int y = yCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int z = zCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+
+                var block = worldObj.getBlock(x, y, z);
+
+                if (block.isFlammable(worldObj, x, y, z, ForgeDirection.UNKNOWN)) {
+                    block.breakBlock(worldObj, x, y, z, block, worldObj.getBlockMetadata(x, y, z));
+                    worldObj.setBlock(x, y, z, Blocks.fire, 0, 3);
+                    break;
+                }
+            }
+        }
+        
+        // evaporation
+        if (heatRatio >= 0.5) {
+            for(int i = 0; i < 10; i++) {
+                int x = xCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int y = yCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int z = zCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+
+                var block = worldObj.getBlock(x, y, z);
+
+                if (block instanceof IFluidBlock fluidBlock && fluidBlock.getFluid().getTemperature() < 375) {
+                    worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+                    // fire hiss
+                    worldObj.playAuxSFX(1004, x, y, z, 0);
+                    break;
+                }
+            }
+        }
+        
+        // damage
+        if (heatRatio >= 0.7) {
+            var entities = worldObj.getEntitiesWithinAABB(
+                EntityLivingBase.class,
+                AxisAlignedBB.getBoundingBox(
+                    xCoord - DAMAGE_RADIUS,
+                    yCoord - DAMAGE_RADIUS,
+                    zCoord - DAMAGE_RADIUS,
+                    xCoord + DAMAGE_RADIUS,
+                    yCoord + DAMAGE_RADIUS,
+                    zCoord + DAMAGE_RADIUS));
+
+            for(var entity : entities) {
+                entity.attackEntityFrom(RADIATION_DAMAGE, 4);
+            }
+        }
+        
+        // lava
+        if (heatRatio >= 0.85) {
+            for(int i = 0; i < 10; i++) {
+                int x = xCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int y = yCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+                int z = zCoord + (int) map(Math.random(), 0, 1, -DAMAGE_RADIUS, DAMAGE_RADIUS);
+
+                // don't melt the reactor or its chambers, because why would we want to do that? :tootroll:
+                if((Math.abs(x - xCoord) + Math.abs(y - yCoord) + Math.abs(z - zCoord)) <= 1) {
+                    continue;
+                }
+
+                var block = worldObj.getBlock(x, y, z);
+
+                if (!block.isAir(worldObj, x, y, z) && block.getBlockHardness(worldObj, x, y, z) < 5) {
+                    worldObj.setBlock(x, y, z, Blocks.flowing_lava, 1, 3);
+                    // fire hiss
+                    worldObj.playAuxSFX(1004, x, y, z, 0);
+                    break;
+                }
+            }
+        }
+        
+        // explosion
+        if (heatRatio >= 1) {
+            worldObj.newExplosion(
+                null,
+                xCoord + 0.5, yCoord + 0.5, zCoord + 0.5,
+                (float) (30 * getExplosionRadiusMultiplier()),
+                true,
+                true
+            );
+        }
     }
 
     @Override
@@ -746,6 +884,10 @@ public class TileReactorCore extends TileEntity
 
     @Override
     public int getMaxHullHeat() {
+        if (hullHeatCache != null) {
+            return hullHeatCache;
+        }
+
         int maxHeat = 5000;
 
         for (int row = 0; row < ROW_COUNT; row++) {
@@ -757,7 +899,24 @@ public class TileReactorCore extends TileEntity
             }
         }
 
+        hullHeatCache = maxHeat;
+
         return maxHeat;
+    }
+
+    private double getExplosionRadiusMultiplier() {
+        double mult = 1.0;
+
+        for (int row = 0; row < ROW_COUNT; row++) {
+            for (int col = 0; col < COL_COUNT; col++) {
+                var component = getComponent(col, row);
+                if (component != null) {
+                    mult *= component.getExplosionRadiusMultiplier();
+                }
+            }
+        }
+
+        return mult;
     }
 
     @Override

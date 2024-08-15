@@ -23,7 +23,7 @@ public class NuclearHorizons {
 
     @SidedProxy(
         clientSide = "com.recursive_pineapple.nuclear_horizons.ClientProxy",
-        serverSide = "com.recursive_pineapple.nuclear_horizons.CommonProxy")
+        serverSide = "com.recursive_pineapple.nuclear_horizons.ServerProxy")
     public static CommonProxy proxy;
 
     @Instance

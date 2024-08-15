@@ -125,7 +125,7 @@ public class BasicHeatVentItem extends Item implements IHeatMover, IComponentAda
                 desc.add(I18n.format("nh_tooltip.vent.fluid_disclaimer"));
             }
         } else {
-            desc.add("Hold Shift for more info.");
+            desc.add(I18n.format("nh_tooltip.more_info"));
         }
     }
 }

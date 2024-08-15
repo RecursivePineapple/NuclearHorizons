@@ -5,8 +5,14 @@ import com.gtnewhorizons.modularui.integration.nei.ModularUIContainerObjectHandl
 
 import codechicken.nei.guihook.GuiContainerManager;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy {
+
+    @Override
+    public Side getSide() {
+        return Side.CLIENT;
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
