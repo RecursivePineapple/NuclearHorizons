@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.IHeatContainer;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatContainer;
 
 public class HeatAbsorberAdapter implements IComponentAdapter {
 

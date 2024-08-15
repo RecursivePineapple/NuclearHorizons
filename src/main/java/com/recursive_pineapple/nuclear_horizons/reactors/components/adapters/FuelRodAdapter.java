@@ -8,7 +8,7 @@ import com.recursive_pineapple.nuclear_horizons.Config;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.InventoryDirection;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.IBasicFuelRod;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
 
 public class FuelRodAdapter implements IComponentAdapter {
 

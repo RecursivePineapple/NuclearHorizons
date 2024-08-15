@@ -1,4 +1,4 @@
-package com.recursive_pineapple.nuclear_horizons.reactors.items;
+package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatMoverAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatMover;
 
 public class BasicHeatVentItem extends Item implements IHeatMover, IComponentAdapterFactory {
 

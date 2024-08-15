@@ -1,4 +1,4 @@
-package com.recursive_pineapple.nuclear_horizons.reactors.items;
+package com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

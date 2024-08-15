@@ -1,4 +1,4 @@
-package com.recursive_pineapple.nuclear_horizons.reactors.items;
+package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +19,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
 
 public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentAdapterFactory {
 

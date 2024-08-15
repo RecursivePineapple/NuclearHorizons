@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.InventoryDirection;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.IHeatMover;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatMover;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
 
 public class HeatMoverAdapter implements IComponentAdapter {

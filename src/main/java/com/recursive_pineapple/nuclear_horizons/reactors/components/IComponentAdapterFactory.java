@@ -6,9 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IComponentAdapterFactory {
 
-    public default boolean canAdaptItem(@Nonnull ItemStack itemStack) {
-        return true;
-    }
+    public boolean canAdaptItem(@Nonnull ItemStack itemStack);
 
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
         int y);

@@ -1,4 +1,4 @@
-package com.recursive_pineapple.nuclear_horizons.reactors.items;
+package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.NeutronReflectorAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.INeutronReflector;
 
 public class BasicNeutronReflectorItem extends Item implements INeutronReflector, IComponentAdapterFactory {
 
