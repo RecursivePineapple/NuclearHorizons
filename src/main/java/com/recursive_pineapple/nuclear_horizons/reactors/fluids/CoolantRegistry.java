@@ -6,25 +6,26 @@ import java.util.Objects;
 import net.minecraftforge.fluids.Fluid;
 
 public class CoolantRegistry {
-    
+
     private static final HashMap<Fluid, Coolant> coolantsByColdFluid = new HashMap<>();
     private static final HashMap<Fluid, Coolant> coolantsByHotFluid = new HashMap<>();
     private static final HashMap<Fluid, Coolant> coolantsByFluid = new HashMap<>();
-    
+
     private CoolantRegistry() {
-        
+
     }
 
     /**
      * Registers a coolant that can be used to cool a nuclear reactor
-     * @param cold The cold input coolant
-     * @param hot The heated output coolant
+     * 
+     * @param cold                 The cold input coolant
+     * @param hot                  The heated output coolant
      * @param specificHeatCapacity The amount of HU that can be stored in one mB of coolant
      */
     public static void registerCoolant(Fluid cold, Fluid hot, int specificHeatCapacity) {
         Objects.requireNonNull(cold);
         Objects.requireNonNull(hot);
-        if(specificHeatCapacity <= 0) throw new IllegalArgumentException("specificHeatCapacity");
+        if (specificHeatCapacity <= 0) throw new IllegalArgumentException("specificHeatCapacity");
 
         Coolant coolant = new Coolant(cold, hot, specificHeatCapacity);
 
@@ -47,6 +48,7 @@ public class CoolantRegistry {
     }
 
     public static class Coolant {
+
         public final Fluid cold, hot;
         public final int specificHeatCapacity;
 

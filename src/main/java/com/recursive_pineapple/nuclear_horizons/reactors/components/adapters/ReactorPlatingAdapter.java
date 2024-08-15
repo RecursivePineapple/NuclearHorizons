@@ -1,10 +1,10 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components.adapters;
 
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.IReactorPlating;
-
-import net.minecraft.item.ItemStack;
 
 public class ReactorPlatingAdapter implements IComponentAdapter {
 
@@ -41,7 +41,7 @@ public class ReactorPlatingAdapter implements IComponentAdapter {
     public double getExplosionRadiusMultiplier() {
         return plating.getExplosionRadiusMultiplier(itemStack);
     }
-    
+
     @Override
     public int getReactorMaxHeatIncrease() {
         return plating.getReactorMaxHeatIncrease(itemStack);

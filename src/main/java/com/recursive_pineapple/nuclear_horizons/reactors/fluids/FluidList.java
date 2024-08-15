@@ -1,10 +1,9 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.fluids;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
-
-// import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 
 public class FluidList {
 

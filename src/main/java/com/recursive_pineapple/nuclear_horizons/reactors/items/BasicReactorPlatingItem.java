@@ -4,6 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
@@ -12,17 +17,13 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.ReactorPlatingAdapter;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 public class BasicReactorPlatingItem extends Item implements IReactorPlating, IComponentAdapterFactory {
 
     private final double explosionRadiusMultiplier;
     private final int maxHeatIncrease;
 
-    public BasicReactorPlatingItem(String name, String textureName, double explosionRadiusMultiplier, int maxHeatIncrease) {
+    public BasicReactorPlatingItem(String name, String textureName, double explosionRadiusMultiplier,
+        int maxHeatIncrease) {
         setUnlocalizedName(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
 
@@ -34,7 +35,7 @@ public class BasicReactorPlatingItem extends Item implements IReactorPlating, IC
     public double getExplosionRadiusMultiplier(@Nonnull ItemStack itemStack) {
         return explosionRadiusMultiplier;
     }
-    
+
     @Override
     public int getReactorMaxHeatIncrease(@Nonnull ItemStack itemStack) {
         return maxHeatIncrease;
@@ -47,7 +48,7 @@ public class BasicReactorPlatingItem extends Item implements IReactorPlating, IC
 
     @Override
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
-            int y) {
+        int y) {
         return new ReactorPlatingAdapter(reactor, x, y, itemStack, this);
     }
 
@@ -58,9 +59,12 @@ public class BasicReactorPlatingItem extends Item implements IReactorPlating, IC
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             if (explosionRadiusMultiplier != 1) {
-                desc.add(I18n.format("nh_tooltip.plating_explosion", (int) Math.round((1 - explosionRadiusMultiplier) * 100)));
+                desc.add(
+                    I18n.format(
+                        "nh_tooltip.plating_explosion",
+                        (int) Math.round((1 - explosionRadiusMultiplier) * 100)));
             }
-    
+
             if (maxHeatIncrease != 0) {
                 desc.add(I18n.format("nh_tooltip.plating_heat", maxHeatIncrease));
             }

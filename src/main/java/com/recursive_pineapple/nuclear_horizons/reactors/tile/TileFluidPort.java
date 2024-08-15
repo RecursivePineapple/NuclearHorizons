@@ -95,13 +95,14 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
         }
 
         // this should only be called a few times a second, so we don't need to cache it
-        if(!CoolantRegistry.isColdCoolant(resource.getFluid())) {
+        if (!CoolantRegistry.isColdCoolant(resource.getFluid())) {
             return 0;
         }
 
         var tank = reactor.coolantTank;
 
-        if(tank.getFluid() == null || resource.getFluid() == tank.getFluid().getFluid()) {
+        if (tank.getFluid() == null || resource.getFluid() == tank.getFluid()
+            .getFluid()) {
             return tank.fill(resource, doFill);
         } else {
             return 0;
@@ -118,7 +119,8 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
 
         var tank = reactor.hotCoolantTank;
 
-        if(tank.getFluid() != null && resource.getFluid() == tank.getFluid().getFluid()) {
+        if (tank.getFluid() != null && resource.getFluid() == tank.getFluid()
+            .getFluid()) {
             return tank.drain(resource.amount, doDrain);
         } else {
             return null;
@@ -135,7 +137,7 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
 
         var tank = reactor.hotCoolantTank;
 
-        if(tank.getFluid() != null) {
+        if (tank.getFluid() != null) {
             return tank.drain(maxDrain, doDrain);
         } else {
             return null;
@@ -160,9 +162,6 @@ public class TileFluidPort extends TileEntity implements IFluidHandler, IReactor
             return new FluidTankInfo[0];
         }
 
-        return new FluidTankInfo[] {
-            reactor.coolantTank.getInfo(),
-            reactor.hotCoolantTank.getInfo()
-        };
+        return new FluidTankInfo[] { reactor.coolantTank.getInfo(), reactor.hotCoolantTank.getInfo() };
     }
 }
