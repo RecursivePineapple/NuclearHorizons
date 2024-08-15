@@ -47,7 +47,7 @@ public interface IComponentAdapter {
         return 0;
     }
 
-    public default double getExplosionRadiusMult() {
+    public default double getExplosionRadiusMultiplier() {
         return 1.0;
     }
 

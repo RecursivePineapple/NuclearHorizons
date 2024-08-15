@@ -1,20 +1,18 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class FluidBlock extends BlockFluidClassic {
 
-    public static final DamageSource HOT_FLUID_DAMAGE = new DamageSource("hot_fluid");
+    public static final DamageSource HOT_FLUID_DAMAGE = new DamageSource("nh_hot_fluid");
 
     private String stillTextureName, flowingTextureName;
 
@@ -45,10 +43,7 @@ public class FluidBlock extends BlockFluidClassic {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, int x, int y, int z, Entity entityIn) {
-        super.onEntityCollidedWithBlock(worldIn, x, y, z, entityIn);
-        if (burnsEntities && worldIn.getWorldTime() % 20 == 0) {
-            entityIn.attackEntityFrom(HOT_FLUID_DAMAGE, 1.0f);
-        }
+    public boolean isBurning(IBlockAccess world, int x, int y, int z) {
+        return burnsEntities;
     }
 }
