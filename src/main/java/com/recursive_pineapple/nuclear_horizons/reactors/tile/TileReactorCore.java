@@ -54,11 +54,11 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.IReactorBlock.Reac
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
 import cofh.api.energy.IEnergyReceiver;
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public class TileReactorCore extends TileEntity
     implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
@@ -519,8 +519,8 @@ public class TileReactorCore extends TileEntity
                     while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
                         && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
                 }
-            } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
-                final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+            } else if (GregTechAPI.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
+                final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);
                 if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
                     receiver.receiveEnergy(oppositeSide, rfOut, false);
                     usedAmperes++;
