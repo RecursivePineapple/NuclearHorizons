@@ -6,23 +6,27 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.lwjgl.input.Keyboard;
+
+import com.recursive_pineapple.nuclear_horizons.Config;
+import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import org.lwjgl.input.Keyboard;
-
-import com.recursive_pineapple.nuclear_horizons.Config;
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
-
 public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentAdapterFactory {
 
+    private final String name;
     private final double energyMult;
     private final double heatMult;
     private final int rodCount;
@@ -36,11 +40,27 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(maxHealth);
 
+        this.name = name;
         this.energyMult = energyMult;
         this.heatMult = heatMult;
         this.rodCount = rodCount;
         this.isMox = isMox;
         this.maxHealth = maxHealth;
+    }
+    
+    public void register() {
+        GameRegistry.registerItem(this, name);
+        ComponentRegistry.registerAdapter(this, this);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return HeatUtils.getNBTInt(stack, "damage", 0);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        HeatUtils.setNBTInt(stack, "damage", damage);
     }
 
     @Override
@@ -103,7 +123,7 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
             desc.addAll(
                 Arrays.asList(
                     I18n.format("nh_tooltip.durability", this.getRemainingHealth(itemStack), this.maxHealth)
-                        .split("\\n")));
+                        .split("\\\\n")));
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
@@ -116,19 +136,19 @@ public class BasicFuelRodItem extends Item implements IBasicFuelRod, IComponentA
                         (int) (this.heatMult * Config.ROD_HU_MULTIPLIER),
                         (int) (this.energyMult * Config.ROD_EU_MULTIPLIER),
                         1 + this.rodCount / 2)
-                        .split("\\n")));
+                        .split("\\\\n")));
 
             if (this.isMox) {
                 desc.addAll(
                     Arrays.asList(
                         I18n.format("nh_tooltip.fuel_rod.mox_stats", Config.MOX_EU_COEFFICIENT)
-                            .split("\\n")));
+                            .split("\\\\n")));
             }
 
             desc.addAll(
                 Arrays.asList(
                     I18n.format("nh_tooltip.fuel_rod.heat_epilogue")
-                        .split("\\n")));
+                        .split("\\\\n")));
         } else {
             desc.add(I18n.format("nh_tooltip.more_info"));
         }

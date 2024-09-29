@@ -1,6 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +17,7 @@ public interface IHeatContainer {
 
     public int getMaxHeat(@Nonnull ItemStack itemStack);
 
-    public default boolean isConsumable(@Nonnull ItemStack itemStack) {
-        return true;
-    }
+    public boolean isConsumable(@Nonnull ItemStack itemStack);
+
+    public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack);
 }

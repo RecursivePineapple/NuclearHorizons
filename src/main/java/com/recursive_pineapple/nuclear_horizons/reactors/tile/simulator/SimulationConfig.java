@@ -440,7 +440,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
                 ? I18n.format(value == null ? "nh_gui.sim.results.none" : ("nh_gui.sim.results." + unit), value)
                 : value);
 
-        for (var line : text.split("\\n")) {
+        for (var line : text.split("\\\\n")) {
             lines.appendTag(
                 new NBTTagString(EnumChatFormatting.RESET.toString() + EnumChatFormatting.BLUE.toString() + line));
         }
@@ -469,11 +469,11 @@ public class SimulationConfig implements IItemHandlerModifiable {
                 }
 
                 if (r.totalHullCooling > 0) {
-                    addResultLine(lore, "avg_hull_cooling", "hu_per_second", r.totalHullCooling / res.simTime);
+                    addResultLine(lore, "avg_hull_cooling", "hu_per_sec", r.totalHullCooling / res.simTime);
                 }
 
                 if (r.totalHullHeating > 0) {
-                    addResultLine(lore, "avg_hull_heating", "hu_per_second", r.totalHullHeating / res.simTime);
+                    addResultLine(lore, "avg_hull_heating", "hu_per_sec", r.totalHullHeating / res.simTime);
                     addResultLine(lore, "heating_per_item", "hu_total", r.totalHullHeating / (r.replaceCount + 1));
                 }
 
@@ -484,7 +484,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
                 addResultLine(lore, "replace_count", null, r.replaceCount);
 
                 if (r.totalEUOutput > 0) {
-                    addResultLine(lore, "avg_power", "eu_per_tick", r.totalEUOutput * 2 / 20 / res.simTime);
+                    addResultLine(lore, "avg_power", "eu_per_tick", r.totalEUOutput / 20 / res.simTime);
                     addResultLine(lore, "power_per_item", "eu_total", r.totalEUOutput / (r.replaceCount + 1));
                 }
 

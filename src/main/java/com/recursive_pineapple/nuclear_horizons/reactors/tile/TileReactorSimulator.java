@@ -4,6 +4,7 @@ import static com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactor
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -287,9 +288,7 @@ public class TileReactorSimulator extends TileEntity implements ITileWithModular
             "nh_gui.sim.results." + name,
             I18n.format(value == null ? "nh_gui.sim.results.none" : ("nh_gui.sim.results." + unit), value));
 
-        for (var line : text.split("\\n")) {
-            lines.add(line);
-        }
+        lines.addAll(Arrays.asList(text.split("\\\\n")));
     }
 
     private Widget resultsPage() {
@@ -343,7 +342,7 @@ public class TileReactorSimulator extends TileEntity implements ITileWithModular
                         lines,
                         "avg_power",
                         "eu_per_tick",
-                        r == null ? null : (r.totalEU * 2 / 20 / r.simTime));
+                        r == null ? null : (r.totalEU / 20 / r.simTime));
                     addResultLine(lines, "min_power", "eu_per_tick", r == null ? null : r.minEUpT);
                     addResultLine(lines, "max_power", "eu_per_tick", r == null ? null : r.maxEUpT);
 

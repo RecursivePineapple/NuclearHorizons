@@ -34,6 +34,7 @@ item.iridiumNeutronReflector.name=Iridium Neutron Reflector
 item.reactorPlating.name=Reactor Plating
 item.reactorPlatingHeat.name=Heat-Capacity Reactor Plating
 item.reactorPlatingExplosive.name=Containment Reactor Plating
+item.debugHeatAbsorber.name=Creative Heat Absorber
 
 fluid.nh_coolant=Coolant
 fluid.nh_hot_coolant=Hot Coolant
@@ -44,7 +45,7 @@ death.attack.nh_radiation.player=%1$s was irradiated to death
 nh_tooltip.durability=Durability: %1$,d / %2$,d
 nh_tooltip.undestructable=Undestructable
 nh_tooltip.stored_heat=Stored Heat: %1$,d / %2$,d
-nh_tooltip.prelude=Every two seconds, this component will:
+nh_tooltip.prelude=Every second, this component will:
 nh_tooltip.more_info=Hold Shift for more info.
 
 nh_tooltip.fuel_rod.gen_stats=Generate %1$,d * n * (n + 1) HU\nGenerate %2$,d * n * (n + 1) EU\nWhere n = %3$d + Number of adjacent rods and reflectors
@@ -55,11 +56,11 @@ nh_tooltip.mover.reactor_xfer=Transfer up to %d HU between the reactor and itsel
 nh_tooltip.exchanger.comp_xfer=Transfer up to %d HU between its neighbours and itself.
 nh_tooltip.vent.void_self=Dissipate up to %d HU from itself.
 nh_tooltip.vent.void_adj=Dissipate up to %d HU from its neighbours.
-nh_tooltip.vent.fluid_disclaimer=Note: In a fluid reactor, each HU vented is converted to 2 HU (2mB) of hot coolant.
+nh_tooltip.vent.fluid_disclaimer=Note: In a fluid reactor, each HU vented is converted to %1$,d HU (%1$,dmB) of hot coolant.
 nh_tooltip.plating_explosion=Decreases the reactor's explosion radius by %,d %% (multiplicative).
 nh_tooltip.plating_heat=Increases the reactor's maximum temperature by %,d HU.
 
-nh_tooltip.results.title=\nSimulation Results:
+nh_tooltip.results.title=Simulation Results:
 nh_tooltip.sim.results.avg_temp=Avg Temp: %s
 nh_tooltip.sim.results.min_temp=Min Temp: %s
 nh_tooltip.sim.results.max_temp=Max Temp: %s

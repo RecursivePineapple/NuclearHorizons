@@ -8,7 +8,6 @@ If you would like to help, send a me message on discord (my username is recursiv
 If you find an issue and would like to report it, you can either open an issue here or send me a message on discord.
 
 # TODO
-- Breeder rods
 - UI Polishing
 - New textures
 - Make vents state their total cooling capacity in sim results

@@ -44,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Row;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.recursive_pineapple.nuclear_horizons.Config;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
@@ -66,7 +67,7 @@ public class TileReactorCore extends TileEntity
     public static final int ROW_COUNT = 6;
     public static final int COL_COUNT = 9;
 
-    private static final int REACTOR_TICK_SPEED = 20;
+    private static final int REACTOR_TICK_SPEED = 10;
     private static final int REACTOR_STRUCTURE_CHECK_PERIOD = 10 * 20;
 
     private final ArrayList<EntityPlayer> viewingPlayers = new ArrayList<>();
@@ -119,45 +120,48 @@ public class TileReactorCore extends TileEntity
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND)
             .bindPlayerInventory(buildContext.getPlayer());
 
+        // spotless:off
         builder.widgets(
-            new Column().setAlignment(CrossAxisAlignment.CENTER)
-                .widgets(
-                    padding(7, 7),
-                    new TextWidget(I18n.format("nh_gui.reactor.title")).setSize(150, 16),
-                    new Row().setAlignment(MainAxisAlignment.CENTER, CrossAxisAlignment.CENTER)
-                        .widgets(
-                            new FluidSlotWidget(coolantTank).setEnabled(w -> isFluid),
-                            padding(2, 0),
-                            SlotGroup.ofItemHandler(new InvWrapper(this), getColumnCount())
-                                .build(),
-                            new Row().setAlignment(MainAxisAlignment.START, CrossAxisAlignment.CENTER)
-                                .consume(w -> {
-                                    for (int i = getColumnCount(); i < COL_COUNT; i++) {
-                                        ((Row) w).widget(
-                                            MISSING_CHAMBER.withFixedSize(18, 108)
-                                                .asWidget()
-                                                .setSize(18, 108));
-                                    }
-                                }),
-                            padding(2, 0),
-                            new FluidSlotWidget(hotCoolantTank).setEnabled(w -> isFluid)),
-                    new MultiChildWidget().addChild(
-                        new Row().setAlignment(MainAxisAlignment.START)
-                            .widgets(
-                                padding(7 + 16, 16),
-                                new TextWidget(I18n.format("nh_gui.reactor.player_inv")).setSize(50, 16)))
-                        .addChild(
-                            new Row().setAlignment(MainAxisAlignment.END)
-                                .widgets(
-                                    TextWidget
-                                        .dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
-                                        .setSize(50, 16),
-                                    TextWidget
-                                        .dynamicString(
-                                            () -> (!isFluid ? I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
-                                                : I18n.format("nh_gui.reactor.hu_output", this.addedHeat)))
-                                        .setSize(50, 16),
-                                    padding(7 + 16, 16)))));
+            new Column().setAlignment(CrossAxisAlignment.CENTER).widgets(
+                padding(7, 7),
+                new TextWidget(I18n.format("nh_gui.reactor.title")).setSize(150, 16),
+                new Row().setAlignment(MainAxisAlignment.CENTER, CrossAxisAlignment.CENTER).widgets(
+                    new FluidSlotWidget(coolantTank).setEnabled(w -> isFluid),
+                    padding(2, 0),
+                    SlotGroup.ofItemHandler(new InvWrapper(this), getColumnCount()).build(),
+                    new Row().setAlignment(MainAxisAlignment.START, CrossAxisAlignment.CENTER)
+                        .consume(w -> {
+                            for (int i = getColumnCount(); i < COL_COUNT; i++) {
+                                ((Row) w).widget(
+                                    MISSING_CHAMBER.withFixedSize(18, 108)
+                                        .asWidget()
+                                        .setSize(18, 108));
+                            }
+                        }),
+                    padding(2, 0),
+                    new FluidSlotWidget(hotCoolantTank).setEnabled(w -> isFluid)
+                ),
+                new MultiChildWidget()
+                    .addChild(new Row().setAlignment(MainAxisAlignment.START).widgets(
+                        padding(7 + 16, 16),
+                        new TextWidget(I18n.format("nh_gui.reactor.player_inv")).setSize(50, 16)
+                    ))
+                    .addChild(new Row().setAlignment(MainAxisAlignment.END).widgets(
+                            TextWidget
+                                .dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
+                                .setSize(50, 16),
+                            TextWidget
+                                .dynamicString(() -> (
+                                    isFluid ?
+                                        I18n.format("nh_gui.reactor.hu_output", this.addedHeat) :
+                                        I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
+                                ))
+                                .setSize(50, 16),
+                            padding(7 + 16, 16)
+                    ))
+            )
+        );
+        // spotless:on
 
         builder.widgets(
             new FakeSyncWidget.BooleanSyncer(() -> this.isActive, v -> this.isActive = v),
@@ -952,7 +956,7 @@ public class TileReactorCore extends TileEntity
                 return airHeat;
             }
 
-            // cache this because it will be called several times a second - may not be completely necessary though
+            // cache this because it will be called several times a second
             if ((coolantCache == null || coolantCache.cold != this.coolantTank.getFluid()
                 .getFluid())) {
                 if (this.coolantTank.getFluidAmount() == 0) {
@@ -968,7 +972,7 @@ public class TileReactorCore extends TileEntity
                 return airHeat;
             }
 
-            this.roundedHeat += airHeat * 2;
+            this.roundedHeat += airHeat * Config.FLUID_NUKE_HU_MULTIPLIER;
 
             int heatableCoolant = Math.min(
                 this.coolantTank.getFluidAmount(),
@@ -989,11 +993,8 @@ public class TileReactorCore extends TileEntity
 
     @Override
     public void addEU(double eu) {
-        this.storedEU += eu;
-
-        if (eu > 0) {
-            this.addedEU += eu;
-        }
+        this.storedEU += eu * Config.REACTOR_EU_MULTIPLIER;
+        this.addedEU += eu * Config.REACTOR_EU_MULTIPLIER;
     }
 
     @Override

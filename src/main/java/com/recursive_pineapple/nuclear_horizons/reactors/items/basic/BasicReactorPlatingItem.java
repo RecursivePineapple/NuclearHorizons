@@ -12,14 +12,18 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.ReactorPlatingAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IReactorPlating;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class BasicReactorPlatingItem extends Item implements IReactorPlating, IComponentAdapterFactory {
 
+    private final String name;
     private final double explosionRadiusMultiplier;
     private final int maxHeatIncrease;
 
@@ -28,8 +32,14 @@ public class BasicReactorPlatingItem extends Item implements IReactorPlating, IC
         setUnlocalizedName(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
 
+        this.name = name;
         this.explosionRadiusMultiplier = explosionRadiusMultiplier;
         this.maxHeatIncrease = maxHeatIncrease;
+    }
+
+    public void register() {
+        GameRegistry.registerItem(this, name);
+        ComponentRegistry.registerAdapter(this, this);
     }
 
     @Override

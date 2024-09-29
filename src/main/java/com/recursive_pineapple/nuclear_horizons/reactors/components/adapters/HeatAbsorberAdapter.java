@@ -51,7 +51,7 @@ public class HeatAbsorberAdapter implements IComponentAdapter {
         int rejected = this.heatContainer.addHeat(itemStack, delta);
 
         if (this.heatContainer.getRemainingHealth(itemStack) <= 0 && this.heatContainer.isConsumable(itemStack)) {
-            this.reactor.setItem(x, y, null);
+            this.reactor.setItem(x, y, ItemStack.copyItemStack(this.heatContainer.getProduct(itemStack)));
         }
 
         return rejected;

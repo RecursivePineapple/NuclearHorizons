@@ -1,5 +1,8 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 public class HeatUtils {
 
     private HeatUtils() {}
@@ -34,5 +37,23 @@ public class HeatUtils {
 
             return -Math.min(-addedHeat, remaining);
         }
+    }
+
+    public static int getNBTInt(ItemStack stack, String name, int def) {
+        NBTTagCompound tag = stack.getTagCompound();
+
+        return tag == null ? def : tag.getInteger(name);
+    }
+
+    public static void setNBTInt(ItemStack stack, String name, int value) {
+        getOrCreateTag(stack).setInteger(name, value);
+    }
+
+    public static NBTTagCompound getOrCreateTag(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+
+        if (tag == null) stack.setTagCompound(tag = new NBTTagCompound());
+
+        return tag;
     }
 }

@@ -6,6 +6,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.InventoryDirection;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatMover;
+import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationComponentResult;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationResult;
 
 public class HeatMoverAdapter implements IComponentAdapter {
@@ -14,6 +15,8 @@ public class HeatMoverAdapter implements IComponentAdapter {
     private final int x, y;
     private final ItemStack itemStack;
     private final IHeatMover heatMover;
+
+    private SimulationComponentResult simResult;
 
     public HeatMoverAdapter(IReactorGrid reactor, int x, int y, ItemStack itemStack, IHeatMover heatMover) {
         this.reactor = reactor;
@@ -60,13 +63,8 @@ public class HeatMoverAdapter implements IComponentAdapter {
     }
 
     @Override
-    public void modifySimulationResults(SimulationResult result, int componentIndex) {
-        // if(result.maxHullCooling == null) result.maxHullCooling = 0l;
-
-        // result.maxHullCooling += this.heatMover.getTransferFromReactor(itemStack, reactor);
-
-        // if(result.componentResults[componentIndex].maxAirHeating
-        // TODO: this
+    public void onSimulationFinished(SimulationResult result, int componentIndex) {
+        
     }
 
     @Override

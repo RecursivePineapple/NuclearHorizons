@@ -263,9 +263,9 @@ public class Simulator {
 
         @Override
         public int addAirHeat(int delta) {
-            result.totalHU += delta * 2;
-            addedHU += delta * 2;
-            currentComponent.totalAirHeating += delta * 2;
+            result.totalHU += delta;
+            addedHU += delta;
+            currentComponent.totalAirHeating += delta;
 
             return 0;
         }
@@ -317,6 +317,7 @@ public class Simulator {
                         var component = getComponent(col, row);
 
                         if (component != null) {
+                            component.setSimulationComponent(result, index);
                             currentComponent = componentResults[index];
 
                             if (reactorTickCounter % 2 == 0) {
@@ -327,7 +328,7 @@ public class Simulator {
 
                             var heat = component.getStoredHeat();
 
-                            currentComponent.totalTempSecs += heat * 2;
+                            currentComponent.totalTempSecs += heat;
 
                             if (heat < currentComponent.minTemp) {
                                 currentComponent.minTemp = heat;
@@ -383,7 +384,7 @@ public class Simulator {
                         result.maxTemp = storedHeat;
                     }
 
-                    result.totalTempSecs += storedHeat * 2;
+                    result.totalTempSecs += storedHeat;
 
                     double ratio = storedHeat / (double) getMaxHullHeat();
 
@@ -441,14 +442,6 @@ public class Simulator {
             }
 
             result.end = System.nanoTime();
-
-            for (int i = 0; i < components.length; i++) {
-                var c = getComponent(i % COL_COUNT, i / COL_COUNT);
-
-                if (c != null) {
-                    c.modifySimulationResults(result, i);
-                }
-            }
         }
     }
 }

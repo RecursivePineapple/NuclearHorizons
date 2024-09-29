@@ -51,7 +51,15 @@ public interface IComponentAdapter {
         return 1.0;
     }
 
-    public default void modifySimulationResults(SimulationResult result, int componentIndex) {
+    public default void onSimulationStarted(SimulationResult result, int componentIndex) {
+
+    }
+
+    public default void setSimulationComponent(SimulationResult result, int componentIndex) {
+
+    }
+
+    public default void onSimulationFinished(SimulationResult result, int componentIndex) {
 
     }
 }

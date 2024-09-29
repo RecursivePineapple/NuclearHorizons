@@ -62,3 +62,12 @@ message ComponentResult {
   int32 replaceCount = 8;
   int64 totalEUOutput = 9;
 }
+
+message CustomResult {
+  string i18n = 1;
+  oneof Values {
+    float float_value = 2;
+    int64 long_value = 3;
+    string string_value = 4;
+  }
+}

@@ -22,6 +22,10 @@ public interface IReactorGrid {
 
     public int getMaxHullHeat();
 
+    public default float getHeatRatio() {
+        return getHullHeat() / (float) getMaxHullHeat();
+    }
+
     public void setHullHeat(int newHeat);
 
     public void addHullHeat(int delta);

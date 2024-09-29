@@ -3,6 +3,7 @@ package com.recursive_pineapple.nuclear_horizons;
 import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.ForeignItems;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
 
@@ -31,16 +32,16 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         PacketDispatcher.registerPackets();
-        // PacketDispatcher.TileEntityUpdatedMessage.init();
-
-        SimulationItems.init();
-
-        FluidList.registerCoolants();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        FluidList.registerCoolants();
+    }
 
     // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {}
+    public void serverStarting(FMLServerStartingEvent event) {
+        SimulationItems.registerSimulationItems();
+        ForeignItems.registerForeignReactorItems();
+    }
 }

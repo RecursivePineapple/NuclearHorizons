@@ -1,18 +1,8 @@
-package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
-
-import java.util.List;
+package com.recursive_pineapple.nuclear_horizons.reactors.items.foreign;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
@@ -20,48 +10,32 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.Hea
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatContainer;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
-public class BasicHeatAbsorberItem extends Item implements IHeatContainer, IComponentAdapterFactory {
+public class ForeignHeatAbsorberItem implements IHeatContainer, IComponentAdapterFactory {
+    
+    @Nonnull
+    protected final Item item;
+    protected final int maxHeat;
+    protected final boolean consumable;
 
-    private final String name;
-    private final int maxHeat;
-    private final boolean consumable;
-
-    private ItemStack product;
-
-    public BasicHeatAbsorberItem(String name, String textureName, int maxHeat, boolean consumable) {
-        setUnlocalizedName(name);
-        setTextureName(NuclearHorizons.MODID + ":" + textureName);
-        setMaxDamage(maxHeat);
-
-        this.name = name;
+    @Nullable
+    protected ItemStack product;
+    
+    public ForeignHeatAbsorberItem(@Nonnull Item item, int maxHeat, boolean consumable) {
+        this.item = item;
         this.maxHeat = maxHeat;
         this.consumable = consumable;
     }
 
-    public void register() {
-        GameRegistry.registerItem(this, name);
-        ComponentRegistry.registerAdapter(this, this);
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return HeatUtils.getNBTInt(stack, "neutrons", 0);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        HeatUtils.setNBTInt(stack, "neutrons", damage);
-    }
-
-    public void setProduct(ItemStack product) {
+    public void setProduct(@Nullable ItemStack product) {
         this.product = product;
     }
 
     @Override
     public boolean canAdaptItem(@Nonnull ItemStack itemStack) {
-        return itemStack.getItem() == this;
+        return itemStack.getItem() == item;
     }
 
     @Override
@@ -102,13 +76,5 @@ public class BasicHeatAbsorberItem extends Item implements IHeatContainer, IComp
     @Override
     public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack) {
         return product;
-    }
-
-    @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc,
-        boolean advancedItemTooltips) {
-        super.addInformation(itemStack, player, desc, advancedItemTooltips);
-
-        desc.add(I18n.format("nh_tooltip.durability", itemStack.getItemDamage(), this.maxHeat));
     }
 }

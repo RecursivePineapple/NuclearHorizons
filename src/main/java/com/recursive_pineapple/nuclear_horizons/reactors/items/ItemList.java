@@ -7,6 +7,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatEx
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicReactorPlatingItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.DebugHeatAbsorber;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -15,15 +16,15 @@ public class ItemList {
     public static final BasicFuelRodItem URANIUM_1X_ROD = new BasicFuelRodItem(
         "fuelRodUranium",
         "reactorUraniumSimple",
-        100.0,
         2.0,
+        4.0,
         1,
         false,
         20_000);
     public static final BasicFuelRodItem URANIUM_2X_ROD = new BasicFuelRodItem(
         "dualFuelRodUranium",
         "reactorUraniumDual",
-        200.0,
+        2.0,
         4.0,
         2,
         false,
@@ -31,8 +32,8 @@ public class ItemList {
     public static final BasicFuelRodItem URANIUM_4X_ROD = new BasicFuelRodItem(
         "quadFuelRodUranium",
         "reactorUraniumQuad",
-        400.0,
-        8.0,
+        2.0,
+        4.0,
         4,
         false,
         20_000);
@@ -40,15 +41,15 @@ public class ItemList {
     public static final BasicFuelRodItem MOX_1X_ROD = new BasicFuelRodItem(
         "fuelRodMOX",
         "reactorMOXSimple",
-        100.0,
         2.0,
+        4.0,
         1,
         true,
         10_000);
     public static final BasicFuelRodItem MOX_2X_ROD = new BasicFuelRodItem(
         "dualFuelRodMOX",
         "reactorMOXDual",
-        200.0,
+        2.0,
         4.0,
         2,
         true,
@@ -56,8 +57,8 @@ public class ItemList {
     public static final BasicFuelRodItem MOX_4X_ROD = new BasicFuelRodItem(
         "quadFuelRodMOX",
         "reactorMOXQuad",
-        400.0,
-        8.0,
+        2.0,
+        4.0,
         4,
         true,
         10_000);
@@ -157,9 +158,6 @@ public class ItemList {
         "thickNeutronReflector",
         "reactorReflectorThick",
         120_000);
-    public static final BasicNeutronReflectorItem IRIDIUM_NEUTRON_REFLECTOR = new BasicNeutronReflectorItem(
-        "iridiumNeutronReflector",
-        "gt.neutronreflector");
 
     public static final BasicReactorPlatingItem REACTOR_PLATING = new BasicReactorPlatingItem(
         "reactorPlating",
@@ -177,86 +175,43 @@ public class ItemList {
         0.9,
         500);
 
+    public static final DebugHeatAbsorber DEBUG_HEAT_ABSORBER = new DebugHeatAbsorber(
+        "debugHeatAbsorber",
+        "debugHeatAbsorber");
+
     public static void registerItems() {
-        register(URANIUM_1X_ROD);
-        register(URANIUM_2X_ROD);
-        register(URANIUM_4X_ROD);
+        URANIUM_1X_ROD.register();
+        URANIUM_2X_ROD.register();
+        URANIUM_4X_ROD.register();
 
-        register(MOX_1X_ROD);
-        register(MOX_2X_ROD);
-        register(MOX_4X_ROD);
+        MOX_1X_ROD.register();
+        MOX_2X_ROD.register();
+        MOX_4X_ROD.register();
 
-        register(BASIC_HEAT_VENT);
-        register(ADVANCED_HEAT_VENT);
-        register(REACTOR_HEAT_VENT);
-        register(COMPONENT_HEAT_VENT);
-        register(OVERCLOCKED_HEAT_VENT);
+        BASIC_HEAT_VENT.register();
+        ADVANCED_HEAT_VENT.register();
+        REACTOR_HEAT_VENT.register();
+        COMPONENT_HEAT_VENT.register();
+        OVERCLOCKED_HEAT_VENT.register();
 
-        register(BASIC_HEAT_EXCHANGER);
-        register(ADVANCED_HEAT_EXCHANGER);
-        register(REACTOR_HEAT_EXCHANGER);
-        register(COMPONENT_HEAT_EXCHANGER);
+        BASIC_HEAT_EXCHANGER.register();
+        ADVANCED_HEAT_EXCHANGER.register();
+        REACTOR_HEAT_EXCHANGER.register();
+        COMPONENT_HEAT_EXCHANGER.register();
 
-        register(COOLANT_CELL_10k);
-        register(COOLANT_CELL_30k);
-        register(COOLANT_CELL_60k);
-        register(RSH_CONDENSATOR);
-        register(LZH_CONDENSATOR);
+        COOLANT_CELL_10k.register();
+        COOLANT_CELL_30k.register();
+        COOLANT_CELL_60k.register();
+        RSH_CONDENSATOR.register();
+        LZH_CONDENSATOR.register();
 
-        register(NEUTRON_REFLECTOR);
-        register(THICK_NEUTRON_REFLECTOR);
-        register(IRIDIUM_NEUTRON_REFLECTOR);
+        NEUTRON_REFLECTOR.register();
+        THICK_NEUTRON_REFLECTOR.register();
 
-        register(REACTOR_PLATING);
-        register(REACTOR_PLATING_HEAT);
-        register(REACTOR_PLATING_EXPLOSIVE);
-    }
+        REACTOR_PLATING.register();
+        REACTOR_PLATING_HEAT.register();
+        REACTOR_PLATING_EXPLOSIVE.register();
 
-    private static void register(BasicFuelRodItem fuelRod) {
-        GameRegistry.registerItem(
-            fuelRod,
-            fuelRod.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(fuelRod, fuelRod);
-    }
-
-    private static void register(BasicHeatVentItem heatVent) {
-        GameRegistry.registerItem(
-            heatVent,
-            heatVent.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(heatVent, heatVent);
-    }
-
-    private static void register(BasicHeatExchangerItem heatExchanger) {
-        GameRegistry.registerItem(
-            heatExchanger,
-            heatExchanger.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(heatExchanger, heatExchanger);
-    }
-
-    private static void register(BasicHeatAbsorberItem heatAbsorber) {
-        GameRegistry.registerItem(
-            heatAbsorber,
-            heatAbsorber.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(heatAbsorber, heatAbsorber);
-    }
-
-    private static void register(BasicNeutronReflectorItem heatAbsorber) {
-        GameRegistry.registerItem(
-            heatAbsorber,
-            heatAbsorber.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(heatAbsorber, heatAbsorber);
-    }
-
-    private static void register(BasicReactorPlatingItem reactorPlating) {
-        GameRegistry.registerItem(
-            reactorPlating,
-            reactorPlating.getUnlocalizedName()
-                .substring("item.".length()));
-        ComponentRegistry.registerAdapter(reactorPlating, reactorPlating);
+        DEBUG_HEAT_ABSORBER.register();
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
@@ -19,8 +20,11 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.Hea
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatMover;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class BasicHeatExchangerItem extends Item implements IHeatMover, IComponentAdapterFactory {
 
+    private final String name;
     private final int maxHeatFromReactor;
     private final int maxHeatFromNeighbour;
     private final int maxHeat;
@@ -31,9 +35,25 @@ public class BasicHeatExchangerItem extends Item implements IHeatMover, ICompone
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(maxHeat);
 
+        this.name = name;
         this.maxHeatFromReactor = maxHeatFromReactor;
         this.maxHeatFromNeighbour = maxHeatFromNeighbour;
         this.maxHeat = maxHeat;
+    }
+
+    public void register() {
+        GameRegistry.registerItem(this, name);
+        ComponentRegistry.registerAdapter(this, this);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return HeatUtils.getNBTInt(stack, "heat", 0);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        HeatUtils.setNBTInt(stack, "heat", damage);
     }
 
     @Override

@@ -40,6 +40,26 @@ public class FuelRodAdapter implements IComponentAdapter {
         return itemStack;
     }
 
+    protected double getEUMultiplier() {
+        double mult = Config.ROD_EU_MULTIPLIER;
+
+        if (fuelRod.isMox(itemStack)) {
+            mult *= 1 + fuelRod.getMoxEUCoefficient(itemStack) * reactor.getHeatRatio();
+        }
+
+        return mult;
+    }
+
+    protected double getHeatMultiplier() {
+        double mult = Config.ROD_HU_MULTIPLIER;
+        
+        if (fuelRod.isMox(itemStack) && reactor.isFluid() && reactor.getHeatRatio() >= 0.5) {
+            mult *= fuelRod.getMoxHeatCoefficient(itemStack);
+        }
+
+        return mult;
+    }
+
     @Override
     public void onHeatTick() {
         if (!reactor.isActive()) {
@@ -47,37 +67,32 @@ public class FuelRodAdapter implements IComponentAdapter {
         }
 
         if (fuelRod.getRemainingHealth(itemStack) <= 0) {
-            var product = fuelRod.getProduct(itemStack);
-            reactor.setItem(x, y, product != null ? product.copy() : null);
+            reactor.setItem(x, y, ItemStack.copyItemStack(fuelRod.getProduct(itemStack)));
             return;
         }
 
         int pulses = this.getPulseCount();
-        int heat = (int) (fuelRod.getHeatMult(itemStack) * pulses * (pulses + 1) * Config.ROD_HU_MULTIPLIER);
-
-        if (fuelRod.isMox(itemStack) && reactor.isFluid()
-            && (reactor.getHullHeat() / reactor.getMaxHullHeat()) >= 0.5) {
-            heat *= 2;
-        }
+        int heat = (int) (fuelRod.getHeatMult(itemStack) * fuelRod.getRodCount(itemStack) * getHeatMultiplier() * pulses * (pulses + 1) / 2);
 
         var heatableNeighbours = this.getHeatableNeighbours();
 
         if (heatableNeighbours.isEmpty()) {
             reactor.addHullHeat(heat);
         } else {
-            int rodCount = fuelRod.getRodCount(itemStack);
-
-            int heatPerRod = heat / rodCount;
-
             for (int i = 0; i < heatableNeighbours.size(); i++) {
                 int remainingNeighbours = heatableNeighbours.size() - i;
-                int heatToTransfer = heatPerRod / remainingNeighbours;
-                heatPerRod -= heatToTransfer;
-                heatPerRod += heatableNeighbours.get(i)
-                    .addHeat(heatToTransfer * rodCount) / rodCount;
+
+                int heatToTransfer = heat / remainingNeighbours;
+                heat -= heatToTransfer;
+
+                int rejected = heatableNeighbours.get(i).addHeat(heatToTransfer);
+
+                heat += rejected;
             }
 
-            reactor.addHullHeat(heatPerRod * rodCount);
+            if (heat > 0) {
+                reactor.addHullHeat(heat);
+            }
         }
     }
 
@@ -92,11 +107,7 @@ public class FuelRodAdapter implements IComponentAdapter {
         }
 
         int pulses = this.getPulseCount();
-        double energy = fuelRod.getEnergyMult(itemStack) * pulses * Config.ROD_EU_MULTIPLIER;
-
-        if (fuelRod.isMox(itemStack)) {
-            energy *= 1 + Config.MOX_EU_COEFFICIENT * reactor.getHullHeat() / reactor.getMaxHullHeat();
-        }
+        double energy = fuelRod.getEnergyMult(itemStack) * fuelRod.getRodCount(itemStack) * getEUMultiplier() * pulses;
 
         reactor.addEU(energy);
         fuelRod.applyDamage(itemStack, 1);
