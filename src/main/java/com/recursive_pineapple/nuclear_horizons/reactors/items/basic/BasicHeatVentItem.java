@@ -70,7 +70,7 @@ public class BasicHeatVentItem extends Item implements IHeatMover, IComponentAda
         if (this.getMaxHeat(itemStack) == 0) {
             return 1;
         }
-        
+
         return HeatUtils.getNBTInt(itemStack, "head", 0);
     }
 
@@ -83,7 +83,7 @@ public class BasicHeatVentItem extends Item implements IHeatMover, IComponentAda
         int consumed = HeatUtils.getConsumableHeat(this.maxHeat, stored, heat);
 
         tag.setInteger("heat", stored + consumed);
-        
+
         return heat - consumed;
     }
 

@@ -338,11 +338,7 @@ public class TileReactorSimulator extends TileEntity implements ITileWithModular
                     addResultLine(lines, "active_time", "seconds", r == null ? null : r.activeTime);
                     addResultLine(lines, "inactive_time", "seconds", r == null ? null : r.pausedTime);
 
-                    addResultLine(
-                        lines,
-                        "avg_power",
-                        "eu_per_tick",
-                        r == null ? null : (r.totalEU / 20 / r.simTime));
+                    addResultLine(lines, "avg_power", "eu_per_tick", r == null ? null : (r.totalEU / 20 / r.simTime));
                     addResultLine(lines, "min_power", "eu_per_tick", r == null ? null : r.minEUpT);
                     addResultLine(lines, "max_power", "eu_per_tick", r == null ? null : r.maxEUpT);
 

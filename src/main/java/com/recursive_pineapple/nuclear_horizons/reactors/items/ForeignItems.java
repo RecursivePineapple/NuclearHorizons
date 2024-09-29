@@ -7,6 +7,9 @@ import java.lang.reflect.Field;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
@@ -24,11 +27,9 @@ import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class ForeignItems {
-    
+
     public static void registerForeignReactorItems() {
         registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_He_1.getItem());
         registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_He_3.getItem());
@@ -107,11 +108,17 @@ public class ForeignItems {
 
     private static <T> Object getField(@Nonnull T object, String name) {
         try {
-            Field field = object.getClass().getDeclaredField(name);
+            Field field = object.getClass()
+                .getDeclaredField(name);
             field.setAccessible(true);
             return field.get(object);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            throw new RuntimeException("could not read field '" + name + "' on class " + object.getClass().getCanonicalName(), e);
+            throw new RuntimeException(
+                "could not read field '" + name
+                    + "' on class "
+                    + object.getClass()
+                        .getCanonicalName(),
+                e);
         }
     }
 
@@ -132,12 +139,13 @@ public class ForeignItems {
         static {
             try {
                 var lookup = MethodHandles.lookup();
-    
+
                 var getHeatOfStack = ItemCoolantCell.class.getDeclaredMethod("getHeatOfStack", ItemStack.class);
                 getHeatOfStack.setAccessible(true);
                 GET_HEAT_OF_STACK = lookup.unreflect(getHeatOfStack);
 
-                var setHeatForStack = ItemCoolantCell.class.getDeclaredMethod("setHeatForStack", ItemStack.class, int.class);
+                var setHeatForStack = ItemCoolantCell.class
+                    .getDeclaredMethod("setHeatForStack", ItemStack.class, int.class);
                 setHeatForStack.setAccessible(true);
                 SET_HEAT_FOR_STACK = lookup.unreflect(setHeatForStack);
             } catch (NoSuchMethodException | IllegalAccessException e) {
@@ -146,15 +154,15 @@ public class ForeignItems {
         }
 
         public GTCoolantCellAdapter(ItemCoolantCellIC item) {
-            super(item, (int)getField(ItemCoolantCell.class, item, "heatStorage"), false);
+            super(item, (int) getField(ItemCoolantCell.class, item, "heatStorage"), false);
         }
 
         @Override
         public int addHeat(@Nonnull ItemStack itemStack, int heat) {
             int consumed = HeatUtils.getConsumableHeat(this.maxHeat, getStoredHeat(itemStack), heat);
-    
+
             setStoredHeat(itemStack, getStoredHeat(itemStack) + consumed);
-    
+
             return heat - consumed;
         }
 
@@ -169,7 +177,7 @@ public class ForeignItems {
         @Override
         public int getStoredHeat(@Nonnull ItemStack itemStack) {
             try {
-                return (int)GET_HEAT_OF_STACK.invoke(itemStack);
+                return (int) GET_HEAT_OF_STACK.invoke(itemStack);
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
@@ -183,7 +191,7 @@ public class ForeignItems {
         static {
             try {
                 var lookup = MethodHandles.lookup();
-    
+
                 var mProduct = ItemBreederCell.class.getDeclaredField("mProduct");
                 mProduct.setAccessible(true);
                 PRODUCT = lookup.unreflectGetter(mProduct);
@@ -193,7 +201,8 @@ public class ForeignItems {
         }
 
         public GTBreederCellAdapter(ItemBreederCell item) {
-            super(item,
+            super(
+                item,
                 (int) getField(item, "mHeatBonusStep"),
                 (int) getField(item, "mHeatBonusMultiplier"),
                 item.getMaxDamage());
@@ -202,7 +211,7 @@ public class ForeignItems {
         @Override
         public ItemStack getProduct(@Nonnull ItemStack itemStack) {
             try {
-                return (ItemStack)PRODUCT.invoke((ItemBreederCell)itemStack.getItem());
+                return (ItemStack) PRODUCT.invoke((ItemBreederCell) itemStack.getItem());
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
@@ -223,7 +232,8 @@ public class ForeignItems {
         }
 
         @Override
-        public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x, int y) {
+        public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
+            int y) {
             return new FuelRodAdapter(reactor, x, y, itemStack, this);
         }
 
@@ -293,8 +303,9 @@ public class ForeignItems {
 
         @Override
         public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
-                int y) {
+            int y) {
             return new FuelRodAdapter(reactor, x, y, itemStack, this) {
+
                 @Override
                 protected double getHeatMultiplier() {
                     return 1.0;

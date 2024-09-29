@@ -52,7 +52,7 @@ public class FuelRodAdapter implements IComponentAdapter {
 
     protected double getHeatMultiplier() {
         double mult = Config.ROD_HU_MULTIPLIER;
-        
+
         if (fuelRod.isMox(itemStack) && reactor.isFluid() && reactor.getHeatRatio() >= 0.5) {
             mult *= fuelRod.getMoxHeatCoefficient(itemStack);
         }
@@ -72,7 +72,11 @@ public class FuelRodAdapter implements IComponentAdapter {
         }
 
         int pulses = this.getPulseCount();
-        int heat = (int) (fuelRod.getHeatMult(itemStack) * fuelRod.getRodCount(itemStack) * getHeatMultiplier() * pulses * (pulses + 1) / 2);
+        int heat = (int) (fuelRod.getHeatMult(itemStack) * fuelRod.getRodCount(itemStack)
+            * getHeatMultiplier()
+            * pulses
+            * (pulses + 1)
+            / 2);
 
         var heatableNeighbours = this.getHeatableNeighbours();
 
@@ -85,7 +89,8 @@ public class FuelRodAdapter implements IComponentAdapter {
                 int heatToTransfer = heat / remainingNeighbours;
                 heat -= heatToTransfer;
 
-                int rejected = heatableNeighbours.get(i).addHeat(heatToTransfer);
+                int rejected = heatableNeighbours.get(i)
+                    .addHeat(heatToTransfer);
 
                 heat += rejected;
             }

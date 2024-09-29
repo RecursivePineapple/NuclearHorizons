@@ -26,21 +26,22 @@ public class SimulationComponentResult {
     // spotless:on
 
     public static class CustomResult {
+
         public String i18n;
-        
+
         // MUTUALLY EXCLUSIVE!
         public Double double_value;
         public Long long_value;
         public String string_value;
 
         public void add(double d) {
-            if(double_value == null) double_value = 0d;
+            if (double_value == null) double_value = 0d;
 
             double_value += d;
         }
 
         public void add(long l) {
-            if(long_value == null) long_value = 0l;
+            if (long_value == null) long_value = 0l;
 
             long_value += l;
         }

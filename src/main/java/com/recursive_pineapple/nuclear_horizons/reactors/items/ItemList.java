@@ -1,6 +1,5 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicFuelRodItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatAbsorberItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatExchangerItem;
@@ -8,8 +7,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVe
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicReactorPlatingItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.DebugHeatAbsorber;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemList {
 

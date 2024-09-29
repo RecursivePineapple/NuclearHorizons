@@ -3,14 +3,14 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items.foreign;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class ForeignFuelRodItem implements IBasicFuelRod, IComponentAdapterFactory {
 
@@ -21,12 +21,12 @@ public class ForeignFuelRodItem implements IBasicFuelRod, IComponentAdapterFacto
     protected final int rodCount;
     protected final boolean isMox;
     protected final int maxHealth;
-    
+
     @Nullable
     protected ItemStack product;
 
     public ForeignFuelRodItem(@Nonnull Item item, double energyMult, double heatMult, int rodCount, boolean isMox,
-            int maxHealth) {
+        int maxHealth) {
         this.item = item;
         this.energyMult = energyMult;
         this.heatMult = heatMult;
@@ -46,7 +46,7 @@ public class ForeignFuelRodItem implements IBasicFuelRod, IComponentAdapterFacto
 
     @Override
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
-            int y) {
+        int y) {
         return new FuelRodAdapter(reactor, x, y, itemStack, this);
     }
 

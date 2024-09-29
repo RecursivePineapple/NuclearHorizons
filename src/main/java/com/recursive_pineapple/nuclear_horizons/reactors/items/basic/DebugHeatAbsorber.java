@@ -5,6 +5,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
@@ -14,13 +19,9 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.Hea
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatContainer;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class DebugHeatAbsorber extends Item implements IHeatContainer, IComponentAdapterFactory {
-    
+
     private final String name;
 
     public DebugHeatAbsorber(String name, String textureName) {
@@ -44,6 +45,7 @@ public class DebugHeatAbsorber extends Item implements IHeatContainer, IComponen
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
         int y) {
         return new HeatAbsorberAdapter(reactor, x, y, itemStack, this) {
+
             @Override
             public void onEnergyTick() {
                 super.onEnergyTick();

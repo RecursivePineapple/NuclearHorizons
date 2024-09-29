@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 
 public interface IBreederRod {
+
     public ItemStack getProduct(@Nonnull ItemStack itemStack);
 
     public int getMaxNeutrons(@Nonnull ItemStack itemStack);

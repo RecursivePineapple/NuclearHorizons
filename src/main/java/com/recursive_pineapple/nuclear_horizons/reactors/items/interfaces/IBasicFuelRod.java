@@ -3,9 +3,9 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.recursive_pineapple.nuclear_horizons.Config;
-
 import net.minecraft.item.ItemStack;
+
+import com.recursive_pineapple.nuclear_horizons.Config;
 
 public interface IBasicFuelRod {
 

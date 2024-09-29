@@ -64,7 +64,7 @@ public class HeatMoverAdapter implements IComponentAdapter {
 
     @Override
     public void onSimulationFinished(SimulationResult result, int componentIndex) {
-        
+
     }
 
     @Override

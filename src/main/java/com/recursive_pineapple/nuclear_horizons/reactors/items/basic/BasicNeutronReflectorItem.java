@@ -26,7 +26,7 @@ public class BasicNeutronReflectorItem extends Item implements INeutronReflector
 
     private final String name;
     private final Optional<Integer> maxHealth;
-    
+
     @Nullable
     private ItemStack product;
 

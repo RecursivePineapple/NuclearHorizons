@@ -5,17 +5,17 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.NeutronReflectorAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.INeutronReflector;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 public class ForeignNeutronReflectorItem implements INeutronReflector, IComponentAdapterFactory {
-    
+
     @Nonnull
     private final Item item;
 
@@ -51,7 +51,7 @@ public class ForeignNeutronReflectorItem implements INeutronReflector, IComponen
 
     @Override
     public int getRemainingHealth(@Nonnull ItemStack itemStack) {
-        if(this.maxHealth.isPresent()) {
+        if (this.maxHealth.isPresent()) {
             return this.maxHealth.get() - itemStack.getItemDamage();
         } else {
             return 1;

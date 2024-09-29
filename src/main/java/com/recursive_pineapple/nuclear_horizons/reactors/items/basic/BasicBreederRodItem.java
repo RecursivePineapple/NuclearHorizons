@@ -6,6 +6,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
@@ -18,10 +23,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBreederRod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BasicBreederRodItem extends Item implements IBreederRod, IComponentAdapterFactory {
 
@@ -61,7 +62,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        return 1.0 - ((double)(stack.getItemDamage())) / ((double)maxNeutrons);
+        return 1.0 - ((double) (stack.getItemDamage())) / ((double) maxNeutrons);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
 
     @Override
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
-            int y) {
+        int y) {
         return new BreederRodAdapter(reactor, x, y, itemStack, this);
     }
 
@@ -123,7 +124,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             var product = this.product;
-            
+
             if (product != null) {
                 desc.add(I18n.format("nh_tooltip.breeder.produces", product.stackSize, product.getDisplayName()));
             }

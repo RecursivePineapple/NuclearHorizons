@@ -3,6 +3,9 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items.foreign;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
@@ -10,11 +13,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.Hea
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatContainer;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 public class ForeignHeatAbsorberItem implements IHeatContainer, IComponentAdapterFactory {
-    
+
     @Nonnull
     protected final Item item;
     protected final int maxHeat;
@@ -22,7 +22,7 @@ public class ForeignHeatAbsorberItem implements IHeatContainer, IComponentAdapte
 
     @Nullable
     protected ItemStack product;
-    
+
     public ForeignHeatAbsorberItem(@Nonnull Item item, int maxHeat, boolean consumable) {
         this.item = item;
         this.maxHeat = maxHeat;

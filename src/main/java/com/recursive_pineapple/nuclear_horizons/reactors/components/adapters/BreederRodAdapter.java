@@ -1,11 +1,11 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.components.adapters;
 
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.InventoryDirection;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBreederRod;
-
-import net.minecraft.item.ItemStack;
 
 public class BreederRodAdapter implements IComponentAdapter {
 
@@ -39,7 +39,7 @@ public class BreederRodAdapter implements IComponentAdapter {
 
     @Override
     public void onHeatTick() {
-        if(!reactor.isActive()) {
+        if (!reactor.isActive()) {
             return;
         }
 
@@ -60,7 +60,8 @@ public class BreederRodAdapter implements IComponentAdapter {
             }
         }
 
-        int heatMultiplier = 1 + reactor.getHullHeat() / breederRod.getReactorHeatDivisor(itemStack) * breederRod.getHeatMultiplier(itemStack);
+        int heatMultiplier = 1 + reactor.getHullHeat() / breederRod.getReactorHeatDivisor(itemStack)
+            * breederRod.getHeatMultiplier(itemStack);
 
         int storedNeutrons = breederRod.getStoredNeutrons(itemStack);
 
