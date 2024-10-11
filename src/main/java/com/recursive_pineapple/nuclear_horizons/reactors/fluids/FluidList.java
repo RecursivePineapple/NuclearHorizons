@@ -62,6 +62,9 @@ public class FluidList {
     public static void registerCoolants() {
         CoolantRegistry.registerCoolant(COOLANT, HOT_COOLANT, 1);
 
+        CoolantRegistry
+            .registerCoolant(FluidRegistry.getFluid("ic2coolant"), FluidRegistry.getFluid("ic2hotcoolant"), 1);
+
         // CoolantRegistry.registerCoolant(Materials.Lead.mStandardMoltenFluid, HOT_SUPER_COOLANT, 10);
     }
 }
