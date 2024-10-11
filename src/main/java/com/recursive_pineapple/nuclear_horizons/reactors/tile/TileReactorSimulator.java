@@ -225,8 +225,8 @@ public class TileReactorSimulator extends TileEntity implements ITileWithModular
                         .setPos(28, -28))
                 .addTabButton(
                     new TabButton(2)
-                        .setBackground(false, ModularUITextures.VANILLA_TAB_TOP_END.getSubArea(0, 0, 1f, 0.5f))
-                        .setBackground(true, ModularUITextures.VANILLA_TAB_TOP_END.getSubArea(0, 0.5f, 1f, 1f))
+                        .setBackground(false, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f))
+                        .setBackground(true, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f))
                         .setPos(56, -28))
                 .addPage(gridPage(buildContext.getPlayer()))
                 .addPage(resultsPage())

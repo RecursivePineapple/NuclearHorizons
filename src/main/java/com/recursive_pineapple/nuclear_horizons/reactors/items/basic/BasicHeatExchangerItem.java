@@ -6,73 +6,25 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import org.lwjgl.input.Keyboard;
-
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
-import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatMoverAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatMover;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+public class BasicHeatExchangerItem extends ReactorItem implements IHeatMover {
 
-public class BasicHeatExchangerItem extends Item implements IHeatMover, IComponentAdapterFactory {
-
-    private final String name;
     private final int maxHeatFromReactor;
     private final int maxHeatFromNeighbour;
-    private final int maxHeat;
 
     public BasicHeatExchangerItem(String name, String textureName, int maxHeatFromReactor, int maxHeatFromNeighbour,
         int maxHeat) {
-        setUnlocalizedName(name);
-        setTextureName(NuclearHorizons.MODID + ":" + textureName);
-        setMaxDamage(maxHeat);
+        super(name, textureName, "heat", maxHeat);
 
-        this.name = name;
         this.maxHeatFromReactor = maxHeatFromReactor;
         this.maxHeatFromNeighbour = maxHeatFromNeighbour;
-        this.maxHeat = maxHeat;
-    }
-
-    public void register() {
-        GameRegistry.registerItem(this, name);
-        ComponentRegistry.registerAdapter(this, this);
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return HeatUtils.getNBTInt(stack, "heat", 0);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        HeatUtils.setNBTInt(stack, "heat", damage);
-    }
-
-    @Override
-    public int getStoredHeat(@Nonnull ItemStack itemStack) {
-        return itemStack.getItemDamage();
-    }
-
-    @Override
-    public int addHeat(@Nonnull ItemStack itemStack, int heat) {
-        int consumed = HeatUtils.getConsumableHeat(this.maxHeat, this.getStoredHeat(itemStack), heat);
-
-        itemStack.setItemDamage(itemStack.getItemDamage() + consumed);
-
-        return heat - consumed;
-    }
-
-    @Override
-    public int getMaxHeat(@Nonnull ItemStack itemStack) {
-        return this.maxHeat;
     }
 
     @Override
@@ -100,37 +52,26 @@ public class BasicHeatExchangerItem extends Item implements IHeatMover, ICompone
     }
 
     @Override
-    public boolean canAdaptItem(@Nonnull ItemStack itemStack) {
-        return itemStack.getItem() == this;
-    }
-
-    @Override
     public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
         int y) {
         return new HeatMoverAdapter(reactor, x, y, itemStack, this);
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc,
-        boolean advancedItemTooltips) {
-        super.addInformation(itemStack, player, desc, advancedItemTooltips);
+    public void addReactorItemInfo(ItemStack itemStack, EntityPlayer player, List<String> chunks) {
+        chunks.add(I18n.format("nh_tooltip.prelude"));
 
-        if (this.maxHeat > 0) {
-            desc.add(I18n.format("nh_tooltip.durability", this.getStoredHeat(itemStack), this.maxHeat));
+        if (this.maxHeatFromReactor > 0) {
+            chunks.add(I18n.format("nh_tooltip.mover.reactor_xfer", this.maxHeatFromReactor));
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            desc.add(I18n.format("nh_tooltip.prelude"));
-
-            if (this.maxHeatFromReactor > 0) {
-                desc.add(I18n.format("nh_tooltip.mover.reactor_xfer", this.maxHeatFromReactor));
-            }
-
-            if (this.maxHeatFromNeighbour > 0) {
-                desc.add(I18n.format("nh_tooltip.exchanger.comp_xfer", this.maxHeatFromNeighbour));
-            }
-        } else {
-            desc.add(I18n.format("nh_tooltip.more_info"));
+        if (this.maxHeatFromNeighbour > 0) {
+            chunks.add(I18n.format("nh_tooltip.exchanger.comp_xfer", this.maxHeatFromNeighbour));
         }
+    }
+
+    @Override
+    protected String getDurabilityTooltip(ItemStack itemStack) {
+        return I18n.format("nh_tooltip.stored_heat", itemStack.getItemDamage(), itemStack.getMaxDamage());
     }
 }

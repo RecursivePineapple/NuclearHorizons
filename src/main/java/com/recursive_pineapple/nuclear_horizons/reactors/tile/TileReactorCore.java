@@ -149,14 +149,14 @@ public class TileReactorCore extends TileEntity
                     .addChild(new Row().setAlignment(MainAxisAlignment.END).widgets(
                             TextWidget
                                 .dynamicString(() -> I18n.format("nh_gui.reactor.stored_hu", this.storedHeat))
-                                .setSize(50, 16),
+                                .setSize(45, 16),
                             TextWidget
                                 .dynamicString(() -> (
                                     isFluid ?
                                         I18n.format("nh_gui.reactor.hu_output", this.addedHeat) :
                                         I18n.format("nh_gui.reactor.eu_output", this.addedEU / 20)
                                 ))
-                                .setSize(50, 16),
+                                .setSize(65, 16),
                             padding(7 + 16, 16)
                     ))
             )
