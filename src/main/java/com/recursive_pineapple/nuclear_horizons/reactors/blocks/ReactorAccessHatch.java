@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +11,10 @@ import net.minecraft.world.World;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileAccessHatch;
 
-public class ReactorAccessHatch extends BlockContainer {
+import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+
+public class ReactorAccessHatch extends BlockContainer implements IDebugableBlock {
 
     public ReactorAccessHatch() {
         super(Material.rock);
@@ -37,6 +42,16 @@ public class ReactorAccessHatch extends BlockContainer {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        if (aPlayer.getEntityWorld()
+            .getTileEntity(aX, aY, aZ) instanceof IDebugableTileEntity te) {
+            return te.getDebugInfo(aPlayer, aLogLevel);
+        } else {
+            return new ArrayList<>();
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +16,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 
-public class TileReactorChamber extends TileEntity implements IReactorBlock, IInventory, IEnergyConnected {
+public class TileReactorChamber extends TileEntity
+    implements IReactorBlock, IInventory, IEnergyConnected, IDebugableTileEntity {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
 
@@ -224,5 +228,18 @@ public class TileReactorChamber extends TileEntity implements IReactorBlock, IIn
         } else {
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
+        ArrayList<String> info = new ArrayList<>();
+
+        var reactor = getReactor();
+
+        if (reactor != null) {
+            info.addAll(reactor.getDebugInfo(aPlayer, aLogLevel));
+        }
+
+        return info;
     }
 }

@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -18,7 +20,10 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorChamber
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
-public class ReactorChamber extends BlockContainer {
+import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+
+public class ReactorChamber extends BlockContainer implements IDebugableBlock {
 
     private IIcon iconTop, iconSide;
 
@@ -115,4 +120,13 @@ public class ReactorChamber extends BlockContainer {
         return reactorCount;
     }
 
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        if (aPlayer.getEntityWorld()
+            .getTileEntity(aX, aY, aZ) instanceof IDebugableTileEntity te) {
+            return te.getDebugInfo(aPlayer, aLogLevel);
+        } else {
+            return new ArrayList<>();
+        }
+    }
 }

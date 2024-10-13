@@ -3,6 +3,7 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicFuelRodItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatAbsorberItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatExchangerItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentCoolantItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicReactorPlatingItem;
@@ -96,6 +97,28 @@ public class ItemList {
         20,
         1000);
 
+    public static final BasicHeatVentCoolantItem COOLANT_HEAT_EXCHANGER_1 = new BasicHeatVentCoolantItem(
+        "reactorVentCoolant1",
+        "reactorVentCoolant1",
+        40,
+        0,
+        30,
+        750);
+    public static final BasicHeatVentCoolantItem COOLANT_HEAT_EXCHANGER_2 = new BasicHeatVentCoolantItem(
+        "reactorVentCoolant2",
+        "reactorVentCoolant2",
+        120,
+        0,
+        90,
+        2250);
+    public static final BasicHeatVentCoolantItem COOLANT_HEAT_EXCHANGER_3 = new BasicHeatVentCoolantItem(
+        "reactorVentCoolant3",
+        "reactorVentCoolant3",
+        360,
+        0,
+        270,
+        6750);
+
     public static final BasicHeatExchangerItem BASIC_HEAT_EXCHANGER = new BasicHeatExchangerItem(
         "heatExchanger",
         "reactorHeatSwitch",
@@ -166,6 +189,11 @@ public class ItemList {
         "reactorPlatingHeat",
         0.99,
         1700);
+    public static final BasicReactorPlatingItem REACTOR_PLATING_HEAT_2 = new BasicReactorPlatingItem(
+        "reactorPlatingHeat2",
+        "reactorPlatingHeat2",
+        0.95,
+        6800);
     public static final BasicReactorPlatingItem REACTOR_PLATING_EXPLOSIVE = new BasicReactorPlatingItem(
         "reactorPlatingExplosive",
         "reactorPlatingExplosive",
@@ -175,6 +203,13 @@ public class ItemList {
     public static final DebugHeatAbsorber DEBUG_HEAT_ABSORBER = new DebugHeatAbsorber(
         "debugHeatAbsorber",
         "debugHeatAbsorber");
+    public static final BasicReactorPlatingItem REACTOR_PLATING_HEAT_DEBUG = new BasicReactorPlatingItem(
+        "reactorPlatingHeatDebug",
+        "reactorPlatingHeatDebug",
+        0.0,
+        2_000_000_000);
+
+    public static final MetaCellItem CELLS = new MetaCellItem();
 
     public static void registerItems() {
         URANIUM_1X_ROD.register();
@@ -190,6 +225,10 @@ public class ItemList {
         REACTOR_HEAT_VENT.register();
         COMPONENT_HEAT_VENT.register();
         OVERCLOCKED_HEAT_VENT.register();
+
+        COOLANT_HEAT_EXCHANGER_1.register();
+        COOLANT_HEAT_EXCHANGER_2.register();
+        COOLANT_HEAT_EXCHANGER_3.register();
 
         BASIC_HEAT_EXCHANGER.register();
         ADVANCED_HEAT_EXCHANGER.register();
@@ -207,8 +246,12 @@ public class ItemList {
 
         REACTOR_PLATING.register();
         REACTOR_PLATING_HEAT.register();
+        REACTOR_PLATING_HEAT_2.register();
         REACTOR_PLATING_EXPLOSIVE.register();
 
         DEBUG_HEAT_ABSORBER.register();
+        REACTOR_PLATING_HEAT_DEBUG.register();
+
+        CELLS.register();
     }
 }

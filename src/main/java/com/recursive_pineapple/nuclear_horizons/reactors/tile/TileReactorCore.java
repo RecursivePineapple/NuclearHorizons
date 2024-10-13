@@ -56,13 +56,15 @@ import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GTUtility;
 
 public class TileReactorCore extends TileEntity
-    implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected {
+    implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected, IDebugableTileEntity {
 
     public static final int ROW_COUNT = 6;
     public static final int COL_COUNT = 9;
@@ -708,15 +710,26 @@ public class TileReactorCore extends TileEntity
             reactorBlock.onEnergyTick(this);
         }
 
+        if (isFluid) {
+            addedEU = 0;
+            storedEU = 0;
+            maxStoredEU = 0;
+            voltage = 32;
+        }
+
+        if (this.addedEU > 0) {
+            int perTick = this.addedEU / 20;
+
+            int voltageTier = (int) (Math.ceil(Math.log(perTick / 8) / Math.log(4)));
+
+            this.voltage = (int) (Math.pow(4, voltageTier) * 8);
+
+            this.maxStoredEU = voltage * 20 * 30;
+        }
+
         if (this.storedEU > this.maxStoredEU) {
             this.storedEU = this.maxStoredEU;
         }
-
-        int perTick = this.addedEU / 20;
-
-        int voltageTier = (int) (Math.ceil(Math.log(perTick / 8) / Math.log(4)));
-
-        this.voltage = (int) (Math.pow(4, voltageTier) * 8);
     }
 
     private static final DamageSource RADIATION_DAMAGE = new DamageSource("nh_radiation");
@@ -815,6 +828,55 @@ public class TileReactorCore extends TileEntity
                 true,
                 true);
         }
+    }
+
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
+        ArrayList<String> info = new ArrayList<>();
+
+        info.add(isActive ? "§aActive§r" : "§cInactive§r");
+        info.add(isFluid ? "Fluid: §atrue§r" : "Fluid: §cfalse§r");
+
+        String heatColour = "§a";
+
+        if (heatRatio >= 0.4) heatColour = "§e";
+        if (heatRatio >= 0.6) heatColour = "§6";
+        if (heatRatio >= 0.8) heatColour = "§c";
+
+        info.add(String.format("§rStored Heat: %s%,d HU§r / §e%,d HU§r", heatColour, storedHeat, getMaxHullHeat()));
+        info.add(String.format("§rHeat Generation Rate: §e%,d HU/s§r", addedHeat));
+        if (coolantTank.getFluidAmount() > 0 && coolantTank.getFluid() != null
+            && coolantTank.getFluid()
+                .getFluid() != null) {
+            info.add(
+                String.format(
+                    "§rStored Coolant: §a%,d L§r / §e%,d L§r §7%s§r",
+                    coolantTank.getFluidAmount(),
+                    coolantTank.getCapacity(),
+                    coolantTank.getFluid()
+                        .getLocalizedName()));
+        } else {
+            info.add(String.format("Stored Coolant: §eEmpty§r"));
+        }
+        if (hotCoolantTank.getFluidAmount() > 0 && hotCoolantTank.getFluid() != null
+            && hotCoolantTank.getFluid()
+                .getFluid() != null) {
+            info.add(
+                String.format(
+                    "§rStored Hot Coolant: §a%,d L§r / §e%,d L§r §7%s§r",
+                    hotCoolantTank.getFluidAmount(),
+                    hotCoolantTank.getCapacity(),
+                    hotCoolantTank.getFluid()
+                        .getLocalizedName()));
+        } else {
+            info.add(String.format("Stored Hot Coolant: §eEmpty§r"));
+        }
+        info.add(String.format("§rStored Energy: §a%,d§r EU / §e%,d§r EU", storedEU, maxStoredEU));
+        info.add(String.format("§rEnergy Generation Rate: §e%,d§r EU/t", addedEU / 20));
+        info.add(
+            String.format("§rMax Out: §c%,d EU/t (%s)§r at §c1§r A", voltage, GTValues.VN[GTUtility.getTier(voltage)]));
+
+        return info;
     }
 
     @Override
@@ -993,8 +1055,10 @@ public class TileReactorCore extends TileEntity
 
     @Override
     public void addEU(double eu) {
-        this.storedEU += eu * Config.REACTOR_EU_MULTIPLIER;
-        this.addedEU += eu * Config.REACTOR_EU_MULTIPLIER;
+        if (!isFluid) {
+            this.storedEU += eu * Config.REACTOR_EU_MULTIPLIER;
+            this.addedEU += eu * Config.REACTOR_EU_MULTIPLIER;
+        }
     }
 
     @Override

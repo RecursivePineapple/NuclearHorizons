@@ -11,12 +11,12 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.Simulati
 
 public class HeatMoverAdapter implements IComponentAdapter {
 
-    private final IReactorGrid reactor;
-    private final int x, y;
-    private final ItemStack itemStack;
-    private final IHeatMover heatMover;
+    protected final IReactorGrid reactor;
+    protected final int x, y;
+    protected final ItemStack itemStack;
+    protected final IHeatMover heatMover;
 
-    private SimulationComponentResult simResult;
+    protected SimulationComponentResult simResult;
 
     public HeatMoverAdapter(IReactorGrid reactor, int x, int y, ItemStack itemStack, IHeatMover heatMover) {
         this.reactor = reactor;
@@ -67,16 +67,32 @@ public class HeatMoverAdapter implements IComponentAdapter {
 
     }
 
+    protected int getTransferFromReactor() {
+        return this.heatMover.getTransferFromReactor(itemStack, reactor);
+    }
+
+    protected int getTransferToAir() {
+        return this.heatMover.getTransferToAir(itemStack, reactor);
+    }
+
+    protected int getTransferNeighbourToAir(IComponentAdapter neighbour) {
+        return this.heatMover.getTransferNeighbourToAir(itemStack, reactor, neighbour);
+    }
+
+    protected int getTransferFromNeighbour(IComponentAdapter neighbour) {
+        return this.heatMover.getTransferFromNeighbour(itemStack, reactor, neighbour);
+    }
+
     @Override
     public void onHeatTick() {
-        int fromReactor = this.heatMover.getTransferFromReactor(itemStack, reactor);
+        int fromReactor = getTransferFromReactor();
 
         if (fromReactor != 0) {
             this.reactor.addHullHeat(-fromReactor);
             this.addHeat(fromReactor);
         }
 
-        int toAir = this.heatMover.getTransferToAir(itemStack, reactor);
+        int toAir = getTransferToAir();
 
         if (toAir != 0) {
             this.addHeat(-toAir);
@@ -98,7 +114,7 @@ public class HeatMoverAdapter implements IComponentAdapter {
             var neighbour = reactor.getComponent(x2, y2);
 
             if (neighbour != null && neighbour.containsHeat()) {
-                int fromNeighbourToAir = this.heatMover.getTransferNeighbourToAir(itemStack, reactor, neighbour);
+                int fromNeighbourToAir = getTransferNeighbourToAir(neighbour);
 
                 if (fromNeighbourToAir != 0) {
                     neighbour.addHeat(-fromNeighbourToAir);
@@ -109,7 +125,7 @@ public class HeatMoverAdapter implements IComponentAdapter {
                     }
                 }
 
-                int fromNeighbour = this.heatMover.getTransferFromNeighbour(itemStack, reactor, neighbour);
+                int fromNeighbour = getTransferFromNeighbour(neighbour);
 
                 if (fromNeighbour != 0) {
                     neighbour.addHeat(-fromNeighbour);

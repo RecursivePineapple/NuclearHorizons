@@ -3,10 +3,6 @@ package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 import static cpw.mods.fml.common.registry.GameRegistry.registerBlock;
 import static cpw.mods.fml.common.registry.GameRegistry.registerTileEntity;
 
-import net.minecraft.block.material.Material;
-
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileAccessHatch;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileFluidPort;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorChamber;
@@ -25,8 +21,6 @@ public class BlockList {
     public static final String REACTOR_REDSTONE_PORT_NAME = "reactor_redstone_port";
     public static final String REACTOR_THERMAL_SENSOR_NAME = "reactor_thermal_sensor";
     public static final String REACTOR_SIMULATOR_NAME = "reactor_simulator";
-    public static final String COOLANT_BLOCK_NAME = "nh_coolant";
-    public static final String HOT_COOLANT_BLOCK_NAME = "nh_hot_coolant";
 
     public static ReactorCore REACTOR_CORE;
     public static ReactorChamber REACTOR_CHAMBER;
@@ -37,9 +31,6 @@ public class BlockList {
     public static ReactorThermalSensor REACTOR_THERMAL_SENSOR;
     public static ReactorSimulator REACTOR_SIMULATOR;
 
-    public static FluidBlock COOLANT_BLOCK;
-    public static FluidBlock HOT_COOLANT_BLOCK;
-
     public static void registerBlocks() {
         REACTOR_CORE = new ReactorCore();
         REACTOR_CHAMBER = new ReactorChamber();
@@ -49,21 +40,6 @@ public class BlockList {
         REACTOR_REDSTONE_PORT = new ReactorRedstonePort();
         REACTOR_THERMAL_SENSOR = new ReactorThermalSensor();
         REACTOR_SIMULATOR = new ReactorSimulator();
-
-        COOLANT_BLOCK = new FluidBlock(
-            FluidList.COOLANT,
-            Material.water,
-            NuclearHorizons.MODID + ":coolant_still",
-            NuclearHorizons.MODID + ":coolant_flow");
-        COOLANT_BLOCK.setBlockName(COOLANT_BLOCK_NAME);
-
-        HOT_COOLANT_BLOCK = new FluidBlock(
-            FluidList.HOT_COOLANT,
-            Material.water,
-            NuclearHorizons.MODID + ":hot_coolant_still",
-            NuclearHorizons.MODID + ":hot_coolant_flow");
-        HOT_COOLANT_BLOCK.setBurnsEntities(true);
-        HOT_COOLANT_BLOCK.setBlockName(HOT_COOLANT_BLOCK_NAME);
 
         registerBlock(REACTOR_CORE, REACTOR_CORE_NAME);
         registerTileEntity(TileReactorCore.class, REACTOR_CORE_NAME);
@@ -87,8 +63,5 @@ public class BlockList {
 
         registerBlock(REACTOR_SIMULATOR, REACTOR_SIMULATOR_NAME);
         registerTileEntity(TileReactorSimulator.class, REACTOR_SIMULATOR_NAME);
-
-        registerBlock(COOLANT_BLOCK, COOLANT_BLOCK_NAME);
-        registerBlock(HOT_COOLANT_BLOCK, HOT_COOLANT_BLOCK_NAME);
     }
 }

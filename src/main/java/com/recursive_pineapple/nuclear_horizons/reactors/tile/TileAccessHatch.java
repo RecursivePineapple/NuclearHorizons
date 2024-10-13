@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +15,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 
-public class TileAccessHatch extends TileEntity implements IInventory, IReactorBlock {
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+
+public class TileAccessHatch extends TileEntity implements IInventory, IReactorBlock, IDebugableTileEntity {
 
     public int reactorRelX, reactorRelY, reactorRelZ;
 
@@ -196,5 +200,26 @@ public class TileAccessHatch extends TileEntity implements IInventory, IReactorB
         } else {
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
+        ArrayList<String> info = new ArrayList<>();
+
+        var reactor = getReactor();
+
+        if (reactor == null) {
+            info.add("§cNot connected to a reactor§r");
+        } else {
+            info.add(
+                String.format(
+                    "Connected to reactor at X=§9%d§r Y=§9%d§r Z=§9%d§r",
+                    reactor.xCoord,
+                    reactor.yCoord,
+                    reactor.zCoord));
+            info.addAll(reactor.getDebugInfo(aPlayer, aLogLevel));
+        }
+
+        return info;
     }
 }

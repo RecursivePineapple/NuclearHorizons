@@ -24,9 +24,9 @@ public class CommonProxy {
 
         Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
-        FluidList.registerFluids();
-        BlockList.registerBlocks();
         ItemList.registerItems();
+        BlockList.registerBlocks();
+        FluidList.registerFluids();
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
@@ -36,12 +36,14 @@ public class CommonProxy {
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
+        FluidList.registerContainers();
         FluidList.registerCoolants();
+        SimulationItems.registerSimulationItems();
+        ForeignItems.registerForeignReactorItems();
     }
 
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
-        SimulationItems.registerSimulationItems();
-        ForeignItems.registerForeignReactorItems();
+
     }
 }

@@ -94,12 +94,10 @@ public abstract class ReactorItem extends Item implements IComponentAdapterFacto
 
         ArrayList<String> chunks = new ArrayList<>();
 
-        if (!advancedItemTooltips) {
-            if (itemStack.isItemStackDamageable()) {
-                chunks.add(getDurabilityTooltip(itemStack));
-            } else if (itemStack.getMaxDamage() == -1) {
-                chunks.add(I18n.format("nh_tooltip.undestructable"));
-            }
+        if (itemStack.isItemStackDamageable()) {
+            chunks.add(getDurabilityTooltip(itemStack));
+        } else if (itemStack.getMaxDamage() == -1) {
+            chunks.add(I18n.format("nh_tooltip.undestructable"));
         }
 
         if (hasMoreInfo(itemStack)) {

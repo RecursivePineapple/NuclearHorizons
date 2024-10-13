@@ -5,6 +5,13 @@ tile.reactor_fluid_port.name=Reactor Fluid Port
 tile.reactor_access_hatch.name=Reactor Access Hatch
 tile.reactor_redstone_port.name=Reactor Redstone Port
 tile.reactor_thermal_sensor.name=Reactor Thermal Sensor
+tile.reactor_simulator.name=Reactor Simulator
+
+tile.nh_coolant.name=Coolant
+tile.nh_hot_coolant.name=Hot Coolant
+
+tile.nh_coolant.name=Coolant
+tile.nh_hot_coolant.name=Hot Coolant
 
 gui.reactor.name=Nuclear Reactor
 
@@ -19,6 +26,9 @@ item.advancedHeatVent.name=Advanced Heat Vent
 item.reactorHeatVent.name=Reactor Heat Vent
 item.componentHeatVent.name=Component Heat Vent
 item.overclockedHeatVent.name=Overclocked Heat Vent
+item.reactorVentCoolant1.name=Copper Coolant Heat Exchanger
+item.reactorVentCoolant2.name=Tungstensteel Coolant Heat Exchanger
+item.reactorVentCoolant3.name=Naquadria Coolant Heat Exchanger
 item.heatExchanger.name=Heat Exchanger
 item.advancedHeatExchanger.name=Advanced Heat Exchanger
 item.coreHeatExchanger.name=Reactor Heat Exchanger
@@ -33,11 +43,25 @@ item.thickNeutronReflector.name=Thick Neutron Reflector
 item.iridiumNeutronReflector.name=Iridium Neutron Reflector
 item.reactorPlating.name=Reactor Plating
 item.reactorPlatingHeat.name=Heat-Capacity Reactor Plating
+item.reactorPlatingHeat2.name=Naquadah Reactor Plating
 item.reactorPlatingExplosive.name=Containment Reactor Plating
 item.debugHeatAbsorber.name=Creative Heat Absorber
+item.reactorPlatingHeatDebug.name=Creative Reactor Plating
+
+item.cell_coolant.name=Coolant Cell
+item.cell_hot_coolant.name=Hot Coolant Cell
+item.cell_pseudo_liquid_naquadah.name=Pseudo-Crystalline Naquadah Cell
+item.cell_hot_pseudo_liquid_naquadah.name=Hot Pseudo-Crystalline Naquadah Cell
+
+item.cell_coolant.tooltip=Can be used as coolant in a fluid reactor. Stores %1$,d HU per L.
+item.cell_hot_coolant.tooltip=Cool down in a large heat exchanger.
+item.cell_pseudo_liquid_naquadah.tooltip=Can be used as coolant in a fluid reactor. Stores %1$,d HU per L.
+item.cell_hot_pseudo_liquid_naquadah.tooltip=Cool down in a large heat exchanger.
 
 fluid.nh_coolant=Coolant
 fluid.nh_hot_coolant=Hot Coolant
+fluid.pseudo_liquid_naquadah=Pseudo-Crystalline Naquadah
+fluid.hot_pseudo_liquid_naquadah=Hot Pseudo-Crystalline Naquadah
 
 death.attack.nh_hot_fluid.player=%1$s was fried to crisp
 death.attack.nh_radiation.player=%1$s was irradiated to death
@@ -59,6 +83,7 @@ nh_tooltip.vent.void_adj=Dissipate up to %d HU from its neighbours.
 nh_tooltip.vent.fluid_disclaimer=Note: In a fluid reactor, each HU vented is converted to %1$,d HU (%1$,dmB) of hot coolant.
 nh_tooltip.plating_explosion=Decreases the reactor's explosion radius by %,d %% (multiplicative).
 nh_tooltip.plating_heat=Increases the reactor's maximum temperature by %,d HU.
+nh_tooltip.vent.fluid_only=Coolant heat exchangers only work in fluid reactors.
 
 nh_tooltip.results.title=Simulation Results:
 nh_tooltip.sim.results.avg_temp=Avg Temp: %s

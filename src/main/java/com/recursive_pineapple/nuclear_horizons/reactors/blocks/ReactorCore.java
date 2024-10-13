@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,7 +13,10 @@ import net.minecraft.world.World;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
 
-public class ReactorCore extends BlockContainer {
+import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+
+public class ReactorCore extends BlockContainer implements IDebugableBlock {
 
     private IIcon iconTop, iconSideInactive, iconSideActive, iconBottom;
 
@@ -66,5 +71,15 @@ public class ReactorCore extends BlockContainer {
     @Override
     public void onBlockPreDestroy(World worldIn, int x, int y, int z, int meta) {
         ((TileReactorCore) worldIn.getTileEntity(x, y, z)).dropInventory();
+    }
+
+    @Override
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        if (aPlayer.getEntityWorld()
+            .getTileEntity(aX, aY, aZ) instanceof IDebugableTileEntity te) {
+            return te.getDebugInfo(aPlayer, aLogLevel);
+        } else {
+            return new ArrayList<>();
+        }
     }
 }
