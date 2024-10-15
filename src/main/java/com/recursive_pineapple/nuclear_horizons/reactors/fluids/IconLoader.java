@@ -18,6 +18,10 @@ public class IconLoader {
     @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 0) {
+            FluidList.DISTILLED_WATER.setIcons(
+                event.map.registerIcon(NuclearHorizons.MODID + ":distilled_water_still"),
+                event.map.registerIcon(NuclearHorizons.MODID + ":distilled_water_flow"));
+
             FluidList.COOLANT.setIcons(
                 event.map.registerIcon(NuclearHorizons.MODID + ":coolant_still"),
                 event.map.registerIcon(NuclearHorizons.MODID + ":coolant_flow"));

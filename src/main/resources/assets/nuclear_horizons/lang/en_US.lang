@@ -7,6 +7,8 @@ tile.reactor_redstone_port.name=Reactor Redstone Port
 tile.reactor_thermal_sensor.name=Reactor Thermal Sensor
 tile.reactor_simulator.name=Reactor Simulator
 
+tile.distilled_water.name=Distilled Water
+
 tile.nh_coolant.name=Coolant
 tile.nh_hot_coolant.name=Hot Coolant
 
@@ -48,6 +50,7 @@ item.reactorPlatingExplosive.name=Containment Reactor Plating
 item.debugHeatAbsorber.name=Creative Heat Absorber
 item.reactorPlatingHeatDebug.name=Creative Reactor Plating
 
+item.cell_distilled_water.name=Distilled Water Cell
 item.cell_coolant.name=Coolant Cell
 item.cell_hot_coolant.name=Hot Coolant Cell
 item.cell_pseudo_liquid_naquadah.name=Pseudo-Crystalline Naquadah Cell
