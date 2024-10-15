@@ -96,9 +96,9 @@ public class TileReactorCore extends TileEntity
 
     Coolant coolantCache;
     FluidTank coolantTank = new FluidTank(10_000);
-    //change for testing distilled water->steam conversion
-    //since so much steam is produced per HU, you need a large output buffer to capture useful
-    //steam/s production
+    // change for testing distilled water->steam conversion
+    // since so much steam is produced per HU, you need a large output buffer to capture useful
+    // steam/s production
     FluidTank hotCoolantTank = new FluidTank(200_000);
 
     private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
@@ -1044,28 +1044,31 @@ public class TileReactorCore extends TileEntity
                 this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount());
 
             int consumedCoolant;
-            //BWR
-            if(this.coolantCache.cold.getName().equals("distilled_water")) {
+            // BWR
+            if (this.coolantCache.cold.getName()
+                .equals("distilled_water")) {
                 consumedCoolant = Math.min(
                     roundedHeat / (coolantCache.specificHeatCapacity),
                     Math.min(
                         this.coolantTank.getFluidAmount(),
-                        (this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount())/Config.BWR_STEAM_PER_HU_MULTIPLIER
-                    ));
+                        (this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount())
+                            / Config.BWR_STEAM_PER_HU_MULTIPLIER));
             }
-            //conventional coolants
+            // conventional coolants
             else {
                 consumedCoolant = Math.min(roundedHeat / coolantCache.specificHeatCapacity, heatableCoolant);
             }
             this.roundedHeat -= consumedCoolant * coolantCache.specificHeatCapacity;
             this.addedHeat += consumedCoolant * coolantCache.specificHeatCapacity;
 
-            //for BWRs, convert distilled water to a configured amount of steam instead of the same quantity of hot coolant
-            if(this.coolantCache.cold.getName().equals("distilled_water")) {
+            // for BWRs, convert distilled water to a configured amount of steam instead of the same quantity of hot
+            // coolant
+            if (this.coolantCache.cold.getName()
+                .equals("distilled_water")) {
                 this.coolantTank.drain(consumedCoolant, true);
-                this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, consumedCoolant * Config.BWR_STEAM_PER_HU_MULTIPLIER), true);
-            }
-            else {
+                this.hotCoolantTank
+                    .fill(new FluidStack(coolantCache.hot, consumedCoolant * Config.BWR_STEAM_PER_HU_MULTIPLIER), true);
+            } else {
                 this.coolantTank.drain(consumedCoolant, true);
                 this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, consumedCoolant), true);
             }

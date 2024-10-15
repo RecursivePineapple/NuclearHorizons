@@ -63,9 +63,7 @@ public class FluidList {
             FluidRegistry.getFluid("ic2hotcoolant"),
             Config.COOLANT_SPECIFIC_HEAT);
 
-        CoolantRegistry.registerCoolant(
-            DISTILLED_WATER,
-            FluidRegistry.getFluid("steam"), 1);
+        CoolantRegistry.registerCoolant(DISTILLED_WATER, FluidRegistry.getFluid("steam"), 1);
 
         CoolantRegistry
             .registerCoolant(PSEUDO_LIQUID_NAQUADAH, HOT_PSEUDO_LIQUID_NAQUADAH, Config.NAQ_COOLANT_SPECIFIC_HEAT);
