@@ -18,7 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MetaCellItem extends Item {
 
-    private IIcon[] icons = new IIcon[4];
+    private IIcon[] icons = new IIcon[5];
 
     public MetaCellItem() {
         setUnlocalizedName("metacell");
@@ -35,6 +35,7 @@ public class MetaCellItem extends Item {
         icons[1] = register.registerIcon(NuclearHorizons.MODID + ":cellHotCoolant");
         icons[2] = register.registerIcon(NuclearHorizons.MODID + ":cellPseudoLiquidNaquadah");
         icons[3] = register.registerIcon(NuclearHorizons.MODID + ":cellHotPseudoLiquidNaquadah");
+        icons[4] = register.registerIcon(NuclearHorizons.MODID + ":cellDistilledWater");
     }
 
     @Override
@@ -53,6 +54,7 @@ public class MetaCellItem extends Item {
             case 1 -> "item.cell_hot_coolant";
             case 2 -> "item.cell_pseudo_liquid_naquadah";
             case 3 -> "item.cell_hot_pseudo_liquid_naquadah";
+            case 4 -> "item.cell_distilled_water";
             default -> "item.invalid_cell";
         };
     }
@@ -66,6 +68,7 @@ public class MetaCellItem extends Item {
             case 1 -> I18n.format("item.cell_hot_coolant.tooltip");
             case 2 -> I18n.format("item.cell_pseudo_liquid_naquadah.tooltip", Config.NAQ_COOLANT_SPECIFIC_HEAT);
             case 3 -> I18n.format("item.cell_hot_pseudo_liquid_naquadah.tooltip");
+            case 4 -> I18n.format("item.cell_distilled_water");
             default -> "";
         });
     }
@@ -76,5 +79,6 @@ public class MetaCellItem extends Item {
         subItems.add(new ItemStack(this, 1, 1));
         subItems.add(new ItemStack(this, 1, 2));
         subItems.add(new ItemStack(this, 1, 3));
+        subItems.add(new ItemStack(this, 1, 4));
     }
 }

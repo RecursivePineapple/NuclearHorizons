@@ -15,17 +15,20 @@ import gregtech.api.registries.LHECoolantRegistry;
 
 public class FluidList {
 
+    public static final String DISTILLED_WATER_NAME = "distilled_water";
     public static final String COOLANT_NAME = "nh_coolant";
     public static final String HOT_COOLANT_NAME = "nh_hot_coolant";
     public static final String PSEUDO_LIQUID_NAQUADAH_NAME = "pseudo_liquid_naquadah";
     public static final String HOT_PSEUDO_LIQUID_NAQUADAH_NAME = "hot_pseudo_liquid_naquadah";
-
+    public static final Fluid DISTILLED_WATER = new Fluid(DISTILLED_WATER_NAME);
     public static final Fluid COOLANT = new Fluid(COOLANT_NAME);
     public static final Fluid HOT_COOLANT = new Fluid(HOT_COOLANT_NAME);
     public static final Fluid PSEUDO_LIQUID_NAQUADAH = new Fluid(PSEUDO_LIQUID_NAQUADAH_NAME);
     public static final Fluid HOT_PSEUDO_LIQUID_NAQUADAH = new Fluid(HOT_PSEUDO_LIQUID_NAQUADAH_NAME);
 
     public static void registerFluids() {
+        FluidRegistry.registerFluid(DISTILLED_WATER);
+
         FluidRegistry.registerFluid(COOLANT);
 
         HOT_COOLANT.setTemperature(273 + 200);
@@ -43,6 +46,7 @@ public class FluidList {
         registerCell(HOT_COOLANT, 1);
         registerCell(PSEUDO_LIQUID_NAQUADAH, 2);
         registerCell(HOT_PSEUDO_LIQUID_NAQUADAH, 3);
+        registerCell(DISTILLED_WATER, 4);
     }
 
     private static void registerCell(Fluid fluid, int metadata) {
@@ -58,6 +62,12 @@ public class FluidList {
             FluidRegistry.getFluid("ic2coolant"),
             FluidRegistry.getFluid("ic2hotcoolant"),
             Config.COOLANT_SPECIFIC_HEAT);
+
+        //boiling water reactor coolant registry
+        //the specific heat is irrelevant since it doesn't work like a normal coolant
+        CoolantRegistry.registerCoolant(
+            DISTILLED_WATER,
+            FluidRegistry.getFluid("steam"), 1);
 
         CoolantRegistry
             .registerCoolant(PSEUDO_LIQUID_NAQUADAH, HOT_PSEUDO_LIQUID_NAQUADAH, Config.NAQ_COOLANT_SPECIFIC_HEAT);
