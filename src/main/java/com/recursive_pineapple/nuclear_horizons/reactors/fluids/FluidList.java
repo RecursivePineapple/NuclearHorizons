@@ -63,8 +63,6 @@ public class FluidList {
             FluidRegistry.getFluid("ic2hotcoolant"),
             Config.COOLANT_SPECIFIC_HEAT);
 
-        //boiling water reactor coolant registry
-        //the specific heat is irrelevant since it doesn't work like a normal coolant
         CoolantRegistry.registerCoolant(
             DISTILLED_WATER,
             FluidRegistry.getFluid("steam"), 1);
