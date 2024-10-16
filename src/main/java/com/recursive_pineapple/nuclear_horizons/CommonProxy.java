@@ -7,6 +7,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.ForeignItems;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
 
+import com.recursive_pineapple.nuclear_horizons.recipes.Centrifuge;
+import com.recursive_pineapple.nuclear_horizons.recipes.ChemicalReactor;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -40,6 +42,10 @@ public class CommonProxy {
         FluidList.registerCoolants();
         SimulationItems.registerSimulationItems();
         ForeignItems.registerForeignReactorItems();
+
+        //register recipes
+        new ChemicalReactor().run();
+        new Centrifuge().run();
     }
 
     // register server commands in this event handler (Remove if not needed)

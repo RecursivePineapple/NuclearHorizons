@@ -1,13 +1,8 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicFuelRodItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatAbsorberItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatExchangerItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentCoolantItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicNeutronReflectorItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicReactorPlatingItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.DebugHeatAbsorber;
+import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemList {
 
@@ -19,6 +14,11 @@ public class ItemList {
         1,
         false,
         20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_URANIUM_1X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodUranium",
+        "reactorDepletedFuelRodUranium");
+
     public static final BasicFuelRodItem URANIUM_2X_ROD = new BasicFuelRodItem(
         "dualFuelRodUranium",
         "reactorUraniumDual",
@@ -213,6 +213,9 @@ public class ItemList {
 
     public static void registerItems() {
         URANIUM_1X_ROD.register();
+        DEPLETED_URANIUM_1X_ROD.register();
+        URANIUM_1X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUranium", 1));
+
         URANIUM_2X_ROD.register();
         URANIUM_4X_ROD.register();
 
