@@ -18,6 +18,7 @@ tile.nh_hot_coolant.name=Hot Coolant
 gui.reactor.name=Nuclear Reactor
 
 item.fuelRodUranium.name=Fuel Rod (Uranium)
+item.depletedFuelRodUranium.name=Depleted Fuel Rod (Uranium)
 item.dualFuelRodUranium.name=Dual Fuel Rod (Uranium)
 item.quadFuelRodUranium.name=Quad Fuel Rod (Uranium)
 item.fuelRodMOX.name=Fuel Rod (MOX)

@@ -26,7 +26,6 @@ public class BasicFuelRodItem extends ReactorItem implements IBasicFuelRod {
     public BasicFuelRodItem(String name, String textureName, double energyMult, double heatMult, int rodCount,
         boolean isMox, int maxHealth) {
         super(name, textureName, "damage", maxHealth);
-
         this.energyMult = energyMult;
         this.heatMult = heatMult;
         this.rodCount = rodCount;
