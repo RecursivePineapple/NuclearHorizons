@@ -21,5 +21,30 @@ public class Centrifuge {
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
+
+        //PUREX
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Cell_Empty.get(3))
+            .fluidInputs(
+                MaterialsNuclear.TREATED_DEPLETED_URANIUM_FUEL_SOLUTION.getFluidOrGas(24000))
+            .itemOutputs(
+                MaterialsNuclear.AQUEOUS_PLUTONIUM_SOLUTION.get(OrePrefixes.cell, 3))
+            .fluidOutputs(
+                MaterialsNuclear.KEROSENE_URANIUM_SOLUTION.getFluidOrGas(21000))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Cell_Empty.get(9))
+            .fluidInputs(
+                MaterialsNuclear.TREATED_DEPLETED_THORIUM_FUEL_SOLUTION.getFluidOrGas(28000))
+            .itemOutputs(
+                MaterialsNuclear.KEROSENE_URANIUM233_SOLUTION.get(OrePrefixes.cell, 9))
+            .fluidOutputs(
+                MaterialsNuclear.AQUEOUS_THORIUM_SOLUTION.getFluidOrGas(22000))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(centrifugeRecipes);
     }
 }

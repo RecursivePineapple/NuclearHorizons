@@ -1,7 +1,9 @@
 package com.recursive_pineapple.nuclear_horizons;
 
+import bartworks.API.WerkstoffAPI;
 import bartworks.API.WerkstoffAdderRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
+import gregtech.api.util.GTWaila;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

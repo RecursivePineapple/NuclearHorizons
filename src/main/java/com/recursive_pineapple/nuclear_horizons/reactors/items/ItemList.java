@@ -6,6 +6,45 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemList {
 
+    public static final BasicFuelRodItem THORIUM_1X_ROD = new BasicFuelRodItem(
+        "fuelRodThorium",
+        "reactorThoriumSimple",
+        2.0,
+        4.0,
+        1,
+        false,
+        20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_THORIUM_1X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodThorium",
+        "reactorDepletedFuelRodThorium");
+
+    public static final BasicFuelRodItem THORIUM_2X_ROD = new BasicFuelRodItem(
+        "fuelRodThoriumDual",
+        "reactorThoriumDual",
+        2.0,
+        4.0,
+        1,
+        false,
+        20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_THORIUM_2X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodThoriumDual",
+        "reactorDepletedFuelRodThoriumDual");
+
+    public static final BasicFuelRodItem THORIUM_4X_ROD = new BasicFuelRodItem(
+        "fuelRodThoriumQuad",
+        "reactorThoriumQuad",
+        2.0,
+        4.0,
+        1,
+        false,
+        20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_THORIUM_4X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodThoriumQuad",
+        "reactorDepletedFuelRodThoriumQuad");
+
     public static final BasicFuelRodItem URANIUM_1X_ROD = new BasicFuelRodItem(
         "fuelRodUranium",
         "reactorUraniumSimple",
@@ -27,6 +66,11 @@ public class ItemList {
         2,
         false,
         20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_URANIUM_2X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodUraniumDual",
+        "reactorDepletedFuelRodUraniumDual");
+
     public static final BasicFuelRodItem URANIUM_4X_ROD = new BasicFuelRodItem(
         "quadFuelRodUranium",
         "reactorUraniumQuad",
@@ -35,6 +79,10 @@ public class ItemList {
         4,
         false,
         20_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_URANIUM_4X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodUraniumQuad",
+        "reactorDepletedFuelRodUraniumQuad");
 
     public static final BasicFuelRodItem MOX_1X_ROD = new BasicFuelRodItem(
         "fuelRodMOX",
@@ -212,12 +260,29 @@ public class ItemList {
     public static final MetaCellItem CELLS = new MetaCellItem();
 
     public static void registerItems() {
+        THORIUM_1X_ROD.register();
+        DEPLETED_THORIUM_1X_ROD.register();
+        THORIUM_1X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThorium", 1));
+
+        THORIUM_2X_ROD.register();
+        DEPLETED_THORIUM_2X_ROD.register();
+        THORIUM_2X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThoriumDual", 1));
+
+        THORIUM_4X_ROD.register();
+        DEPLETED_THORIUM_4X_ROD.register();
+        THORIUM_4X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThoriumQuad", 1));
+
         URANIUM_1X_ROD.register();
         DEPLETED_URANIUM_1X_ROD.register();
         URANIUM_1X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUranium", 1));
 
         URANIUM_2X_ROD.register();
+        DEPLETED_URANIUM_2X_ROD.register();
+        URANIUM_2X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUraniumDual", 1));
+
         URANIUM_4X_ROD.register();
+        DEPLETED_URANIUM_4X_ROD.register();
+        URANIUM_4X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUraniumQuad", 1));
 
         MOX_1X_ROD.register();
         MOX_2X_ROD.register();

@@ -32,10 +32,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 1,
-        TextureSet.SET_DULL,
-
-        new Pair<>(NATURAL_URANIUM, 1),
-        new Pair<>(Materials.Fluorine, 4));
+        TextureSet.SET_DULL);
 
     public static final Werkstoff NATURAL_URANIUM_HEXAFLUORIDE = new Werkstoff(
         new short[] { 232, 124, 219 },
@@ -46,9 +43,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         offsetID + 2,
-        TextureSet.SET_FLUID,
-        new Pair<>(NATURAL_URANIUM_TETRAFLUORIDE, 1),
-        new Pair<>(Materials.Fluorine, 2));
+        TextureSet.SET_FLUID);
 
     public static final Werkstoff DEPLETED_URANIUM_HEXAFLUORIDE = new Werkstoff(
         new short[] { 232, 124, 219 },
@@ -59,9 +54,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         offsetID + 3,
-        TextureSet.SET_FLUID,
-        new Pair<>(NATURAL_URANIUM_TETRAFLUORIDE, 1),
-        new Pair<>(Materials.Fluorine, 2));
+        TextureSet.SET_FLUID);
 
     public static final Werkstoff ENRICHED_URANIUM_HEXAFLUORIDE = new Werkstoff(
         new short[] { 232, 124, 219 },
@@ -72,9 +65,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         offsetID + 4,
-        TextureSet.SET_FLUID,
-        new Pair<>(NATURAL_URANIUM_TETRAFLUORIDE, 1),
-        new Pair<>(Materials.Fluorine, 2));
+        TextureSet.SET_FLUID);
 
     public static final Werkstoff URANIUM_238_DIOXIDE = new Werkstoff(
         new short[] { 132, 224, 219 },
@@ -85,9 +76,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 5,
-        TextureSet.SET_DULL,
-        new Pair<>(Materials.Uranium, 1),
-        new Pair<>(Materials.Oxygen, 2));
+        TextureSet.SET_DULL);
 
     public static final Werkstoff URANIUM_235_DIOXIDE = new Werkstoff(
         new short[] { 132, 224, 219 },
@@ -98,9 +87,7 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 6,
-        TextureSet.SET_DULL,
-        new Pair<>(Materials.Uranium235, 1),
-        new Pair<>(Materials.Oxygen, 2));
+        TextureSet.SET_DULL);
 
     public static final Werkstoff TRIBUTYL_PHOSPHATE = new Werkstoff(
         new short[] { 132, 224, 219 },
@@ -133,6 +120,182 @@ public class MaterialsNuclear implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 9,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff ENRICHED_URANIUM_FUEL = new Werkstoff(
+        new short[] { 92, 214, 92 },
+        "Enriched Uranium Fuel",
+        subscriptNumbers("235UO2(238UO2)4"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 10,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff ENRICHED_THORIUM_FUEL = new Werkstoff(
+        new short[] { 0, 77, 0 },
+        "Enriched Thorium Fuel",
+        subscriptNumbers("235UO2(ThO2)4"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 11,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff DEPLETED_URANIUM_FUEL = new Werkstoff(
+        new short[] { 41, 163, 41 },
+        "Depleted Uranium Fuel",
+        subscriptNumbers("??(238UO2)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 12,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff DEPLETED_THORIUM_FUEL = new Werkstoff(
+        new short[] { 41, 163, 41 },
+        "Depleted Thorium Fuel",
+        subscriptNumbers("??(ThO2)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 13,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff URANIUM_233_DIOXIDE = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Uranium-233 Dioxide",
+        subscriptNumbers("233UO2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 14,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff DEPLETED_URANIUM_FUEL_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Depleted Uranium Fuel Solution",
+        subscriptNumbers("??(238UO2)(HNO3)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 15,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff DEPLETED_THORIUM_FUEL_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Depleted Thorium Fuel Solution",
+        subscriptNumbers("??(ThO2)(HNO3)(HF)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 16,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff TREATED_DEPLETED_URANIUM_FUEL_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Treated Depleted Uranium Fuel Solution",
+        subscriptNumbers("??(238UO2)(HNO3)(PO(OC4H9)3)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 17,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff TREATED_DEPLETED_THORIUM_FUEL_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Treated Depleted Thorium Fuel Solution",
+        subscriptNumbers("??(ThO2)(HNO3)(HF)(PO(OC4H9)3)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 18,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff AQUEOUS_PLUTONIUM_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Aqueous Plutonium Solution",
+        subscriptNumbers("??Pu(NO3)2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 19,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff KEROSENE_URANIUM_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Kerosene Uranium Solution",
+        subscriptNumbers("238U(NO3)2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 20,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff AQUEOUS_THORIUM_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Aqueous Thorium Solution",
+        subscriptNumbers("??Th(NO3)2(HF)"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 21,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff KEROSENE_URANIUM233_SOLUTION = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Kerosene Uranium-233 Solution",
+        subscriptNumbers("233U(NO3)2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID + 22,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff TRANSPLUTONIC_WASTE_MIXTURE = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Transplutonic Waste Mixture",
+        subscriptNumbers("?Am?"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 23,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff PLUTONIUM_239_DIOXIDE = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Plutonium-239 Dioxide",
+        subscriptNumbers("239PuO2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 24,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff PLUTONIUM_241_DIOXIDE = new Werkstoff(
+        new short[] { 132, 224, 219 },
+        "Plutonium-241 Dioxide",
+        subscriptNumbers("241PuO2"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID + 25,
         TextureSet.SET_DULL);
 
     private static final MaterialsNuclear INSTANCE = new MaterialsNuclear();
