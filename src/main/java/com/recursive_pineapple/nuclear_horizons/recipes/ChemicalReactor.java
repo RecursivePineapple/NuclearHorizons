@@ -1,5 +1,6 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
+import bartworks.system.material.WerkstoffLoader;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import gregtech.api.enums.*;
 import gregtech.api.util.GTOreDictUnificator;
@@ -7,6 +8,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -199,7 +201,7 @@ public class ChemicalReactor {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialsNuclear.AQUEOUS_THORIUM_SOLUTION.getFluidOrGas(22000))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustThorianite", 7))
+            .itemOutputs(WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 7))
             .fluidOutputs(
                 MaterialsNuclear.TRIBUTYL_PHOSPHATE.getFluidOrGas(9000),
                 Materials.Fluorine.getGas(1000),
@@ -212,7 +214,7 @@ public class ChemicalReactor {
             .fluidInputs(MaterialsNuclear.KEROSENE_URANIUM233_SOLUTION.getFluidOrGas(9000))
             .itemOutputs(MaterialsNuclear.URANIUM_233_DIOXIDE.get(OrePrefixes.dust, 3))
             .fluidOutputs(
-                FluidRegistry.getFluidStack("fluid.kerosene", 9000),
+                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 3000), //gt++ moment
                 Materials.NitrogenDioxide.getGas(3000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -224,7 +226,7 @@ public class ChemicalReactor {
                 MaterialsNuclear.URANIUM_235_DIOXIDE.get(OrePrefixes.dust, 1),
                 MaterialsNuclear.URANIUM_238_DIOXIDE.get(OrePrefixes.dust, 6))
             .fluidOutputs(
-                FluidRegistry.getFluidStack("fluid.kerosene", 8000),
+                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 8000), //gt++ moment
                 MaterialsNuclear.TRIBUTYL_PHOSPHATE.getFluidOrGas(6000),
                 Materials.NitrogenDioxide.getGas(7000))
             .duration(20 * SECONDS)

@@ -53,6 +53,7 @@ public class CommonProxy {
         new ThermalCentrifuge().run();
         new Mixer().run();
         new CanningMachine().run();
+        new AssemblingMachine().run();
     }
 
     // register server commands in this event handler (Remove if not needed)

@@ -3,6 +3,7 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.ItemStack;
 
 public class ItemList {
 
@@ -262,27 +263,27 @@ public class ItemList {
     public static void registerItems() {
         THORIUM_1X_ROD.register();
         DEPLETED_THORIUM_1X_ROD.register();
-        THORIUM_1X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThorium", 1));
+        THORIUM_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_1X_ROD, 1));
 
         THORIUM_2X_ROD.register();
         DEPLETED_THORIUM_2X_ROD.register();
-        THORIUM_2X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThoriumDual", 1));
+        THORIUM_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_2X_ROD, 1));
 
         THORIUM_4X_ROD.register();
         DEPLETED_THORIUM_4X_ROD.register();
-        THORIUM_4X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodThoriumQuad", 1));
+        THORIUM_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_4X_ROD, 1));
 
         URANIUM_1X_ROD.register();
         DEPLETED_URANIUM_1X_ROD.register();
-        URANIUM_1X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUranium", 1));
+        URANIUM_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_1X_ROD, 1));
 
         URANIUM_2X_ROD.register();
         DEPLETED_URANIUM_2X_ROD.register();
-        URANIUM_2X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUraniumDual", 1));
+        URANIUM_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_2X_ROD, 1));
 
         URANIUM_4X_ROD.register();
         DEPLETED_URANIUM_4X_ROD.register();
-        URANIUM_4X_ROD.setProduct(GameRegistry.findItemStack(NuclearHorizons.MODID, "depletedFuelRodUraniumQuad", 1));
+        URANIUM_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_4X_ROD, 1));
 
         MOX_1X_ROD.register();
         MOX_2X_ROD.register();
