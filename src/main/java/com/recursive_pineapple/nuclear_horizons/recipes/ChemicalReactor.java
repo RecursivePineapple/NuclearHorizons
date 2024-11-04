@@ -97,7 +97,7 @@ public class ChemicalReactor {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 3))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(8000))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(16000))
             .itemOutputs(
                 MaterialsNuclear.NATURAL_URANIUM_TETRAFLUORIDE.get(OrePrefixes.dust, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
@@ -119,12 +119,12 @@ public class ChemicalReactor {
         //depleted uranium hexafluoride
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Water.getFluid(30000),
-                MaterialsNuclear.DEPLETED_URANIUM_HEXAFLUORIDE.getFluidOrGas(10000))
+                Materials.Water.getFluid(36000),
+                MaterialsNuclear.DEPLETED_URANIUM_HEXAFLUORIDE.getFluidOrGas(12000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 6),
-                MaterialsNuclear.URANIUM_238_DIOXIDE.get(OrePrefixes.dust, 8))
-            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(60000))
+                MaterialsNuclear.URANIUM_238_DIOXIDE.get(OrePrefixes.dust, 6))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(72000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -132,12 +132,12 @@ public class ChemicalReactor {
         //enriched uranium hexafluoride
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Water.getFluid(30000),
-                MaterialsNuclear.ENRICHED_URANIUM_HEXAFLUORIDE.getFluidOrGas(10000))
+                Materials.Water.getFluid(36000),
+                MaterialsNuclear.ENRICHED_URANIUM_HEXAFLUORIDE.getFluidOrGas(12000))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 21),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uraninite, 9),
                 MaterialsNuclear.URANIUM_235_DIOXIDE.get(OrePrefixes.dust, 3))
-            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(60000))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(72000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -214,7 +214,7 @@ public class ChemicalReactor {
             .fluidInputs(MaterialsNuclear.KEROSENE_URANIUM233_SOLUTION.getFluidOrGas(9000))
             .itemOutputs(MaterialsNuclear.URANIUM_233_DIOXIDE.get(OrePrefixes.dust, 3))
             .fluidOutputs(
-                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 3000), //gt++ moment
+                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 8000), //gt++ moment
                 Materials.NitrogenDioxide.getGas(3000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -226,9 +226,39 @@ public class ChemicalReactor {
                 MaterialsNuclear.URANIUM_235_DIOXIDE.get(OrePrefixes.dust, 1),
                 MaterialsNuclear.URANIUM_238_DIOXIDE.get(OrePrefixes.dust, 6))
             .fluidOutputs(
-                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 8000), //gt++ moment
+                new FluidStack(FluidRegistry.getFluid("fluid.kerosene"), 6000), //gt++ moment
                 MaterialsNuclear.TRIBUTYL_PHOSPHATE.getFluidOrGas(6000),
                 Materials.NitrogenDioxide.getGas(7000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        //phosphoryl chloride and tributyl phosphate (TBP)
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Oxygen.getCells(1))
+            .fluidInputs(MaterialsKevlar.PhosphorusTrichloride.getFluid(2000))
+            .fluidOutputs(MaterialsNuclear.PHOSPHORYL_CHLORIDE.getFluidOrGas(2000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
+
+        //TBP normally requires butanol, which can be synthesized using either a
+        //metallic cobalt or organometallic rhodium catalyst
+        //in this pack the kevlar line devs chose to use the more complicated synthesis
+        //that uses rhodium and palladium organometallic catalysts
+        //so this reaction is in a single step to avoid producing butanol which could bypass
+        //their chemical gating
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.Cobalt.getDustTiny(1))
+            .fluidInputs(
+                MaterialsNuclear.PHOSPHORYL_CHLORIDE.getFluidOrGas(1000),
+                Materials.CarbonMonoxide.getGas(6000),
+                Materials.Water.getFluid(3000),
+                Materials.Propene.getGas(3000))
+            .fluidOutputs(
+                MaterialsNuclear.TRIBUTYL_PHOSPHATE.getFluidOrGas(1000),
+                Materials.CarbonDioxide.getGas(3000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);

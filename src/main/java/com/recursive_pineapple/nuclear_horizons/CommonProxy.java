@@ -54,6 +54,8 @@ public class CommonProxy {
         new Mixer().run();
         new CanningMachine().run();
         new AssemblingMachine().run();
+        new Electrolyzer().run();
+        new Distillery().run();
     }
 
     // register server commands in this event handler (Remove if not needed)

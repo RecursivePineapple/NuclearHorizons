@@ -17,13 +17,24 @@ tile.nh_hot_coolant.name=Hot Coolant
 
 gui.reactor.name=Nuclear Reactor
 
+item.fuelRodThorium.name=Fuel Rod (Thorium)
+item.depletedFuelRodThorium.name=Depleted Fuel Rod (Thorium)
+item.fuelRodThoriumDual.name=Dual Fuel Rod (Thorium)
+item.depletedFuelRodThoriumDual.name=Depleted Dual Fuel Rod (Thorium)
+item.fuelRodThoriumQuad.name=Quad Fuel Rod (Thorium)
+item.depletedFuelRodThoriumQuad.name=Depleted Quad Fuel Rod (Thorium)
 item.fuelRodUranium.name=Fuel Rod (Uranium)
 item.depletedFuelRodUranium.name=Depleted Fuel Rod (Uranium)
 item.dualFuelRodUranium.name=Dual Fuel Rod (Uranium)
+item.depletedFuelRodUraniumDual.name=Depleted Dual Fuel Rod (Uranium)
 item.quadFuelRodUranium.name=Quad Fuel Rod (Uranium)
+item.depletedFuelRodUraniumQuad.name=Depleted Quad Fuel Rod (Uranium)
 item.fuelRodMOX.name=Fuel Rod (MOX)
+item.depletedFuelRodMOX.name=Depleted Fuel Rod (MOX)
 item.dualFuelRodMOX.name=Dual Fuel Rod (MOX)
+item.depletedFuelRodMOXDual.name=Depleted Dual Fuel Rod (MOX)
 item.quadFuelRodMOX.name=Quad Fuel Rod (MOX)
+item.depletedFuelRodMOXQuad.name=Depleted Quad Fuel Rod (MOX)
 item.heatVent.name=Heat Vent
 item.advancedHeatVent.name=Advanced Heat Vent
 item.reactorHeatVent.name=Reactor Heat Vent
