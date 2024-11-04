@@ -79,7 +79,7 @@ public class AssemblingMachine {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 Materials.Aluminium.getPlates(2),
-                GTOreDictUnificator.get(OrePrefixes.motor, Materials.LV, 1),
+                gregtech.api.enums.ItemList.Electric_Motor_LV.get(1L),
                 ItemUtils.getItemStackFromFQRN("dreamcraft:item.SteelBars", 2))
             .fluidInputs()
             .itemOutputs(new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
@@ -104,7 +104,7 @@ public class AssemblingMachine {
                 GTUtility.getIntegratedCircuit(21),
                 Ic2Items.industrialDiamond,
                 new ItemStack(ItemList.BASIC_HEAT_VENT, 1),
-                getModItem(NewHorizonsCoreMod.ID, "item.StainlessSteelBars", 4))
+                ItemUtils.getItemStackFromFQRN("dreamcraft:item.StainlessSteelBars", 4))
             .fluidInputs()
             .itemOutputs(new ItemStack(ItemList.ADVANCED_HEAT_VENT, 1))
             .duration(15 * SECONDS)
@@ -115,7 +115,7 @@ public class AssemblingMachine {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.SteelBars", 4),
+                ItemUtils.getItemStackFromFQRN("dreamcraft:item.StainlessSteelBars", 4),
                 new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
             .fluidInputs()
             .itemOutputs(new ItemStack(ItemList.COMPONENT_HEAT_VENT, 1))

@@ -13,7 +13,7 @@ public class Electrolyzer {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .itemOutputs(Materials.Sodium.getDust(1))
-            .fluidOutputs(Materials.Fluorine.getFluid(1000))
+            .fluidOutputs(Materials.Fluorine.getGas(1000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
