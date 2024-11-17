@@ -1,10 +1,13 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
+import net.minecraft.item.ItemStack;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
-import cpw.mods.fml.common.registry.GameRegistry;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,19 +16,12 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.Ic2Items;
-import net.minecraft.block.BlockFence;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 public class AssemblingMachine {
+
     public void run() {
 
-        //basic components
+        // basic components
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
@@ -145,7 +141,6 @@ public class AssemblingMachine {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
@@ -158,7 +153,6 @@ public class AssemblingMachine {
             .duration(30 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
-
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -200,9 +194,7 @@ public class AssemblingMachine {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Ic2Items.reinforcedStone.getItem(), 1),
-                Materials.Lead.getPlates(2))
+            .itemInputs(new ItemStack(Ic2Items.reinforcedStone.getItem(), 1), Materials.Lead.getPlates(2))
             .fluidInputs()
             .itemOutputs(new ItemStack(BlockList.PRESSURE_VESSEL, 1))
             .duration(10 * SECONDS)
@@ -239,7 +231,7 @@ public class AssemblingMachine {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        //based on nuclear control thermal monitor recipe (the non-wireless one)
+        // based on nuclear control thermal monitor recipe (the non-wireless one)
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Ic2Items.reinforcedGlass.getItem(), 3),
@@ -253,7 +245,7 @@ public class AssemblingMachine {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        //idk lol
+        // idk lol
         GTValues.RA.stdBuilder()
             .itemInputs()
             .fluidInputs()

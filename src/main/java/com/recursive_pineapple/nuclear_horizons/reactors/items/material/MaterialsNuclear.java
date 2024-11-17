@@ -1,12 +1,9 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items.material;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.util.Pair;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gtPlusPlus.core.material.MaterialsElements;
-
 import static bartworks.util.BWUtil.subscriptNumbers;
+
+import bartworks.system.material.Werkstoff;
+import gregtech.api.enums.TextureSet;
 
 public class MaterialsNuclear implements Runnable {
 
@@ -351,6 +348,7 @@ public class MaterialsNuclear implements Runnable {
     public static void runInit() {
 
     }
+
     @Override
     public void run() {
 

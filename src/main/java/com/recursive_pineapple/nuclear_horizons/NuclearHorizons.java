@@ -1,12 +1,11 @@
 package com.recursive_pineapple.nuclear_horizons;
 
-import bartworks.API.WerkstoffAPI;
-import bartworks.API.WerkstoffAdderRegistry;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
-import gregtech.api.util.GTWaila;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
+
+import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
@@ -37,7 +36,7 @@ public class NuclearHorizons {
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
-        //werkstoff material registration
+        // werkstoff material registration
         WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialsNuclear());
 
         proxy.preInit(event);
@@ -45,7 +44,9 @@ public class NuclearHorizons {
 
     @Mod.EventHandler
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
-    public void init(FMLInitializationEvent event) { proxy.init(event); }
+    public void init(FMLInitializationEvent event) {
+        proxy.init(event);
+    }
 
     @Mod.EventHandler
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)

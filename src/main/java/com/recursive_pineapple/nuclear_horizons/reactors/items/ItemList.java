@@ -1,9 +1,8 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
-import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
 
 public class ItemList {
 
