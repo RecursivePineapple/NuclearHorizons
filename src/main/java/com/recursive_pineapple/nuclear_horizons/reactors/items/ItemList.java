@@ -9,7 +9,7 @@ public class ItemList {
 
     public static final BasicFuelRodItem THORIUM_1X_ROD = new BasicFuelRodItem(
         "fuelRodThorium",
-        "reactorThoriumSimple",
+        "reactorThoriumSingle",
         2.0,
         4.0,
         1,
@@ -18,7 +18,7 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_THORIUM_1X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodThorium",
-        "reactorDepletedFuelRodThorium");
+        "reactorThoriumSingleDepleted");
 
     public static final BasicFuelRodItem THORIUM_2X_ROD = new BasicFuelRodItem(
         "fuelRodThoriumDual",
@@ -31,7 +31,7 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_THORIUM_2X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodThoriumDual",
-        "reactorDepletedFuelRodThoriumDual");
+        "reactorThoriumDualDepleted");
 
     public static final BasicFuelRodItem THORIUM_4X_ROD = new BasicFuelRodItem(
         "fuelRodThoriumQuad",
@@ -44,11 +44,11 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_THORIUM_4X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodThoriumQuad",
-        "reactorDepletedFuelRodThoriumQuad");
+        "reactorThoriumQuadDepleted");
 
     public static final BasicFuelRodItem URANIUM_1X_ROD = new BasicFuelRodItem(
         "fuelRodUranium",
-        "reactorUraniumSimple",
+        "reactorUraniumSingle",
         2.0,
         4.0,
         1,
@@ -57,7 +57,7 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_URANIUM_1X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodUranium",
-        "reactorDepletedFuelRodUranium");
+        "reactorUraniumSingleDepleted");
 
     public static final BasicFuelRodItem URANIUM_2X_ROD = new BasicFuelRodItem(
         "dualFuelRodUranium",
@@ -70,7 +70,7 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_URANIUM_2X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodUraniumDual",
-        "reactorDepletedFuelRodUraniumDual");
+        "reactorUraniumDualDepleted");
 
     public static final BasicFuelRodItem URANIUM_4X_ROD = new BasicFuelRodItem(
         "quadFuelRodUranium",
@@ -83,16 +83,20 @@ public class ItemList {
 
     public static final BasicFuelRodProductItem DEPLETED_URANIUM_4X_ROD = new BasicFuelRodProductItem(
         "depletedFuelRodUraniumQuad",
-        "reactorDepletedFuelRodUraniumQuad");
+        "reactorUraniumQuadDepleted");
 
     public static final BasicFuelRodItem MOX_1X_ROD = new BasicFuelRodItem(
         "fuelRodMOX",
-        "reactorMOXSimple",
+        "reactorMOXSingle",
         2.0,
         4.0,
         1,
         true,
         10_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_MOX_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodMOX",
+        "reactorMOXSingleDepleted");
     public static final BasicFuelRodItem MOX_2X_ROD = new BasicFuelRodItem(
         "dualFuelRodMOX",
         "reactorMOXDual",
@@ -101,6 +105,10 @@ public class ItemList {
         2,
         true,
         10_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_MOX_2X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodMOXDual",
+        "reactorMOXDualDepleted");
     public static final BasicFuelRodItem MOX_4X_ROD = new BasicFuelRodItem(
         "quadFuelRodMOX",
         "reactorMOXQuad",
@@ -109,6 +117,10 @@ public class ItemList {
         4,
         true,
         10_000);
+
+    public static final BasicFuelRodProductItem DEPLETED_MOX_4X_ROD = new BasicFuelRodProductItem(
+        "depletedFuelRodMOXQuad",
+        "reactorMOXQuadDepleted");
 
     public static final BasicHeatVentItem BASIC_HEAT_VENT = new BasicHeatVentItem(
         "heatVent",
@@ -286,8 +298,16 @@ public class ItemList {
         URANIUM_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_4X_ROD, 1));
 
         MOX_1X_ROD.register();
+        DEPLETED_MOX_ROD.register();
+        MOX_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_ROD, 1));
+
         MOX_2X_ROD.register();
+        DEPLETED_MOX_2X_ROD.register();
+        MOX_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_2X_ROD, 1));
+
         MOX_4X_ROD.register();
+        DEPLETED_MOX_4X_ROD.register();
+        MOX_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_4X_ROD, 1));
 
         BASIC_HEAT_VENT.register();
         ADVANCED_HEAT_VENT.register();

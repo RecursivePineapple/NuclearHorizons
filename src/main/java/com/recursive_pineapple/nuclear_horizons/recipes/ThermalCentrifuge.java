@@ -33,11 +33,51 @@ public class ThermalCentrifuge {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                new ItemStack(ItemList.DEPLETED_URANIUM_2X_ROD, 1))
+            .itemOutputs(
+                MaterialsNuclear.DEPLETED_URANIUM_FUEL.get(OrePrefixes.dust, 8),
+                new ItemStack(Loaders.advancedFuelRod, 2))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(thermalCentrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(ItemList.DEPLETED_URANIUM_4X_ROD, 1))
+            .itemOutputs(
+                MaterialsNuclear.DEPLETED_URANIUM_FUEL.get(OrePrefixes.dust, 16),
+                new ItemStack(Loaders.advancedFuelRod, 4))
+            .duration(80 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(thermalCentrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 new ItemStack(ItemList.DEPLETED_THORIUM_1X_ROD, 1))
             .itemOutputs(
                 MaterialsNuclear.DEPLETED_THORIUM_FUEL.get(OrePrefixes.dust, 4),
                 new ItemStack(Loaders.advancedFuelRod, 1))
             .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(thermalCentrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(ItemList.DEPLETED_THORIUM_2X_ROD, 1))
+            .itemOutputs(
+                MaterialsNuclear.DEPLETED_THORIUM_FUEL.get(OrePrefixes.dust, 8),
+                new ItemStack(Loaders.advancedFuelRod, 2))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(thermalCentrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(ItemList.DEPLETED_THORIUM_2X_ROD, 1))
+            .itemOutputs(
+                MaterialsNuclear.DEPLETED_THORIUM_FUEL.get(OrePrefixes.dust, 16),
+                new ItemStack(Loaders.advancedFuelRod, 4))
+            .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
     }

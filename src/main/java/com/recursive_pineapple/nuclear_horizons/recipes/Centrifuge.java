@@ -1,7 +1,10 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
+import bartworks.system.material.WerkstoffLoader;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import gregtech.api.enums.*;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -43,6 +46,22 @@ public class Centrifuge {
                 MaterialsNuclear.KEROSENE_URANIUM233_SOLUTION.get(OrePrefixes.cell, 9))
             .fluidOutputs(
                 MaterialsNuclear.AQUEOUS_THORIUM_SOLUTION.getFluidOrGas(22000))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(centrifugeRecipes);
+
+        //fission product waste
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsNuclear.URANIUM_FISSION_PRODUCT_MIXTURE.get(OrePrefixes.dust, 7))
+            .itemOutputs(
+                WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1),
+                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
+                Materials.Gallium.getDust(1),
+                Materials.Lutetium.getDust(1),
+                Materials.Barium.getDust(1),
+                Materials.Molybdenum.getDust(1))
+            .fluidOutputs(
+                WerkstoffLoader.Krypton.getFluidOrGas(1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
