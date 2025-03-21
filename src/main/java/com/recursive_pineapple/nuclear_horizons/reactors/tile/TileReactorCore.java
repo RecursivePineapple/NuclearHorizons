@@ -59,8 +59,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GTUtility;
 
 public class TileReactorCore extends TileEntity
@@ -96,10 +94,7 @@ public class TileReactorCore extends TileEntity
 
     Coolant coolantCache;
     FluidTank coolantTank = new FluidTank(10_000);
-    // change for testing distilled water->steam conversion
-    // since so much steam is produced per HU, you need a large output buffer to capture useful
-    // steam/s production
-    FluidTank hotCoolantTank = new FluidTank(200_000);
+    FluidTank hotCoolantTank = new FluidTank(10_000);
 
     private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
 
@@ -272,16 +267,12 @@ public class TileReactorCore extends TileEntity
                 this.coolantTank.readFromNBT(compound.getCompoundTag("coolantTank"));
                 this.hotCoolantTank.readFromNBT(compound.getCompoundTag("hotCoolantTank"));
 
-                if (this.coolantTank.getFluid() != null && !CoolantRegistry.isColdCoolant(
-                    this.coolantTank.getFluid()
-                        .getFluid())) {
+                if (this.coolantTank.getFluid() != null && !CoolantRegistry.isColdCoolant(this.coolantTank.getFluid().getFluid())) {
                     // TODO: figure out if there's a mechanism to migrate fluids
                     this.coolantTank.setFluid(null);
                 }
 
-                if (this.hotCoolantTank.getFluid() != null && !CoolantRegistry.isHotCoolant(
-                    this.hotCoolantTank.getFluid()
-                        .getFluid())) {
+                if (this.hotCoolantTank.getFluid() != null && !CoolantRegistry.isHotCoolant(this.hotCoolantTank.getFluid().getFluid())) {
                     this.hotCoolantTank.setFluid(null);
                 }
 
@@ -318,15 +309,15 @@ public class TileReactorCore extends TileEntity
             if (this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 boolean wasActive = isActive;
 
-                this.isActive = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+                this.isActive = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
                 for (var dir : DirectionUtil.values()) {
                     // spotless:off
-                    this.isActive |= worldObj.getBlockPowerInput(
+                    this.isActive |= worldObj.isBlockIndirectlyGettingPowered(
                         dir.offsetX + xCoord,
                         dir.offsetY + yCoord,
                         dir.offsetZ + zCoord
-                    ) > 0;
+                    );
                     // spotless:on
                 }
 
@@ -378,8 +369,7 @@ public class TileReactorCore extends TileEntity
     }
 
     private void spawnSmoke(int x, int y, int z) {
-        if (worldObj.getBlock(x, y + 1, z)
-            .isBlockNormalCube()) {
+        if (worldObj.getBlock(x, y + 1, z).isBlockNormalCube()) {
             return;
         }
 
@@ -507,26 +497,15 @@ public class TileReactorCore extends TileEntity
             if (usedAmperes > amperage) break;
 
             ForgeDirection oppositeSide = Objects.requireNonNull(side.getOpposite());
-            TileEntity tTileEntity = emitter.getWorldObj()
-                .getTileEntity(
-                    emitter.xCoord + side.offsetX,
-                    emitter.yCoord + side.offsetY,
-                    emitter.zCoord + side.offsetZ);
-            if (tTileEntity instanceof PowerLogicHost host) {
+            TileEntity tTileEntity = emitter.getWorldObj().getTileEntity(emitter.xCoord + side.offsetX, emitter.yCoord + side.offsetY, emitter.zCoord + side.offsetZ);
 
-                PowerLogic logic = host.getPowerLogic(oppositeSide);
-                if (logic == null || logic.isEnergyReceiver()) {
-                    continue;
-                }
-
-                usedAmperes += logic.injectEnergy(voltage, amperage - usedAmperes);
-            } else if (tTileEntity instanceof IEnergyConnected energyConnected) {
+            if (tTileEntity instanceof IEnergyConnected energyConnected) {
                 usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
-
             } else if (tTileEntity instanceof ic2.api.energy.tile.IEnergySink sink) {
                 if (sink.acceptsEnergyFrom(emitter, oppositeSide)) {
-                    while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
-                        && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
+                    while (amperage > usedAmperes && sink.getDemandedEnergy() > 0 && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) {
+                        usedAmperes++;
+                    }
                 }
             } else if (GregTechAPI.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
                 final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);

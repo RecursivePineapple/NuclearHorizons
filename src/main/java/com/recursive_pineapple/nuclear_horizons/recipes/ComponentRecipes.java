@@ -17,11 +17,14 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.Ic2Items;
 
-public class AssemblingMachine {
+public class ComponentRecipes {
 
-    public void run() {
+    public static void registerRecipes() {
+        registerComponentRecipes();
+        registerReactorRecipes();
+    }
 
-        // basic components
+    private static void registerComponentRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
@@ -165,7 +168,9 @@ public class AssemblingMachine {
             .duration(30 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
+    }
 
+    private static void registerReactorRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(22),

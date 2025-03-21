@@ -5,6 +5,8 @@ import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ForeignItems;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
 import com.recursive_pineapple.nuclear_horizons.recipes.*;
 
@@ -33,6 +35,8 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         PacketDispatcher.registerPackets();
+        MaterialsNuclear.init();
+        MaterialsChemical.init();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
@@ -42,17 +46,11 @@ public class CommonProxy {
         SimulationItems.registerSimulationItems();
         ForeignItems.registerForeignReactorItems();
 
-        // change the owner of werkstoff materials to this mod in waila
-
-        // register recipes
-        new ChemicalReactor().run();
-        new Centrifuge().run();
-        new ThermalCentrifuge().run();
-        new Mixer().run();
-        new CanningMachine().run();
-        new AssemblingMachine().run();
-        new Electrolyzer().run();
-        new Distillery().run();
+        ReprocessingRecipes.registerRecipes();
+        FuelProcessingRecipes.registerRecipes();
+        CoolantRecipes.registerRecipes();
+        FuelRodRecipes.registerRecipes();
+        ComponentRecipes.registerRecipes();
     }
 
     // register server commands in this event handler (Remove if not needed)

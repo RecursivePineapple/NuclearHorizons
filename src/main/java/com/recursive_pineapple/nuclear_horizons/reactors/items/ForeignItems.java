@@ -3,6 +3,8 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -10,12 +12,18 @@ import javax.annotation.Nullable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignBreederRodItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignFuelRodItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignHeatAbsorberItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
@@ -221,6 +229,8 @@ public class ForeignItems {
     private static class GTRadioactiveCellAdapter implements IBasicFuelRod, IComponentAdapterFactory {
 
         private final ItemRadioactiveCellIC item;
+        private Fluid spargeGas;
+        private int spargeMin, spargeMax;
 
         public GTRadioactiveCellAdapter(ItemRadioactiveCellIC item) {
             this.item = item;
@@ -276,6 +286,22 @@ public class ForeignItems {
         public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack) {
             return item.sDepleted;
         }
+
+        @Override
+        public @org.jetbrains.annotations.Nullable FluidStack getSpargeGas(@NotNull ItemStack itemStack) {
+            if (spargeGas == null) return null;
+
+            Random rng = ThreadLocalRandom.current();
+
+            return new FluidStack(spargeGas, (int) (spargeMin + (spargeMax - spargeMin) * rng.nextFloat()));
+        }
+
+        public GTRadioactiveCellAdapter setSpargeGas(Fluid fluid, int min, int max) {
+            this.spargeGas = fluid;
+            this.spargeMin = min;
+            this.spargeMax = max;
+            return this;
+        }
     }
 
     private static class GGItemFuelRodAdapter implements IBasicFuelRod, IComponentAdapterFactory {
@@ -286,6 +312,8 @@ public class ForeignItems {
         private final int Heat;
         private final float HeatBonus;
         private final ItemStack result;
+        private Fluid spargeGas;
+        private int spargeMin, spargeMax;
 
         public GGItemFuelRodAdapter(ItemFuelRod item) {
             this.item = item;
@@ -361,6 +389,22 @@ public class ForeignItems {
         @Override
         public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack) {
             return result;
+        }
+
+        @Override
+        public @org.jetbrains.annotations.Nullable FluidStack getSpargeGas(@NotNull ItemStack itemStack) {
+            if (spargeGas == null) return null;
+
+            Random rng = ThreadLocalRandom.current();
+
+            return new FluidStack(spargeGas, (int) (spargeMin + (spargeMax - spargeMin) * rng.nextFloat()));
+        }
+
+        public GGItemFuelRodAdapter setSpargeGas(Fluid fluid, int min, int max) {
+            this.spargeGas = fluid;
+            this.spargeMin = min;
+            this.spargeMax = max;
+            return this;
         }
     }
 }

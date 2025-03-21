@@ -5,6 +5,8 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import com.recursive_pineapple.nuclear_horizons.Config;
 
 public interface IBasicFuelRod {
@@ -30,5 +32,9 @@ public interface IBasicFuelRod {
     public void applyDamage(@Nonnull ItemStack itemStack, int damage);
 
     public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack);
+
+    /** Gets the amount of gas to sparge for this fuel rod. */
+    @Nullable
+    FluidStack getSpargeGas(@Nonnull ItemStack itemStack);
 
 }

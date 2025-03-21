@@ -36,9 +36,6 @@ public class NuclearHorizons {
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
-        // werkstoff material registration
-        WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialsNuclear());
-
         proxy.preInit(event);
     }
 
