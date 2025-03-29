@@ -1,9 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
 import static com.recursive_pineapple.nuclear_horizons.recipes.GTMats.*;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -18,6 +16,9 @@ public class FuelProcessingRecipes {
     public static void registerRecipes() {
         registerEnrichmentRecipes();
         registerFuelRecipes();
+
+        //Not sure where to put this one:
+        registerThoriumLineRecipes();
     }
 
     private static void registerEnrichmentRecipes() {
@@ -69,6 +70,58 @@ public class FuelProcessingRecipes {
             .addTo(multiblockChemicalReactorRecipes);
     }
 
+    private static void registerThoriumLineRecipes() {
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(NITRICACID.getFluid(5000))
+            .itemInputs(THORIANIT.getDust(3))
+            .fluidOutputs(THORIANITE_AQ_SOLUTION.getFluid(5000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(THORIANITE_AQ_SOLUTION.getFluid(2000))
+            .fluidOutputs(THORIUM_NITRATE_SOLUTION.getFluid(1900),LOW_URANIUM_SLUDGE.getFluid(100))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(centrifugeRecipes);
+
+        //15 Thoranite - 10 thorium ~ 1 uranium dust, sounds fair
+        GTValues.RA.stdBuilder()
+            .fluidInputs(LOW_URANIUM_SLUDGE.getFluid(1000))
+            .itemOutputs(
+                URANIUM232.getDust(1),
+                URANIUM233.getDust(1),
+                URANIUM235.getDust(1),
+                URANIUM238.getDust(1)
+            )
+            .fluidOutputs(NITRICACID.getFluid(1000))
+            .outputChances(4000, 2000, 100, 1250)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(THORIUM_NITRATE_SOLUTION.getFluid(1900))
+            .itemInputs(WATER.getCells(2))
+            .itemOutputs(REFINED_THORIUM.getDust(1), EMPTY.getCells(2))
+            .fluidOutputs(NITRICACID.getFluid(1890))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(THORIUM_NITRATE_SOLUTION.getFluid(1900), WATER.getFluid(2000))
+            .itemOutputs(REFINED_THORIUM.getDust(1))
+            .fluidOutputs(NITRICACID.getFluid(1900))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+
+    }
+
     private static void registerFuelRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(URANIUM_233_DIOXIDE.getDust(1), URANIUM_238_DIOXIDE.getDust(4))
@@ -85,15 +138,15 @@ public class FuelProcessingRecipes {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(URANIUM_233_DIOXIDE.getDust(1), THORIANIT.getDust(4))
-            .itemOutputs(ENRICHED_THORIUM_FUEL.getDust(5))
+            .itemInputs(URANIUM_233_DIOXIDE.getDust(1), REFINED_THORIUM.getDust(15))
+            .itemOutputs(ENRICHED_THORIUM_FUEL.getDust(16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(URANIUM_235_DIOXIDE.getDust(1), THORIANIT.getDust(4))
-            .itemOutputs(ENRICHED_THORIUM_FUEL.getDust(5))
+            .itemInputs(URANIUM_235_DIOXIDE.getDust(1), REFINED_THORIUM.getDust(15))
+            .itemOutputs(ENRICHED_THORIUM_FUEL.getDust(16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

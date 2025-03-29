@@ -53,7 +53,7 @@ public class FuelRodRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Loaders.advancedFuelRod, 1),
-                ENRICHED_THORIUM_FUEL.getDust(4))
+                ENRICHED_THORIUM_FUEL.getDust(2))
             .itemOutputs(new ItemStack(ItemList.THORIUM_1X_ROD, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -62,7 +62,7 @@ public class FuelRodRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Loaders.advancedFuelRod, 2),
-                ENRICHED_THORIUM_FUEL.getDust(8))
+                ENRICHED_THORIUM_FUEL.getDust(4))
             .itemOutputs(new ItemStack(ItemList.THORIUM_2X_ROD, 1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -71,7 +71,7 @@ public class FuelRodRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Loaders.advancedFuelRod, 4),
-                ENRICHED_THORIUM_FUEL.getDust(16))
+                ENRICHED_THORIUM_FUEL.getDust(8))
             .itemOutputs(new ItemStack(ItemList.THORIUM_4X_ROD, 1))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
