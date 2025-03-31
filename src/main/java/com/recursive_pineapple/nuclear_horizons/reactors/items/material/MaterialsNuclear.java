@@ -73,7 +73,7 @@ public class MaterialsNuclear {
     public static final Werkstoff ENRICHED_THORIUM_FUEL = new Werkstoff(
         new short[] { 0, 77, 0 },
         "Enriched Thorium Fuel",
-        process("UO↓2(ThO↓2)↓4"),
+        process("UO↓2(ThO↓2)↓15"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -339,6 +339,59 @@ public class MaterialsNuclear {
         DUST,
         MaterialIDs.URANIUM_238_DIOXIDE.id,
         TextureSet.SET_DULL);
+
+
+    public static final Werkstoff THORIANITE_AQ_SOLUTION = new Werkstoff(
+        rgb(0x393b32),
+        "Thorianite solution (Aqueos State)",
+        process("??Th(NO↓3)?U?"),
+        DEFAULT_STATS,
+        Werkstoff.Types.COMPOUND,
+        FLUID,
+        MaterialIDs.THORIANITE_AQ_SOLUTION.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff THORIUM_NITRATE_SOLUTION = new Werkstoff(
+        rgb(0x182a21),
+        "Thorium Nitrate solution",
+        process("Th(NO↓3)"),
+        DEFAULT_STATS,
+        Werkstoff.Types.COMPOUND,
+        FLUID,
+        MaterialIDs.THORIUM_NITRATE.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff LOW_URANIUM_SLUDGE = new Werkstoff(
+        rgb(0x132602),
+        "Low Uranium Sludge",
+        process("?U?(NO↓3)?"),
+        DEFAULT_STATS,
+        Werkstoff.Types.COMPOUND,
+        FLUID,
+        MaterialIDs.LOW_URANIUM_SLUDGE.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff POOR_URANIUM_MIXTURE = new Werkstoff(
+        rgb(0x132602),
+        "Poor Uranium Mixture",
+        process("?U?"),
+        DEFAULT_STATS,
+        Werkstoff.Types.COMPOUND,
+        FLUID,
+        MaterialIDs.URANIUM_POOR_MIXTURE.id,
+        TextureSet.SET_FLUID);
+
+
+    public static final Werkstoff REFINED_THORIUM = new Werkstoff(
+        rgb(0x081a11),
+        "Refined Thorium",
+        process("Th"),
+        DEFAULT_STATS,
+        Werkstoff.Types.COMPOUND,
+        DUST,
+        MaterialIDs.REFINED_THORIUM.id,
+        TextureSet.SET_DULL);
+
 
     public static void init() {
 

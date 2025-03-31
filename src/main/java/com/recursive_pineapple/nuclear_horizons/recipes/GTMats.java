@@ -1317,6 +1317,11 @@ public class GTMats {
     public static final MaterialWrapper URANIUM_233_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_233_DIOXIDE);
     public static final MaterialWrapper URANIUM_235_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_235_DIOXIDE);
     public static final MaterialWrapper URANIUM_238_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_238_DIOXIDE);
+    public static final MaterialWrapper REFINED_THORIUM = MaterialWrapper.of(() -> MaterialsNuclear.REFINED_THORIUM);
+    public static final MaterialWrapper THORIANITE_AQ_SOLUTION = MaterialWrapper.of(() -> MaterialsNuclear.THORIANITE_AQ_SOLUTION);
+    public static final MaterialWrapper LOW_URANIUM_SLUDGE = MaterialWrapper.of(() -> MaterialsNuclear.LOW_URANIUM_SLUDGE);
+    public static final MaterialWrapper THORIUM_NITRATE_SOLUTION = MaterialWrapper.of(() -> MaterialsNuclear.THORIUM_NITRATE_SOLUTION);
+    public static final MaterialWrapper POOR_URANIUM_MIXTURE = MaterialWrapper.of(() -> MaterialsNuclear.POOR_URANIUM_MIXTURE);
     //#endregion
 
     //#region src/main/java/com/recursive_pineapple/nuclear_horizons/reactors/items/material/MaterialsChemical.java
