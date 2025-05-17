@@ -5,8 +5,9 @@ import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.M
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.FLUID;
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.process;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
-import bartworks.util.Pair;
 import com.recursive_pineapple.nuclear_horizons.recipes.GTMats;
 import gregtech.api.enums.TextureSet;
 
@@ -57,9 +58,9 @@ public class MaterialsChemical {
         DUST,
         MaterialIDs.ZINC_NITRATE.id,
         TextureSet.SET_DULL,
-        new Pair<>(GTMats.ZINC.getMaterial(), 1),
-        new Pair<>(GTMats.NITROGEN.getMaterial(), 2),
-        new Pair<>(GTMats.OXYGEN.getMaterial(), 6));
+        Pair.of(GTMats.ZINC.getMaterial(), 1),
+        Pair.of(GTMats.NITROGEN.getMaterial(), 2),
+        Pair.of(GTMats.OXYGEN.getMaterial(), 6));
     public static final Werkstoff METYHL_MAGNESIUM_BROMIDE = new Werkstoff(
         new short[] { 225, 225, 175 },
         "Methyl Magnesium Bromide",
