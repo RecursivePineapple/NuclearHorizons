@@ -30,13 +30,14 @@ public class CommonProxy {
         ItemList.registerItems();
         BlockList.registerBlocks();
         FluidList.registerFluids();
+
+        MaterialsNuclear.init();
+        MaterialsChemical.init();
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         PacketDispatcher.registerPackets();
-        MaterialsNuclear.init();
-        MaterialsChemical.init();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
