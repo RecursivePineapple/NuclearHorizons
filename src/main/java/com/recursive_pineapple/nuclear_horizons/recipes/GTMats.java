@@ -288,7 +288,6 @@ public class GTMats {
     public static final MaterialWrapper ANTIMATTER = MaterialWrapper.of(() -> Materials.Antimatter);
     public static final MaterialWrapper PROTOMATTER = MaterialWrapper.of(() -> Materials.Protomatter);
     public static final MaterialWrapper ADVANCEDGLUE = MaterialWrapper.of(() -> Materials.AdvancedGlue);
-    public static final MaterialWrapper BIOFUEL = MaterialWrapper.of(() -> Materials.BioFuel);
     public static final MaterialWrapper BIOMASS = MaterialWrapper.of(() -> Materials.Biomass);
     public static final MaterialWrapper CHARCOALBYPRODUCTS = MaterialWrapper.of(() -> Materials.CharcoalByproducts);
     public static final MaterialWrapper CHEESE = MaterialWrapper.of(() -> Materials.Cheese);
@@ -780,6 +779,15 @@ public class GTMats {
     public static final MaterialWrapper RADOXCRACKED = MaterialWrapper.of(() -> Materials.RadoxCracked);
     public static final MaterialWrapper RADOXGAS = MaterialWrapper.of(() -> Materials.RadoxGas);
     public static final MaterialWrapper RADOXPOLYMER = MaterialWrapper.of(() -> Materials.RadoxPolymer);
+    public static final MaterialWrapper NETHERAIR = MaterialWrapper.of(() -> Materials.NetherAir);
+    public static final MaterialWrapper NETHERSEMIFLUID = MaterialWrapper.of(() -> Materials.NetherSemiFluid);
+    public static final MaterialWrapper NEFARIOUSGAS = MaterialWrapper.of(() -> Materials.NefariousGas);
+    public static final MaterialWrapper NEFARIOUSOIL = MaterialWrapper.of(() -> Materials.NefariousOil);
+    public static final MaterialWrapper POORNETHERWASTE = MaterialWrapper.of(() -> Materials.PoorNetherWaste);
+    public static final MaterialWrapper RICHNETHERWASTE = MaterialWrapper.of(() -> Materials.RichNetherWaste);
+    public static final MaterialWrapper HELLISHMETAL = MaterialWrapper.of(() -> Materials.HellishMetal);
+    public static final MaterialWrapper NETHERITE = MaterialWrapper.of(() -> Materials.Netherite);
+    public static final MaterialWrapper ACTIVATEDNETHERITE = MaterialWrapper.of(() -> Materials.ActivatedNetherite);
     //#endregion
 
     //#region src/main/java/gregtech/api/enums/MaterialsKevlar.java
@@ -1317,11 +1325,11 @@ public class GTMats {
     public static final MaterialWrapper URANIUM_233_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_233_DIOXIDE);
     public static final MaterialWrapper URANIUM_235_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_235_DIOXIDE);
     public static final MaterialWrapper URANIUM_238_DIOXIDE = MaterialWrapper.of(() -> MaterialsNuclear.URANIUM_238_DIOXIDE);
-    public static final MaterialWrapper REFINED_THORIUM = MaterialWrapper.of(() -> MaterialsNuclear.REFINED_THORIUM);
     public static final MaterialWrapper THORIANITE_AQ_SOLUTION = MaterialWrapper.of(() -> MaterialsNuclear.THORIANITE_AQ_SOLUTION);
-    public static final MaterialWrapper LOW_URANIUM_SLUDGE = MaterialWrapper.of(() -> MaterialsNuclear.LOW_URANIUM_SLUDGE);
     public static final MaterialWrapper THORIUM_NITRATE_SOLUTION = MaterialWrapper.of(() -> MaterialsNuclear.THORIUM_NITRATE_SOLUTION);
+    public static final MaterialWrapper LOW_URANIUM_SLUDGE = MaterialWrapper.of(() -> MaterialsNuclear.LOW_URANIUM_SLUDGE);
     public static final MaterialWrapper POOR_URANIUM_MIXTURE = MaterialWrapper.of(() -> MaterialsNuclear.POOR_URANIUM_MIXTURE);
+    public static final MaterialWrapper REFINED_THORIUM = MaterialWrapper.of(() -> MaterialsNuclear.REFINED_THORIUM);
     //#endregion
 
     //#region src/main/java/com/recursive_pineapple/nuclear_horizons/reactors/items/material/MaterialsChemical.java
