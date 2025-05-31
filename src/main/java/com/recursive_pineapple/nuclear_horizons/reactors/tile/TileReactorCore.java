@@ -1063,6 +1063,11 @@ public class TileReactorCore extends TileEntity
         return isFluid;
     }
 
+    @Override
+    public int getTickRate() {
+        return REACTOR_TICK_SPEED;
+    }
+
     // #endregion
 
     // #region Reactor Structure Logic

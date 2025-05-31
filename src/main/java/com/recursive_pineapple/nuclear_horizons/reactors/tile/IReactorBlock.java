@@ -6,23 +6,23 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid
 
 public interface IReactorBlock {
 
-    public @Nullable TileReactorCore getReactor();
+    @Nullable IReactorGrid getReactor();
 
-    public void setReactor(TileReactorCore reactor);
+    void setReactor(@Nullable TileReactorCore reactor);
 
-    public default void onHeatTick(IReactorGrid reactor) {
-
-    }
-
-    public default void onEnergyTick(IReactorGrid reactor) {
+    default void onHeatTick(IReactorGrid reactor) {
 
     }
 
-    public default ReactorEnableState getEnableState() {
+    default void onEnergyTick(IReactorGrid reactor) {
+
+    }
+
+    default ReactorEnableState getEnableState() {
         return ReactorEnableState.Idle;
     }
 
-    public static enum ReactorEnableState {
+    enum ReactorEnableState {
         Active,
         Idle,
         Inhibiting,

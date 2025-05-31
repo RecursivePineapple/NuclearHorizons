@@ -282,6 +282,11 @@ public class Simulator {
             return config.fluid;
         }
 
+        @Override
+        public int getTickRate() {
+            throw new UnsupportedOperationException();
+        }
+
         public void run() {
             this.reactorTickCounter = 0;
 

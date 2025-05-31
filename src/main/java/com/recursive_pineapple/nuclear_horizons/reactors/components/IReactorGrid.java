@@ -6,33 +6,35 @@ import net.minecraft.item.ItemStack;
 
 public interface IReactorGrid {
 
-    public int getWidth();
+    int getWidth();
 
-    public int getHeight();
+    int getHeight();
 
-    public @Nullable IComponentAdapter getComponent(int x, int y);
+    @Nullable IComponentAdapter getComponent(int x, int y);
 
-    public @Nullable ItemStack getItem(int x, int y);
+    @Nullable ItemStack getItem(int x, int y);
 
-    public void setItem(int x, int y, @Nullable ItemStack item);
+    void setItem(int x, int y, @Nullable ItemStack item);
 
-    public boolean isActive();
+    boolean isActive();
 
-    public int getHullHeat();
+    int getHullHeat();
 
-    public int getMaxHullHeat();
+    int getMaxHullHeat();
 
-    public default float getHeatRatio() {
+    default float getHeatRatio() {
         return getHullHeat() / (float) getMaxHullHeat();
     }
 
-    public void setHullHeat(int newHeat);
+    void setHullHeat(int newHeat);
 
-    public void addHullHeat(int delta);
+    void addHullHeat(int delta);
 
-    public int addAirHeat(int delta);
+    int addAirHeat(int delta);
 
-    public void addEU(double eu);
+    void addEU(double eu);
 
-    public boolean isFluid();
+    boolean isFluid();
+
+    int getTickRate();
 }
