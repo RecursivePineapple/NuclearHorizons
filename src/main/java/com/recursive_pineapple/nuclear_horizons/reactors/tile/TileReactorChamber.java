@@ -38,9 +38,9 @@ public class TileReactorChamber extends TileEntity
     @Override
     public void setReactor(TileReactorCore reactor) {
         if (getReactor() != reactor) {
-            this.reactorRelX = reactor != null ? reactor.xCoord - xCoord : 0;
-            this.reactorRelY = reactor != null ? reactor.yCoord - yCoord : 0;
-            this.reactorRelZ = reactor != null ? reactor.zCoord - zCoord : 0;
+            this.reactorRelX = reactor == null ? 0 : reactor.xCoord - xCoord;
+            this.reactorRelY = reactor == null ? 0 : reactor.yCoord - yCoord;
+            this.reactorRelZ = reactor == null ? 0 : reactor.zCoord - zCoord;
             this.markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }

@@ -35,9 +35,9 @@ public class TileAccessHatch extends TileEntity implements IInventory, IReactorB
     @Override
     public void setReactor(TileReactorCore reactor) {
         if (getReactor() != reactor) {
-            this.reactorRelX = reactor.xCoord - xCoord;
-            this.reactorRelY = reactor.yCoord - yCoord;
-            this.reactorRelZ = reactor.zCoord - zCoord;
+            this.reactorRelX = reactor == null ? 0 : reactor.xCoord - xCoord;
+            this.reactorRelY = reactor == null ? 0 : reactor.yCoord - yCoord;
+            this.reactorRelZ = reactor == null ? 0 : reactor.zCoord - zCoord;
             this.markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }

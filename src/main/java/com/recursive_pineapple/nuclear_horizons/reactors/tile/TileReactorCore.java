@@ -1,5 +1,9 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.tile;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -27,6 +31,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.forge.InvWrapper;
@@ -55,24 +67,24 @@ import com.recursive_pineapple.nuclear_horizons.reactors.tile.IReactorBlock.Reac
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
 
 import cofh.api.energy.IEnergyReceiver;
+import com.recursive_pineapple.nuclear_horizons.utils.NHStructureChannels;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import ic2.api.energy.tile.IEnergySink;
 
 public class TileReactorCore extends TileEntity
-    implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected, IDebugableTileEntity {
+    implements IInventory, IReactorGrid, ITileWithModularUI, IEnergyConnected, IDebugableTileEntity, IConstructable, ISurvivalConstructable {
 
     public static final int ROW_COUNT = 6;
     public static final int COL_COUNT = 9;
 
-    private static final int REACTOR_TICK_SPEED = 10;
+    private static final int REACTOR_TICK_SPEED = 20;
     private static final int REACTOR_STRUCTURE_CHECK_PERIOD = 10 * 20;
 
-    private final ArrayList<EntityPlayer> viewingPlayers = new ArrayList<>();
-
-    private int chambers = 0;
     private ItemStack[] contents = new ItemStack[ROW_COUNT * COL_COUNT];
     private IComponentAdapter[] components = new IComponentAdapter[ROW_COUNT * COL_COUNT];
 
@@ -80,6 +92,7 @@ public class TileReactorCore extends TileEntity
 
     boolean isActive = false;
     boolean isFluid = false;
+    boolean checkStructureImmediately = false;
 
     int storedHeat = 0;
     int addedHeat = 0;
@@ -96,7 +109,9 @@ public class TileReactorCore extends TileEntity
     FluidTank coolantTank = new FluidTank(10_000);
     FluidTank hotCoolantTank = new FluidTank(10_000);
 
-    private ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
+    private final ArrayList<IReactorBlock> reactorBlocks = new ArrayList<>();
+    private final ArrayList<TileReactorChamber> chambers = new ArrayList<>();
+    private int chamberCount = 0;
 
     private double heatRatio = 0;
 
@@ -179,44 +194,43 @@ public class TileReactorCore extends TileEntity
     // #region Tile Entity Logic
 
     public int getColumnCount() {
-        return chambers + 3;
+        return getChamberCount() + 3;
     }
 
-    public void setChamberCount(int chambers) {
-        if (chambers == this.chambers) {
-            return;
-        }
+    public int getChamberCount() {
+        return worldObj.isRemote ? chamberCount : chambers.size();
+    }
 
-        this.chambers = chambers;
+    private void dropExtraItems() {
+        if (worldObj.isRemote) return;
 
-        for (var player : viewingPlayers.toArray(new EntityPlayer[viewingPlayers.size()])) {
-            player.closeScreen();
-        }
-
-        viewingPlayers.clear();
+        int cols = getColumnCount();
 
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < COL_COUNT; col++) {
-                if (col >= this.getColumnCount()) {
-                    var item = contents[row * COL_COUNT + col];
-                    contents[row * COL_COUNT + col] = null;
-                    if (item != null && !worldObj.isRemote) {
-                        worldObj
-                            .spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
-                    }
-                }
+                if (col < cols) continue;
+
+                var item = contents[row * COL_COUNT + col];
+                contents[row * COL_COUNT + col] = null;
+
+                if (item == null) continue;
+
+                worldObj.spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
             }
         }
     }
 
     public void dropInventory() {
+        if (worldObj.isRemote) return;
+
         for (int row = 0; row < ROW_COUNT; row++) {
             for (int col = 0; col < COL_COUNT; col++) {
                 var item = contents[row * COL_COUNT + col];
                 contents[row * COL_COUNT + col] = null;
-                if (item != null && !worldObj.isRemote) {
-                    worldObj.spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
-                }
+
+                if (item == null) continue;
+
+                worldObj.spawnEntityInWorld(new EntityItem(worldObj, this.xCoord, this.yCoord, this.zCoord, item));
             }
         }
     }
@@ -237,10 +251,11 @@ public class TileReactorCore extends TileEntity
         compound.setTag("coolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
         compound.setTag("hotCoolantTank", hotCoolantTank.writeToNBT(new NBTTagCompound()));
 
-        var grid = new NBTTagCompound();
+        NBTTagCompound grid = new NBTTagCompound();
 
         for (int i = 0; i < contents.length; i++) {
-            var item = contents[i];
+            ItemStack item = contents[i];
+
             if (item != null) {
                 grid.setTag(Integer.toString(i), item.writeToNBT(new NBTTagCompound()));
             }
@@ -256,7 +271,7 @@ public class TileReactorCore extends TileEntity
         int version = compound.getInteger("version");
 
         switch (version) {
-            case 1: {
+            case 1 -> {
                 this.storedHeat = compound.getInteger("heat");
                 this.roundedHeat = compound.getInteger("roundedHeat");
                 this.storedEU = compound.getInteger("storedEU");
@@ -268,7 +283,6 @@ public class TileReactorCore extends TileEntity
                 this.hotCoolantTank.readFromNBT(compound.getCompoundTag("hotCoolantTank"));
 
                 if (this.coolantTank.getFluid() != null && !CoolantRegistry.isColdCoolant(this.coolantTank.getFluid().getFluid())) {
-                    // TODO: figure out if there's a mechanism to migrate fluids
                     this.coolantTank.setFluid(null);
                 }
 
@@ -291,34 +305,42 @@ public class TileReactorCore extends TileEntity
                         }
                     }
                 }
-
-                break;
             }
         }
+    }
+
+    public void queueStructureCheck() {
+        checkStructureImmediately = true;
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
 
-        this.setChamberCount(getAttachedChambers(worldObj, xCoord, yCoord, zCoord));
-
         this.tickCounter++;
 
         if (!this.worldObj.isRemote) {
+            if (this.tickCounter % REACTOR_STRUCTURE_CHECK_PERIOD == 0 || checkStructureImmediately) {
+                checkStructureImmediately = false;
+
+                doStructureCheck();
+            }
+
             if (this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 boolean wasActive = isActive;
 
-                this.isActive = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                // There isn't a reasonable way to power the internals of a fluid nuke, so don't bother checking them
+                // If they are receiving power, it's almost certainly not intentional
+                if (!this.isFluid) {
+                    this.isActive = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
-                for (var dir : DirectionUtil.values()) {
-                    // spotless:off
-                    this.isActive |= worldObj.isBlockIndirectlyGettingPowered(
-                        dir.offsetX + xCoord,
-                        dir.offsetY + yCoord,
-                        dir.offsetZ + zCoord
-                    );
-                    // spotless:on
+                    for (var dir : DirectionUtil.values()) {
+                        Block block = worldObj.getBlock(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord);
+
+                        if (block != BlockList.REACTOR_CHAMBER) continue;
+
+                        this.isActive |= worldObj.isBlockIndirectlyGettingPowered(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord);
+                    }
                 }
 
                 if (this.isFluid) {
@@ -337,21 +359,14 @@ public class TileReactorCore extends TileEntity
                     }
                 }
 
-                if ((this.tickCounter / REACTOR_TICK_SPEED) % 2 == 0) {
-                    this.doHeatTick();
-                } else {
-                    this.doEUTick();
-                }
+                this.doHeatTick();
+                this.doEUTick();
 
                 if (wasActive != isActive) {
                     worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isActive ? 1 : 0, 3);
                 }
 
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            }
-
-            if (this.tickCounter % REACTOR_STRUCTURE_CHECK_PERIOD == 0) {
-                doStructureCheck();
             }
 
             this.emitEnergy();
@@ -387,7 +402,7 @@ public class TileReactorCore extends TileEntity
     public Packet getDescriptionPacket() {
         var data = new NBTTagCompound();
 
-        data.setInteger("chambers", chambers);
+        data.setInteger("chambers", chambers.size());
         data.setBoolean("isActive", isActive);
         data.setInteger("storedEU", storedEU);
         data.setInteger("storedHeat", storedHeat);
@@ -406,7 +421,7 @@ public class TileReactorCore extends TileEntity
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         var data = pkt.func_148857_g();
 
-        this.chambers = data.getInteger("chambers");
+        this.chamberCount = data.getInteger("chambers");
         this.isActive = data.getBoolean("isActive");
         this.storedEU = data.getInteger("storedEU");
         this.storedHeat = data.getInteger("storedHeat");
@@ -417,26 +432,6 @@ public class TileReactorCore extends TileEntity
         this.isFluid = data.getBoolean("isFluid");
         this.coolantTank.readFromNBT(data.getCompoundTag("coolantTank"));
         this.hotCoolantTank.readFromNBT(data.getCompoundTag("hotCoolantTank"));
-    }
-
-    public static int getAttachedChambers(World worldIn, int x, int y, int z) {
-        int chamberCount = 0;
-
-        for (var d : DirectionUtil.values()) {
-            if (d.getBlock(worldIn, x, y, z) == BlockList.REACTOR_CHAMBER) {
-                chamberCount++;
-            }
-        }
-
-        return chamberCount;
-    }
-
-    public void addViewingPlayer(EntityPlayer player) {
-        this.viewingPlayers.add(player);
-    }
-
-    public void removeViewingPlayer(EntityPlayer player) {
-        this.viewingPlayers.remove(player);
     }
 
     // #endregion
@@ -474,10 +469,10 @@ public class TileReactorCore extends TileEntity
         int availableAmps = this.storedEU / this.voltage;
 
         if (availableAmps > 0) {
-            long consumedAmps = emitEnergyToNetwork(this.voltage, availableAmps, this);
+            int consumedAmps = emitEnergyToNetwork(this.voltage, availableAmps, this);
 
             for (var dir : DirectionUtil.values()) {
-                if ((availableAmps - consumedAmps) <= 0) {
+                if (availableAmps - consumedAmps <= 0) {
                     break;
                 }
 
@@ -490,8 +485,8 @@ public class TileReactorCore extends TileEntity
         }
     }
 
-    private static long emitEnergyToNetwork(long voltage, long amperage, TileEntity emitter) {
-        long usedAmperes = 0;
+    private static int emitEnergyToNetwork(int voltage, int amperage, TileEntity emitter) {
+        int usedAmperes = 0;
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (usedAmperes > amperage) break;
@@ -500,15 +495,15 @@ public class TileReactorCore extends TileEntity
             TileEntity tTileEntity = emitter.getWorldObj().getTileEntity(emitter.xCoord + side.offsetX, emitter.yCoord + side.offsetY, emitter.zCoord + side.offsetZ);
 
             if (tTileEntity instanceof IEnergyConnected energyConnected) {
-                usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
-            } else if (tTileEntity instanceof ic2.api.energy.tile.IEnergySink sink) {
+                usedAmperes += GTUtility.safeInt(energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes));
+            } else if (tTileEntity instanceof IEnergySink sink) {
                 if (sink.acceptsEnergyFrom(emitter, oppositeSide)) {
                     while (amperage > usedAmperes && sink.getDemandedEnergy() > 0 && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) {
                         usedAmperes++;
                     }
                 }
             } else if (GregTechAPI.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
-                final int rfOut = GTUtility.safeInt(voltage * GregTechAPI.mEUtoRF / 100);
+                final int rfOut = GTUtility.safeInt((long) voltage * GregTechAPI.mEUtoRF / 100);
                 if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
                     receiver.receiveEnergy(oppositeSide, rfOut, false);
                     usedAmperes++;
@@ -702,9 +697,9 @@ public class TileReactorCore extends TileEntity
         if (this.addedEU > 0) {
             int perTick = this.addedEU / 20;
 
-            int voltageTier = (int) (Math.ceil(Math.log(perTick / 8) / Math.log(4)));
+            int voltageTier = GTUtility.getTier(perTick);
 
-            this.voltage = (int) (Math.pow(4, voltageTier) * 8);
+            this.voltage = (int) GTValues.V[voltageTier];
 
             this.maxStoredEU = voltage * 20 * 30;
         }
@@ -827,9 +822,7 @@ public class TileReactorCore extends TileEntity
 
         info.add(String.format("§rStored Heat: %s%,d HU§r / §e%,d HU§r", heatColour, storedHeat, getMaxHullHeat()));
         info.add(String.format("§rHeat Generation Rate: §e%,d HU/s§r", addedHeat));
-        if (coolantTank.getFluidAmount() > 0 && coolantTank.getFluid() != null
-            && coolantTank.getFluid()
-                .getFluid() != null) {
+        if (coolantTank.getFluidAmount() > 0 && coolantTank.getFluid() != null && coolantTank.getFluid().getFluid() != null) {
             info.add(
                 String.format(
                     "§rStored Coolant: §a%,d L§r / §e%,d L§r §7%s§r",
@@ -840,9 +833,7 @@ public class TileReactorCore extends TileEntity
         } else {
             info.add(String.format("Stored Coolant: §eEmpty§r"));
         }
-        if (hotCoolantTank.getFluidAmount() > 0 && hotCoolantTank.getFluid() != null
-            && hotCoolantTank.getFluid()
-                .getFluid() != null) {
+        if (hotCoolantTank.getFluidAmount() > 0 && hotCoolantTank.getFluid() != null && hotCoolantTank.getFluid().getFluid() != null) {
             info.add(
                 String.format(
                     "§rStored Hot Coolant: §a%,d L§r / §e%,d L§r §7%s§r",
@@ -855,8 +846,7 @@ public class TileReactorCore extends TileEntity
         }
         info.add(String.format("§rStored Energy: §a%,d§r EU / §e%,d§r EU", storedEU, maxStoredEU));
         info.add(String.format("§rEnergy Generation Rate: §e%,d§r EU/t", addedEU / 20));
-        info.add(
-            String.format("§rMax Out: §c%,d EU/t (%s)§r at §c1§r A", voltage, GTValues.VN[GTUtility.getTier(voltage)]));
+        info.add(String.format("§rMax Out: §c%,d EU/t (%s)§r at §c1§r A", voltage, GTValues.VN[GTUtility.getTier(voltage)]));
 
         return info;
     }
@@ -1061,8 +1051,8 @@ public class TileReactorCore extends TileEntity
     @Override
     public void addEU(double eu) {
         if (!isFluid) {
-            this.storedEU += eu * Config.REACTOR_EU_MULTIPLIER;
-            this.addedEU += eu * Config.REACTOR_EU_MULTIPLIER;
+            this.storedEU += (int) (eu * Config.REACTOR_EU_MULTIPLIER);
+            this.addedEU += (int) (eu * Config.REACTOR_EU_MULTIPLIER);
         }
     }
 
@@ -1075,71 +1065,213 @@ public class TileReactorCore extends TileEntity
 
     // #region Reactor Structure Logic
 
-    private static boolean isInsideCube(int coord) {
-        return coord == -1 || coord == 0 || coord == 1;
+    private static int remainingChambers = 0;
+
+    // spotless:off
+    private static final IStructureDefinition<TileReactorCore> STRUCTURE_DEFINITION = StructureDefinition
+        .<TileReactorCore>builder()
+        .addShape(
+            "fluid",
+            transpose(
+                new String[][] {
+                    {"AAAAA", "ABBBA", "ABBBA", "ABBBA", "AAAAA"},
+                    {"ABBBA", "B   B", "B C B", "B   B", "ABBBA"},
+                    {"ABBBA", "B C B", "BC~CB", "B C B", "ABBBA"},
+                    {"ABBBA", "B   B", "B C B", "B   B", "ABBBA"},
+                    {"AAAAA", "ABBBA", "ABBBA", "ABBBA", "AAAAA"},
+                }))
+        .addShape(
+            "eu",
+            transpose(
+                new String[][] {
+                    {"   ", " C ", "   "},
+                    {" C ", "C~C", " C "},
+                    {"   ", " C ", "   "},
+                }))
+        .addElement('A', lazy(() -> ofBlock(BlockList.PRESSURE_VESSEL, 0)))
+        .addElement('B', lazy(() -> new GTStructureUtility.ProxyStructureElement<>(ofBlock(BlockList.PRESSURE_VESSEL, 0)) {
+
+            @Override
+            public boolean check(TileReactorCore reactor, World world, int x, int y, int z) {
+                if (world.getTileEntity(x, y, z) instanceof IReactorBlock reactorBlock) {
+                    reactor.reactorBlocks.add(reactorBlock);
+                    reactorBlock.setReactor(reactor);
+                    return true;
+                }
+
+                return super.check(reactor, world, x, y, z);
+            }
+        }))
+        .addElement('C', lazy(() -> new GTStructureUtility.ProxyStructureElement<>(ofBlock(BlockList.REACTOR_CHAMBER, 0)) {
+
+            private boolean decrement() {
+                if (remainingChambers == 0) return false;
+
+                remainingChambers--;
+
+                return true;
+            }
+
+            @Override
+            public boolean check(TileReactorCore reactor, World world, int x, int y, int z) {
+                decrement();
+
+                if (super.check(reactor, world, x, y, z)) {
+                    TileReactorChamber reactorBlock = (TileReactorChamber) world.getTileEntity(x, y, z);
+
+                    reactor.chambers.add(reactorBlock);
+                    reactorBlock.setReactor(reactor);
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(TileReactorCore reactor, World world, int x, int y, int z, ItemStack trigger) {
+                if (!decrement()) return true;
+
+                return proxiedElement.spawnHint(reactor, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean placeBlock(TileReactorCore reactor, World world, int x, int y, int z, ItemStack trigger) {
+                if (!decrement()) return true;
+
+                return proxiedElement.placeBlock(reactor, world, x, y, z, trigger);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(TileReactorCore reactor, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                if (!decrement()) return PlaceResult.ACCEPT;
+
+                return proxiedElement.survivalPlaceBlock(reactor, world, x, y, z, trigger, env);
+            }
+        }))
+        .build();
+    // spotless:on
+
+    @Override
+    public IStructureDefinition<TileReactorCore> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return new String[0];
+    }
+
+    private void resetStructure() {
+        isFluid = false;
+
+        for (TileReactorChamber c : chambers) {
+            c.setReactor(null);
+        }
+
+        chambers.clear();
+
+        for (IReactorBlock b : reactorBlocks) {
+            b.setReactor(null);
+        }
+
+        reactorBlocks.clear();
     }
 
     private void doStructureCheck() {
-        this.isFluid = true;
-        this.reactorBlocks.clear();
+        resetStructure();
 
-        for (int relX = -2; relX < 3; relX++) {
-            for (int relY = -2; relY < 3; relY++) {
-                for (int relZ = -2; relZ < 3; relZ++) {
-                    if (relX == 0 && relY == 0 && relZ == 0) {
-                        continue;
-                    }
+        boolean isFluid = STRUCTURE_DEFINITION.check(
+            this,
+            "fluid",
+            worldObj,
+            ExtendedFacing.DEFAULT,
+            xCoord, yCoord, zCoord,
+            2, 2, 2,
+            false);
 
-                    int insideCubeCount = 0;
+        if (isFluid) {
+            this.isFluid = true;
 
-                    if (isInsideCube(relX)) insideCubeCount++;
-                    if (isInsideCube(relY)) insideCubeCount++;
-                    if (isInsideCube(relZ)) insideCubeCount++;
+            dropExtraItems();
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
-                    boolean isInternal = insideCubeCount == 3;
-                    // boolean isFace = insideCubeCount == 2;
-                    boolean isEdge = insideCubeCount == 1;
-                    boolean isCorner = insideCubeCount == 0;
+            return;
+        }
 
-                    // within the center 3x3x3
-                    if (isInternal) {
-                        continue;
-                    }
+        resetStructure();
 
-                    int x = xCoord + relX, y = yCoord + relY, z = zCoord + relZ;
+        STRUCTURE_DEFINITION.check(
+            this,
+            "eu",
+            worldObj,
+            ExtendedFacing.DEFAULT,
+            xCoord, yCoord, zCoord,
+            1, 1, 1,
+            false);
 
-                    if (!worldObj.blockExists(x, y, z)) {
-                        this.isFluid = false;
-                        continue;
-                    }
+        dropExtraItems();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
-                    Block block = worldObj.getBlock(x, y, z);
+    @Override
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        boolean fluid = NHStructureChannels.FLUID.hasValue(trigger) && NHStructureChannels.FLUID.getValue(trigger) == 1;
 
-                    // valid in any spot on the surface
-                    if (block == BlockList.PRESSURE_VESSEL) {
-                        continue;
-                    }
+        remainingChambers = NHStructureChannels.CHAMBERS.hasValue(trigger) ? NHStructureChannels.FLUID.getValue(trigger) : 0;
 
-                    // edges & corners must be pressure vessels
-                    if (isEdge || isCorner) {
-                        if (block != BlockList.PRESSURE_VESSEL) {
-                            this.isFluid = false;
-                        }
-                        continue;
-                    }
+        if (fluid) {
+            STRUCTURE_DEFINITION.buildOrHints(
+                this,
+                trigger,
+                "fluid",
+                worldObj,
+                ExtendedFacing.DEFAULT,
+                xCoord, yCoord, zCoord,
+                2, 2, 2,
+                hintsOnly);
+        } else {
+            STRUCTURE_DEFINITION.buildOrHints(
+                this,
+                trigger,
+                "eu",
+                worldObj,
+                ExtendedFacing.DEFAULT,
+                xCoord, yCoord, zCoord,
+                1, 1, 1,
+                hintsOnly);
+        }
+    }
 
-                    // a face can be any IReactorBlock
-                    if (block.hasTileEntity(worldObj.getBlockMetadata(x, y, z))) {
-                        if (worldObj.getTileEntity(x, y, z) instanceof IReactorBlock reactorBlock) {
-                            reactorBlock.setReactor(this);
-                            reactorBlocks.add(reactorBlock);
-                            continue;
-                        }
-                    }
+    @Override
+    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        boolean fluid = ChannelDataAccessor.getChannelData(trigger, "fluid") == 1;
 
-                    this.isFluid = false;
-                }
-            }
+        remainingChambers = ChannelDataAccessor.getChannelData(trigger, "chambers");
+
+        if (fluid) {
+            return STRUCTURE_DEFINITION.survivalBuild(
+                this,
+                trigger,
+                "fluid",
+                worldObj,
+                ExtendedFacing.DEFAULT,
+                xCoord, yCoord, zCoord,
+                2, 2, 2,
+                elementBudget,
+                env,
+                true);
+        } else {
+            return STRUCTURE_DEFINITION.survivalBuild(
+                this,
+                trigger,
+                "eu",
+                worldObj,
+                ExtendedFacing.DEFAULT,
+                xCoord, yCoord, zCoord,
+                1, 1, 1,
+                elementBudget,
+                env,
+                true);
         }
     }
 
