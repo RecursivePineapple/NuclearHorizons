@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -23,14 +24,10 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignBreederRodItem;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignFuelRodItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignHeatAbsorberItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
 
-import bartworks.system.material.BWNonMetaMaterialItems;
-import goodgenerator.items.ItemFuelRod;
-import goodgenerator.loader.FuelRodLoader;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCell;
 import gregtech.api.items.ItemCoolantCellIC;
@@ -57,45 +54,45 @@ public class ForeignItems {
         Item iridiumReflector = gregtech.api.enums.ItemList.Neutron_Reflector.getItem();
         ComponentRegistry.registerAdapter(iridiumReflector, new ForeignNeutronReflectorItem(iridiumReflector));
 
-        registerBreederCell((ItemBreederCell) gregtech.api.enums.ItemList.GlowstoneCell.getItem());
+        registerBreederCell((ItemBreederCell) ItemList.RodGlowstone.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Uraniumcell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Uraniumcell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Uraniumcell_4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium4.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Moxcell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Moxcell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.Moxcell_4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX4.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.ThoriumCell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.ThoriumCell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.ThoriumCell_4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium4.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.NaquadahCell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.NaquadahCell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.NaquadahCell_4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah4.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.MNqCell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.MNqCell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) gregtech.api.enums.ItemList.MNqCell_4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadria.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah4.getItem());
 
-        registerFuelRod((ItemRadioactiveCellIC) BWNonMetaMaterialItems.TiberiumCell_1.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) BWNonMetaMaterialItems.TiberiumCell_2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) BWNonMetaMaterialItems.TiberiumCell_4.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) BWNonMetaMaterialItems.TheCoreCell.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah32.getItem()); // The core
 
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedUranium);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedUranium_2);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedUranium_4);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedPlutonium);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedPlutonium_2);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodCompressedPlutonium_4);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidUranium);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidUranium_2);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidUranium_4);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidPlutonium);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidPlutonium_2);
-        registerFuelRod((ItemFuelRod) FuelRodLoader.rodLiquidPlutonium_4);
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium4.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium2.getItem());
+        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium4.getItem());
     }
 
     public static void registerCoolantCell(ItemCoolantCellIC coolantCell) {
@@ -108,10 +105,6 @@ public class ForeignItems {
 
     public static void registerFuelRod(ItemRadioactiveCellIC item) {
         ComponentRegistry.registerAdapter(item, new GTRadioactiveCellAdapter(item));
-    }
-
-    public static void registerFuelRod(ItemFuelRod item) {
-        ComponentRegistry.registerAdapter(item, new GGItemFuelRodAdapter(item));
     }
 
     private static <T> Object getField(@Nonnull T object, String name) {
@@ -306,7 +299,7 @@ public class ForeignItems {
 
     private static class GGItemFuelRodAdapter implements IBasicFuelRod, IComponentAdapterFactory {
 
-        private final ItemFuelRod item;
+        private final ItemRadioactiveCellIC item;
         private final int numberOfCells;
         private final float Power;
         private final int Heat;
@@ -315,12 +308,12 @@ public class ForeignItems {
         private Fluid spargeGas;
         private int spargeMin, spargeMax;
 
-        public GGItemFuelRodAdapter(ItemFuelRod item) {
+        public GGItemFuelRodAdapter(ItemRadioactiveCellIC item) {
             this.item = item;
-            numberOfCells = (int) getField(item, "numberOfCells");
-            Power = (float) getField(item, "Power");
-            Heat = (int) getField(item, "Heat");
-            HeatBonus = (float) getField(item, "HeatBonus");
+            numberOfCells = (int) getField(item, "aCellcount");
+            Power = (float) getField(item, "aEnergy");
+            Heat = (int) getField(item, "aHeat");
+            HeatBonus = (float) getField(item, "aHeatBonus");
             result = (ItemStack) getField(item, "result");
         }
 
@@ -378,12 +371,12 @@ public class ForeignItems {
 
         @Override
         public int getRemainingHealth(@Nonnull ItemStack itemStack) {
-            return item.getMaxCustomDamage(itemStack) - item.getCustomDamage(itemStack);
+            return item.getMaxDamage(itemStack) - item.getDamageOfStack(itemStack);
         }
 
         @Override
         public void applyDamage(@Nonnull ItemStack itemStack, int damage) {
-            item.setCustomDamage(itemStack, item.getCustomDamage(itemStack) + damage);
+            item.setDamageForStack(itemStack, item.getDamageOfStack(itemStack) + damage);
         }
 
         @Override

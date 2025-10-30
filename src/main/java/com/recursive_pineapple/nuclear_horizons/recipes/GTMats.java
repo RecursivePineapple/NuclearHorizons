@@ -196,7 +196,7 @@ public class GTMats {
     public static final MaterialWrapper EMERY = MaterialWrapper.of(() -> Materials.Emery);
     public static final MaterialWrapper ENDERIUMBASE = MaterialWrapper.of(() -> Materials.EnderiumBase);
     public static final MaterialWrapper ENERGIZED = MaterialWrapper.of(() -> Materials.Energized);
-    public static final MaterialWrapper EPIDOTE = MaterialWrapper.of(() -> Materials.Epidote);
+//    public static final MaterialWrapper EPIDOTE = MaterialWrapper.of(() -> Materials.Epidote); I think this is depricated, but not sure what its replaced by
     public static final MaterialWrapper EXIMITE = MaterialWrapper.of(() -> Materials.Eximite);
     public static final MaterialWrapper FIERYSTEEL = MaterialWrapper.of(() -> Materials.FierySteel);
     public static final MaterialWrapper FIRESTONE = MaterialWrapper.of(() -> Materials.Firestone);

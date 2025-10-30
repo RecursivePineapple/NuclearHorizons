@@ -1,7 +1,5 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
-import net.minecraft.item.ItemStack;
-
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
 import com.recursive_pineapple.nuclear_horizons.recipes.GTMats;
 
@@ -273,41 +271,6 @@ public class ItemList {
     public static final MetaCellItem CELLS = new MetaCellItem();
 
     public static void registerItems() {
-        THORIUM_1X_ROD.register();
-        DEPLETED_THORIUM_1X_ROD.register();
-        THORIUM_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_1X_ROD, 1));
-
-        THORIUM_2X_ROD.register();
-        DEPLETED_THORIUM_2X_ROD.register();
-        THORIUM_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_2X_ROD, 1));
-
-        THORIUM_4X_ROD.register();
-        DEPLETED_THORIUM_4X_ROD.register();
-        THORIUM_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_THORIUM_4X_ROD, 1));
-
-        URANIUM_1X_ROD.register();
-        DEPLETED_URANIUM_1X_ROD.register();
-        URANIUM_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_1X_ROD, 1));
-
-        URANIUM_2X_ROD.register();
-        DEPLETED_URANIUM_2X_ROD.register();
-        URANIUM_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_2X_ROD, 1));
-
-        URANIUM_4X_ROD.register();
-        DEPLETED_URANIUM_4X_ROD.register();
-        URANIUM_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_URANIUM_4X_ROD, 1));
-
-        MOX_1X_ROD.register();
-        DEPLETED_MOX_ROD.register();
-        MOX_1X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_ROD, 1));
-
-        MOX_2X_ROD.register();
-        DEPLETED_MOX_2X_ROD.register();
-        MOX_2X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_2X_ROD, 1));
-
-        MOX_4X_ROD.register();
-        DEPLETED_MOX_4X_ROD.register();
-        MOX_4X_ROD.setProduct(new ItemStack(ItemList.DEPLETED_MOX_4X_ROD, 1));
 
         BASIC_HEAT_VENT.register();
         ADVANCED_HEAT_VENT.register();

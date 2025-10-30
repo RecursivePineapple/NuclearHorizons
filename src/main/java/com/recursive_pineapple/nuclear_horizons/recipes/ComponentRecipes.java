@@ -3,6 +3,7 @@ package com.recursive_pineapple.nuclear_horizons.recipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
@@ -14,7 +15,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.Ic2Items;
 
 public class ComponentRecipes {
@@ -79,7 +79,7 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(21),
                 Materials.Aluminium.getPlates(2),
                 gregtech.api.enums.ItemList.Electric_Motor_LV.get(1L),
-                ItemUtils.getItemStackFromFQRN("dreamcraft:item.SteelBars", 2))
+                new ItemStack(Item.getItemById(101), 2))
             .fluidInputs()
             .itemOutputs(new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
             .duration(10 * SECONDS)
@@ -103,8 +103,8 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(21),
                 Ic2Items.industrialDiamond,
                 new ItemStack(ItemList.BASIC_HEAT_VENT, 1),
-                ItemUtils.getItemStackFromFQRN("dreamcraft:item.StainlessSteelBars", 4))
-            .fluidInputs()
+                new ItemStack(Item.getItemById(101), 2)
+            )
             .itemOutputs(new ItemStack(ItemList.ADVANCED_HEAT_VENT, 1))
             .duration(15 * SECONDS)
             .eut(256)
@@ -114,7 +114,7 @@ public class ComponentRecipes {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2),
-                ItemUtils.getItemStackFromFQRN("dreamcraft:item.StainlessSteelBars", 4),
+                new ItemStack(Item.getItemById(101), 2),
                 new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
             .fluidInputs()
             .itemOutputs(new ItemStack(ItemList.COMPONENT_HEAT_VENT, 1))
