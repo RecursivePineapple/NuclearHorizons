@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.recursive_pineapple.nuclear_horizons.Config;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -53,7 +53,7 @@ public class FluidList {
         ItemStack empty = new ItemStack(GameRegistry.findItem("IC2", "itemCellEmpty"));
 
         FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerData(new FluidStack(fluid, 1000), new ItemStack(ItemList.CELLS, 1, metadata), empty));
+            new FluidContainerData(new FluidStack(fluid, 1000), new ItemStack(NHItemList.CELLS, 1, metadata), empty));
     }
 
     public static void registerCoolants() {

@@ -196,7 +196,6 @@ public class GTMats {
     public static final MaterialWrapper EMERY = MaterialWrapper.of(() -> Materials.Emery);
     public static final MaterialWrapper ENDERIUMBASE = MaterialWrapper.of(() -> Materials.EnderiumBase);
     public static final MaterialWrapper ENERGIZED = MaterialWrapper.of(() -> Materials.Energized);
-//    public static final MaterialWrapper EPIDOTE = MaterialWrapper.of(() -> Materials.Epidote); I think this is depricated, but not sure what its replaced by
     public static final MaterialWrapper EXIMITE = MaterialWrapper.of(() -> Materials.Eximite);
     public static final MaterialWrapper FIERYSTEEL = MaterialWrapper.of(() -> Materials.FierySteel);
     public static final MaterialWrapper FIRESTONE = MaterialWrapper.of(() -> Materials.Firestone);
@@ -788,6 +787,17 @@ public class GTMats {
     public static final MaterialWrapper HELLISHMETAL = MaterialWrapper.of(() -> Materials.HellishMetal);
     public static final MaterialWrapper NETHERITE = MaterialWrapper.of(() -> Materials.Netherite);
     public static final MaterialWrapper ACTIVATEDNETHERITE = MaterialWrapper.of(() -> Materials.ActivatedNetherite);
+    public static final MaterialWrapper PRISMARINESOLUTION = MaterialWrapper.of(() -> Materials.PrismarineSolution);
+    public static final MaterialWrapper PRISMARINECONTAMINATEDHYDROGENPEROXIDE = MaterialWrapper.of(() -> Materials.PrismarineContaminatedHydrogenPeroxide);
+    public static final MaterialWrapper PRISMARINERICHNITROBENZENESOLUTION = MaterialWrapper.of(() -> Materials.PrismarineRichNitrobenzeneSolution);
+    public static final MaterialWrapper PRISMARINECONTAMINATEDNITROBENZESOLUTION = MaterialWrapper.of(() -> Materials.PrismarineContaminatedNitrobenzeSolution);
+    public static final MaterialWrapper PRISMATICGAS = MaterialWrapper.of(() -> Materials.PrismaticGas);
+    public static final MaterialWrapper PRISMATICACID = MaterialWrapper.of(() -> Materials.PrismaticAcid);
+    public static final MaterialWrapper PRISMATICNAQUADAH = MaterialWrapper.of(() -> Materials.PrismaticNaquadah);
+    public static final MaterialWrapper PRISMATICNAQUADAHCOMPOSITESLURRY = MaterialWrapper.of(() -> Materials.PrismaticNaquadahCompositeSlurry);
+    public static final MaterialWrapper COMPLEXITYCATALYST = MaterialWrapper.of(() -> Materials.ComplexityCatalyst);
+    public static final MaterialWrapper ENTROPICCATALYST = MaterialWrapper.of(() -> Materials.EntropicCatalyst);
+    public static final MaterialWrapper STEAM = MaterialWrapper.of(() -> Materials.Steam);
     //#endregion
 
     //#region src/main/java/gregtech/api/enums/MaterialsKevlar.java

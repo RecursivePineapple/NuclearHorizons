@@ -91,6 +91,7 @@ nh_tooltip.fuel_rod.gen_stats=Generate %1$,d * n * (n + 1) HU\nGenerate %2$,d * 
 nh_tooltip.fuel_rod.mox_stats=\nIf the reactor's hull heat is above 50%, the HU output will be multiplied by 2.\nThe EU output will always be multiplied by 1 + %1$f * (Current Heat / Max Heat).
 nh_tooltip.fuel_rod.heat_epilogue=\nIf there are adjacent components which can contain heat, heat will be spread among them evenly.\nOtherwise, heat will be added to the reactor hull.
 
+nh_tooltip.rod.lifetime=Remaining lifetime: %1$,ds / %2$,ds
 nh_tooltip.mover.reactor_xfer=Transfer up to %d HU between the reactor and itself.
 nh_tooltip.exchanger.comp_xfer=Transfer up to %d HU between its neighbours and itself.
 nh_tooltip.vent.void_self=Dissipate up to %d HU from itself.

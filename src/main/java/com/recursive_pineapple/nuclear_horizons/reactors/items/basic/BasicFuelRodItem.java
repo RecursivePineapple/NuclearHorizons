@@ -111,4 +111,9 @@ public class BasicFuelRodItem extends ReactorItem implements IBasicFuelRod {
 
         chunks.add(I18n.format("nh_tooltip.fuel_rod.heat_epilogue"));
     }
+
+    @Override
+    protected String getDurabilityTooltip(ItemStack itemStack) {
+        return I18n.format("nh_tooltip.rod.lifetime", this.getRemainingHealth(itemStack), itemStack.getMaxDamage());
+    }
 }

@@ -3,7 +3,7 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
 import com.recursive_pineapple.nuclear_horizons.recipes.GTMats;
 
-public class ItemList {
+public class NHItemList {
 
     public static final BasicFuelRodItem THORIUM_1X_ROD = new BasicFuelRodItem(
         "fuelRodThorium",
