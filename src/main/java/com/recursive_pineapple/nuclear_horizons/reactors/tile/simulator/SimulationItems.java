@@ -1,64 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator;
 
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.ADVANCED_HEAT_EXCHANGER;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.ADVANCED_HEAT_VENT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.BASIC_HEAT_EXCHANGER;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.BASIC_HEAT_VENT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.COMPONENT_HEAT_EXCHANGER;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.COMPONENT_HEAT_VENT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.COOLANT_CELL_10k;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.COOLANT_CELL_30k;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.COOLANT_CELL_60k;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.LZH_CONDENSATOR;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.NEUTRON_REFLECTOR;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.OVERCLOCKED_HEAT_VENT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.REACTOR_HEAT_EXCHANGER;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.REACTOR_HEAT_VENT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.REACTOR_PLATING;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.REACTOR_PLATING_EXPLOSIVE;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.REACTOR_PLATING_HEAT;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.RSH_CONDENSATOR;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.THICK_NEUTRON_REFLECTOR;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.URANIUM_1X_ROD;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.URANIUM_2X_ROD;
-import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.URANIUM_4X_ROD;
-import static gregtech.api.enums.ItemList.Neutron_Reflector;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_He_1;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_He_3;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_He_6;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_NaK_1;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_NaK_3;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_NaK_6;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_Sp_1;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_Sp_2;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_Sp_3;
-import static gregtech.api.enums.ItemList.Reactor_Coolant_Sp_6;
-import static gregtech.api.enums.ItemList.RodExcitedPlutonium;
-import static gregtech.api.enums.ItemList.RodExcitedPlutonium2;
-import static gregtech.api.enums.ItemList.RodExcitedUranium;
-import static gregtech.api.enums.ItemList.RodExcitedUranium2;
-import static gregtech.api.enums.ItemList.RodExcitedUranium4;
-import static gregtech.api.enums.ItemList.RodGlowstone;
-import static gregtech.api.enums.ItemList.RodHighDensityPlutonium;
-import static gregtech.api.enums.ItemList.RodHighDensityPlutonium2;
-import static gregtech.api.enums.ItemList.RodHighDensityPlutonium4;
-import static gregtech.api.enums.ItemList.RodHighDensityUranium;
-import static gregtech.api.enums.ItemList.RodHighDensityUranium2;
-import static gregtech.api.enums.ItemList.RodHighDensityUranium4;
-import static gregtech.api.enums.ItemList.RodNaquadah;
-import static gregtech.api.enums.ItemList.RodNaquadah2;
-import static gregtech.api.enums.ItemList.RodNaquadah32;
-import static gregtech.api.enums.ItemList.RodNaquadah4;
-import static gregtech.api.enums.ItemList.RodNaquadria;
-import static gregtech.api.enums.ItemList.RodNaquadria2;
-import static gregtech.api.enums.ItemList.RodNaquadria4;
-import static gregtech.api.enums.ItemList.RodThorium;
-import static gregtech.api.enums.ItemList.RodThorium2;
-import static gregtech.api.enums.ItemList.RodThorium4;
-import static gregtech.api.enums.ItemList.RodTiberium;
-import static gregtech.api.enums.ItemList.RodTiberium2;
-import static gregtech.api.enums.ItemList.RodTiberium4;
-import static gregtech.api.enums.ItemList.neutroniumHeatCapacitor;
+import static com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList.*;
+import static gregtech.api.enums.ItemList.*;
 
 import java.util.HashMap;
 
@@ -66,10 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
-
-import bartworks.system.material.BWNonMetaMaterialItems;
-import goodgenerator.loader.FuelRodLoader;
+import gregtech.api.enums.ItemList;
 
 public class SimulationItems {
 
@@ -81,7 +21,7 @@ public class SimulationItems {
         reactorItemIdsByItem.put(item, id);
     }
 
-    public static void registerSimulationItem(int id, gregtech.api.enums.ItemList item) {
+    public static void registerSimulationItem(int id, ItemList item) {
         reactorItemsById.put(id, item.getItem());
         reactorItemIdsByItem.put(item.getItem(), id);
     }

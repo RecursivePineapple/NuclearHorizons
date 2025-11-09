@@ -8,8 +8,6 @@ GT5u="../GT5-Unofficial"
 
 gtStyle=[
     ("src/main/java/gregtech/api/enums/Materials.java", r"public static Materials (\w+);"),
-    ("src/main/java/gregtech/api/enums/MaterialsKevlar.java", r"public static Materials (\w+) ="),
-    ("src/main/java/gregtech/api/enums/MaterialsUEVplus.java", r"public static Materials (\w+) =")
 ]
 
 bwStyle=[
@@ -38,8 +36,6 @@ out=[
     "import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;",
     "import goodgenerator.items.GGMaterial;",
     "import gregtech.api.enums.Materials;",
-    "import gregtech.api.enums.MaterialsKevlar;",
-    "import gregtech.api.enums.MaterialsUEVplus;",
     "import gtPlusPlus.core.material.MaterialMisc;",
     "import gtPlusPlus.core.material.MaterialsAlloy;",
     "import gtPlusPlus.core.material.MaterialsElements;",

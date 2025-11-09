@@ -2,12 +2,14 @@ package com.recursive_pineapple.nuclear_horizons.reactors.items.material;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.CustomGlyphs;
 
 public class MaterialsNuclear {
 
     public static final Werkstoff.GenerationFeatures DUST = new Werkstoff.GenerationFeatures().disable().onlyDust();
     public static final Werkstoff.GenerationFeatures FLUID = new Werkstoff.GenerationFeatures().disable().addCells();
     public static final Werkstoff.Stats DEFAULT_STATS = new Werkstoff.Stats().setElektrolysis(false);
+    public static final Werkstoff.Stats SYNTH = new Werkstoff.Stats().setElektrolysis(true);
     public static final Werkstoff.Stats RADIO_STATS = new Werkstoff.Stats().setElektrolysis(false).setRadioactive(true);
 
     public static final Werkstoff NATURAL_URANIUM = new Werkstoff(
@@ -20,30 +22,20 @@ public class MaterialsNuclear {
         MaterialIDs.NATURAL_URANIUM.id,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff NATURAL_URANIUM_TETRAFLUORIDE = new Werkstoff(
-        new short[] { 34, 138, 103 },
-        "Natural Uranium Tetrafluoride",
-        process("??UF↓4??"),
-        RADIO_STATS,
-        Werkstoff.Types.COMPOUND,
-        DUST,
-        MaterialIDs.NATURAL_URANIUM_TETRAFLUORIDE.id,
-        TextureSet.SET_DULL);
-
     public static final Werkstoff NATURAL_URANIUM_HEXAFLUORIDE = new Werkstoff(
-        new short[] { 49, 138, 34 },
+        rgb(0xc7e6c3),
         "Natural Uranium Hexafluoride",
         process("??UF↓6??"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
-        FLUID,
+        new Werkstoff.GenerationFeatures().disable().onlyDust().addCells(),
         MaterialIDs.NATURAL_URANIUM_HEXAFLUORIDE.id,
         TextureSet.SET_FLUID);
 
     public static final Werkstoff DEPLETED_URANIUM_HEXAFLUORIDE = new Werkstoff(
         new short[] { 57, 190, 33 },
         "Depleted Uranium Hexafluoride",
-        process("?U↑238F↓6?"),
+        process("?↑238UF↓6?"),
         DEFAULT_STATS,
         Werkstoff.Types.COMPOUND,
         FLUID,
@@ -53,7 +45,7 @@ public class MaterialsNuclear {
     public static final Werkstoff ENRICHED_URANIUM_HEXAFLUORIDE = new Werkstoff(
         new short[] { 84, 242, 55 },
         "Enriched Uranium Hexafluoride",
-        process("?U↑235F↓6?"),
+        process("?↑235UF↓6?"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         FLUID,
@@ -63,7 +55,7 @@ public class MaterialsNuclear {
     public static final Werkstoff ENRICHED_URANIUM_FUEL = new Werkstoff(
         new short[] { 92, 214, 92 },
         "Enriched Uranium Fuel",
-        process("UO↓2(U↑238O↓2)↓4"),
+        process("?UO↓2?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -73,7 +65,7 @@ public class MaterialsNuclear {
     public static final Werkstoff ENRICHED_THORIUM_FUEL = new Werkstoff(
         new short[] { 0, 77, 0 },
         "Enriched Thorium Fuel",
-        process("UO↓2(ThO↓2)↓15"),
+        process("?(UO↓2)(ThO↓2)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -81,9 +73,9 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff ENRICHED_MOX_FUEL = new Werkstoff(
-        new short[] { 150, 138, 0 },
-        "Enriched Mixed Oxide Fuel",
-        process("PuO↓2(U↑238O↓2)↓4"),
+        rgb(0x994433),
+        "Enriched Mixed Metal Oxide Fuel",
+        process("?(PuO↓2)(UO↓2)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -93,7 +85,7 @@ public class MaterialsNuclear {
     public static final Werkstoff DEPLETED_URANIUM_FUEL = new Werkstoff(
         new short[] { 41, 163, 41 },
         "Depleted Uranium Fuel",
-        process("??U↑238O↓2??"),
+        process("??↑238UO↓2??"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -111,9 +103,9 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff DEPLETED_MOX_FUEL = new Werkstoff(
-        new short[] { 206, 138, 0 },
-        "Depleted Mixed Oxide Fuel",
-        process("??U↑238O↓2??"),
+        rgb(0x512626),
+        "Depleted Mixed Metal Oxide Fuel",
+        process("?(PuO↓2)(UO↓2)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         DUST,
@@ -123,7 +115,7 @@ public class MaterialsNuclear {
     public static final Werkstoff DEPLETED_URANIUM_FUEL_SOLUTION = new Werkstoff(
         new short[] { 41, 163, 41 },
         "Depleted Uranium Fuel Solution",
-        process("??(U↑238O↓2)(HNO↓3)??"),
+        process("??(↑238UO↓2)(HNO↓3)??"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -133,21 +125,11 @@ public class MaterialsNuclear {
     public static final Werkstoff DEPLETED_THORIUM_FUEL_SOLUTION = new Werkstoff(
         new short[] { 0, 122, 0 },
         "Depleted Thorium Fuel Solution",
-        process("??(ThO2)(HNO3)(HF)??"),
+        process("??(ThO↓2)(HNO↓3)??"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
         MaterialIDs.DEPLETED_THORIUM_FUEL_SOLUTION.id,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff DEPLETED_MOX_FUEL_SOLUTION = new Werkstoff(
-        new short[] { 206, 138, 0 },
-        "Depleted Mixed Oxide Fuel Solution",
-        process("??(U↑238O↓2)(HNO↓3)??"),
-        RADIO_STATS,
-        Werkstoff.Types.MIXTURE,
-        FLUID,
-        MaterialIDs.DEPLETED_MOX_FUEL_SOLUTION.id,
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PU_SOLUTION_AQ_PHASE = new Werkstoff(
@@ -173,7 +155,7 @@ public class MaterialsNuclear {
     public static final Werkstoff U238_MIBK_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Uranium-238 Enriched Methyl Isobutyl Ketone",
-        process("?(U↑238O↓2(NO↓3))((CH↓3)↓2COC↓4H↓9)?"),
+        process("?(↑238UO↓2)((CH↓3)↓2COC↓4H↓9)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -183,7 +165,7 @@ public class MaterialsNuclear {
     public static final Werkstoff U238_WATER_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Uranium-238 Enriched Solution",
-        process("?(U↑238O↓2(NO↓3))(H↓2O)?"),
+        process("?(↑238UO↓2)(H↓2O)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -193,7 +175,7 @@ public class MaterialsNuclear {
     public static final Werkstoff U235_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Uranium-235 Enriched Solution",
-        process("?(U↑238O↓2(NO↓3))(PO(OC↓4H↓9)↓3)?"),
+        process("?(↑238UO↓2(NO↓3))(PO(OC↓4H↓9)↓3)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -213,7 +195,7 @@ public class MaterialsNuclear {
     public static final Werkstoff PU239_MIBK_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Plutonium-239 Enriched Methyl Isobutyl Ketone",
-        process("?(Pu↑239O↓2(NO↓3))((CH↓3)↓2COC↓4H↓9)?"),
+        process("?(↑239PuO↓2(NO↓3))((CH↓3)↓2COC↓4H↓9)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -223,7 +205,7 @@ public class MaterialsNuclear {
     public static final Werkstoff PU239_WATER_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Plutonium-239 Enriched Solution",
-        process("?(Pu↑239O↓2(NO↓3))(H↓2O)?"),
+        process("?(↑239PuO↓2(NO↓3))(H↓2O)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -233,7 +215,7 @@ public class MaterialsNuclear {
     public static final Werkstoff PU241_SOLUTION = new Werkstoff(
         new short[] { 143, 196, 53 },
         "Plutonium-241 Enriched Solution",
-        process("?(Pu↑241O↓2(NO↓3))(H↓2O)?"),
+        process("?(↑241PuO↓2(NO↓3))(H↓2O)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -243,7 +225,7 @@ public class MaterialsNuclear {
     public static final Werkstoff TH_SOLUTION_AQ_PHASE = new Werkstoff(
         new short[] { 45, 64, 85 },
         "Thorium Solution (Aqueous Phase)",
-        process("?Th(NO↓3)↓2(HF)?"),
+        process("?Th(NO↓3)↓2?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -253,7 +235,7 @@ public class MaterialsNuclear {
     public static final Werkstoff URANIUM233_SOLUTION_ORG_PHASE = new Werkstoff(
         new short[] { 143, 224, 53 },
         "Uranium-233 Solution (Organic Phase)",
-        process("?U↑233(PO(OC↓4H↓9)↓3)?"),
+        process("?↑233U(PO(OC↓4H↓9)↓3)?"),
         RADIO_STATS,
         Werkstoff.Types.MIXTURE,
         FLUID,
@@ -263,7 +245,7 @@ public class MaterialsNuclear {
     public static final Werkstoff PLUTONYL_239_NITRATE = new Werkstoff(
         new short[] { 255, 38, 38 },
         "Plutonyl-239 Nitrate",
-        process("Pu↑239O↓2(NO↓3)2"),
+        process("↑239PuO↓2(NO↓3)↓2"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
@@ -273,7 +255,7 @@ public class MaterialsNuclear {
     public static final Werkstoff PLUTONYL_241_NITRATE = new Werkstoff(
         new short[] { 227, 1, 1 },
         "Plutonyl-241 Nitrate",
-        process("Pu↑241O↓2(NO↓3)2"),
+        process("↑241PuO↓2(NO↓3)↓2"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
@@ -283,7 +265,7 @@ public class MaterialsNuclear {
     public static final Werkstoff URANYL_233_NITRATE = new Werkstoff(
         new short[] { 84, 242, 127 },
         "Uranyl-233 Nitrate",
-        process("U↑233O↓2(NO↓3)2"),
+        process("↑233UO↓2(NO↓3)↓2"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
@@ -293,7 +275,7 @@ public class MaterialsNuclear {
     public static final Werkstoff URANYL_235_NITRATE = new Werkstoff(
         new short[] { 84, 242, 55 },
         "Uranyl-235 Nitrate",
-        process("U↑235O↓2(NO↓3)2"),
+        process("↑235UO↓2(NO↓3)↓2"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
@@ -303,7 +285,7 @@ public class MaterialsNuclear {
     public static final Werkstoff URANYL_238_NITRATE = new Werkstoff(
         rgb(0x39BE21),
         "Uranyl-238 Nitrate",
-        process("U↑238O↓2(NO↓3)2"),
+        process("↑238UO↓2(NO↓3)↓2"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
@@ -313,8 +295,8 @@ public class MaterialsNuclear {
     public static final Werkstoff URANIUM_233_DIOXIDE = new Werkstoff(
         rgb(0xA9DD4C),
         "Uranium-233 Dioxide",
-        process("U↑233O↓2"),
-        DEFAULT_STATS,
+        process("↑233UO↓2"),
+        RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_233_DIOXIDE.id,
@@ -323,8 +305,8 @@ public class MaterialsNuclear {
     public static final Werkstoff URANIUM_235_DIOXIDE = new Werkstoff(
         rgb(0x75DD16),
         "Uranium-235 Dioxide",
-        process("U↑235O↓2"),
-        DEFAULT_STATS,
+        process("↑235UO↓2"),
+        RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_235_DIOXIDE.id,
@@ -333,53 +315,33 @@ public class MaterialsNuclear {
     public static final Werkstoff URANIUM_238_DIOXIDE = new Werkstoff(
         rgb(0x39BE21),
         "Uranium-238 Dioxide",
-        process("U↑238O↓2"),
-        DEFAULT_STATS,
+        process("↑238UO↓2"),
+        RADIO_STATS,
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_238_DIOXIDE.id,
         TextureSet.SET_DULL);
 
 
-    public static final Werkstoff THORIANITE_AQ_SOLUTION = new Werkstoff(
+    public static final Werkstoff UNREFINED_THORIUM_SOLUTION = new Werkstoff(
         rgb(0x393b32),
-        "Thorianite solution (Aqueos State)",
-        process("??Th(NO↓3)?U?"),
+        "Unrefined Thorium Solution",
+        process("??Th(NO↓3)??"),
         DEFAULT_STATS,
         Werkstoff.Types.COMPOUND,
         FLUID,
-        MaterialIDs.THORIANITE_AQ_SOLUTION.id,
+        MaterialIDs.UNREFINED_THORIUM_SOLUTION.id,
         TextureSet.SET_FLUID);
 
     public static final Werkstoff THORIUM_NITRATE_SOLUTION = new Werkstoff(
         rgb(0x182a21),
-        "Thorium Nitrate solution",
+        "Thorium Nitrate Solution",
         process("Th(NO↓3)"),
         DEFAULT_STATS,
         Werkstoff.Types.COMPOUND,
         FLUID,
         MaterialIDs.THORIUM_NITRATE.id,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff LOW_URANIUM_SLUDGE = new Werkstoff(
-        rgb(0x132602),
-        "Low Uranium Sludge",
-        process("?U?(NO↓3)?"),
-        DEFAULT_STATS,
-        Werkstoff.Types.COMPOUND,
-        FLUID,
-        MaterialIDs.LOW_URANIUM_SLUDGE.id,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff POOR_URANIUM_MIXTURE = new Werkstoff(
-        rgb(0x132602),
-        "Poor Uranium Mixture",
-        process("?U?"),
-        DEFAULT_STATS,
-        Werkstoff.Types.COMPOUND,
-        FLUID,
-        MaterialIDs.URANIUM_POOR_MIXTURE.id,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_SHINY);
 
 
     public static final Werkstoff REFINED_THORIUM = new Werkstoff(
@@ -390,8 +352,27 @@ public class MaterialsNuclear {
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.REFINED_THORIUM.id,
+        TextureSet.SET_SHINY);
+
+    public static final Werkstoff PLUTONIUM_239_DIOXIDE = new Werkstoff(
+        rgb(0xac4643),
+        "Plutonium-239 Dioxide",
+        process("↑239PuO↓2"),
+        RADIO_STATS,
+        Werkstoff.Types.COMPOUND,
+        DUST,
+        MaterialIDs.PLUTONIUM_239_DIOXIDE.id,
         TextureSet.SET_DULL);
 
+    public static final Werkstoff PLUTONIUM_241_DIOXIDE = new Werkstoff(
+        rgb(0xd30024),
+        "Plutonium-241 Dioxide",
+        process("↑241PuO↓2"),
+        RADIO_STATS,
+        Werkstoff.Types.COMPOUND,
+        DUST,
+        MaterialIDs.PLUTONUM_241_DIOXIDE.id,
+        TextureSet.SET_SHINY);
 
     public static void init() {
 
@@ -417,16 +398,16 @@ public class MaterialsNuclear {
                 sup = false;
             } else if (sub) {
                 nu[i] = switch (chars[i]) {
-                    case '0' -> '\u2080';
-                    case '1' -> '\u2081';
-                    case '2' -> '\u2082';
-                    case '3' -> '\u2083';
-                    case '4' -> '\u2084';
-                    case '5' -> '\u2085';
-                    case '6' -> '\u2086';
-                    case '7' -> '\u2087';
-                    case '8' -> '\u2088';
-                    case '9' -> '\u2089';
+                    case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                    case '1' -> '₁';
+                    case '2' -> '₂';
+                    case '3' -> '₃';
+                    case '4' -> '₄';
+                    case '5' -> '₅';
+                    case '6' -> '₆';
+                    case '7' -> '₇';
+                    case '8' -> '₈';
+                    case '9' -> '₉';
                     default -> {
                         sub = false;
                         yield chars[i];
@@ -434,16 +415,16 @@ public class MaterialsNuclear {
                 };
             } else if (sup) {
                 nu[i] = switch (chars[i]) {
-                    case '0' -> '\u2070';
-                    case '1' -> '\u2071';
-                    case '2' -> '\u00B2';
-                    case '3' -> '\u00B3';
-                    case '4' -> '\u2074';
-                    case '5' -> '\u2075';
-                    case '6' -> '\u2076';
-                    case '7' -> '\u2077';
-                    case '8' -> '\u2078';
-                    case '9' -> '\u2079';
+                    case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
+                    case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
+                    case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
+                    case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
+                    case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
+                    case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
+                    case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
+                    case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
+                    case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
+                    case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
                     default -> {
                         sup = false;
                         yield chars[i];

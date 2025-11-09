@@ -1,6 +1,5 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -21,15 +20,14 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.BreederRodAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBreederRod;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BasicBreederRodItem extends Item implements IBreederRod, IComponentAdapterFactory {
 
     private final String name;
-    private final int heatDivisor;
-    private final int heatMultiplier;
-    private final int maxNeutrons;
+    public final int heatDivisor;
+    public final int heatMultiplier;
+    public final int maxNeutrons;
 
     @Nullable
     private ItemStack product;
@@ -115,12 +113,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
         boolean advancedItemTooltips) {
         super.addInformation(itemStack, player, desc, advancedItemTooltips);
 
-        if (!advancedItemTooltips) {
-            desc.addAll(
-                Arrays.asList(
-                    I18n.format("nh_tooltip.breeder.stored_neutrons", getStoredNeutrons(itemStack), this.maxNeutrons)
-                        .split("\\\\n")));
-        }
+        desc.add(I18n.format("nh_tooltip.breeder.stored_neutrons", getStoredNeutrons(itemStack), this.maxNeutrons));
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             var product = this.product;
@@ -131,7 +124,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
 
             desc.add(I18n.format("nh_tooltip.breeder.desc"));
 
-            desc.add(I18n.format("nh_tooltip.breeder.heat_mult", heatDivisor, heatMultiplier));
+            desc.add(I18n.format("nh_tooltip.breeder.heat_mult", heatDivisor * 100, heatMultiplier));
         } else {
             desc.add(I18n.format("nh_tooltip.more_info"));
         }

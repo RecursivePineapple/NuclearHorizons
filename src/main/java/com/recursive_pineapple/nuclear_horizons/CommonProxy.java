@@ -52,9 +52,11 @@ public class CommonProxy {
 
         ReprocessingRecipes.registerRecipes();
         FuelProcessingRecipes.registerRecipes();
+        ChemicalRecipes.registerRecipes();
         CoolantRecipes.registerRecipes();
         FuelRodRecipes.registerRecipes();
         ComponentRecipes.registerRecipes();
+        MiscRecipes.registerRecipes();
     }
 
     // register server commands in this event handler (Remove if not needed)
