@@ -4,11 +4,9 @@ import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.M
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.DUST;
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.FLUID;
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.process;
-
-import org.apache.commons.lang3.tuple.Pair;
+import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.rgb;
 
 import bartworks.system.material.Werkstoff;
-import com.recursive_pineapple.nuclear_horizons.recipes.GTMats;
 import gregtech.api.enums.TextureSet;
 
 public class MaterialsChemical {
@@ -57,14 +55,11 @@ public class MaterialsChemical {
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.ZINC_NITRATE.id,
-        TextureSet.SET_DULL,
-        Pair.of(GTMats.ZINC.getMaterial(), 1),
-        Pair.of(GTMats.NITROGEN.getMaterial(), 2),
-        Pair.of(GTMats.OXYGEN.getMaterial(), 6));
+        TextureSet.SET_DULL);
     public static final Werkstoff METYHL_MAGNESIUM_BROMIDE = new Werkstoff(
         new short[] { 225, 225, 175 },
         "Methyl Magnesium Bromide",
-        process("CH3MgBr"),
+        process("CH↓3MgBr"),
         DEFAULT_STATS,
         Werkstoff.Types.COMPOUND,
         FLUID,
@@ -208,6 +203,26 @@ public class MaterialsChemical {
         Werkstoff.Types.MIXTURE,
         DUST,
         MaterialIDs.LANTHANIDE_WASTE_MIXTURE.id,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff BROMINE_SALT_WATER = new Werkstoff(
+        rgb(0x4499BB),
+        "Bromine-Rich Salt Water",
+        process("?Br(NaCl)(H↓2O)?"),
+        DEFAULT_STATS,
+        Werkstoff.Types.MIXTURE,
+        FLUID,
+        MaterialIDs.BROMINE_SALT_WATER.id,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff THORIUM_ORE_IMPURITIES = new Werkstoff(
+        rgb(0x212430),
+        "Thorium Rare-Earth Impurities",
+        process("??(SiO↓2)(Al↓2O↓3)(Fe↓2O↓3)??"),
+        DEFAULT_STATS,
+        Werkstoff.Types.MIXTURE,
+        DUST,
+        MaterialIDs.THORIUM_ORE_IMPURITIES.id,
         TextureSet.SET_DULL);
 
     public static void init() {

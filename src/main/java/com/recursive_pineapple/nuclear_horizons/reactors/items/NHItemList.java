@@ -1,124 +1,18 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.*;
-import com.recursive_pineapple.nuclear_horizons.recipes.GTMats;
+import net.minecraft.item.ItemStack;
 
-public class ItemList {
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicBreederRodItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicFuelRodProductItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatAbsorberItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatExchangerItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentCoolantItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicHeatVentItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicNeutronReflectorItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicReactorPlatingItem;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.DebugHeatAbsorber;
 
-    public static final BasicFuelRodItem THORIUM_1X_ROD = new BasicFuelRodItem(
-        "fuelRodThorium",
-        "reactorThoriumSingle",
-        0.4,
-        1.0,
-        1,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_THORIUM_1X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodThorium",
-        "reactorThoriumSingleDepleted");
-
-    public static final BasicFuelRodItem THORIUM_2X_ROD = new BasicFuelRodItem(
-        "fuelRodThoriumDual",
-        "reactorThoriumDual",
-        0.4,
-        1.0,
-        2,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_THORIUM_2X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodThoriumDual",
-        "reactorThoriumDualDepleted");
-
-    public static final BasicFuelRodItem THORIUM_4X_ROD = new BasicFuelRodItem(
-        "fuelRodThoriumQuad",
-        "reactorThoriumQuad",
-        0.4,
-        1.0,
-        4,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_THORIUM_4X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodThoriumQuad",
-        "reactorThoriumQuadDepleted");
-
-    public static final BasicFuelRodItem URANIUM_1X_ROD = new BasicFuelRodItem(
-        "fuelRodUranium",
-        "reactorUraniumSingle",
-        2.0,
-        4.0,
-        1,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_URANIUM_1X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodUranium",
-        "reactorUraniumSingleDepleted");
-
-    public static final BasicFuelRodItem URANIUM_2X_ROD = new BasicFuelRodItem(
-        "dualFuelRodUranium",
-        "reactorUraniumDual",
-        2.0,
-        4.0,
-        2,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_URANIUM_2X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodUraniumDual",
-        "reactorUraniumDualDepleted");
-
-    public static final BasicFuelRodItem URANIUM_4X_ROD = new BasicFuelRodItem(
-        "quadFuelRodUranium",
-        "reactorUraniumQuad",
-        2.0,
-        4.0,
-        4,
-        false,
-        20_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_URANIUM_4X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodUraniumQuad",
-        "reactorUraniumQuadDepleted");
-
-    public static final BasicFuelRodItem MOX_1X_ROD = new BasicFuelRodItem(
-        "fuelRodMOX",
-        "reactorMOXSingle",
-        2.0,
-        4.0,
-        1,
-        true,
-        10_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_MOX_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodMOX",
-        "reactorMOXSingleDepleted");
-    public static final BasicFuelRodItem MOX_2X_ROD = new BasicFuelRodItem(
-        "dualFuelRodMOX",
-        "reactorMOXDual",
-        2.0,
-        4.0,
-        2,
-        true,
-        10_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_MOX_2X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodMOXDual",
-        "reactorMOXDualDepleted");
-    public static final BasicFuelRodItem MOX_4X_ROD = new BasicFuelRodItem(
-        "quadFuelRodMOX",
-        "reactorMOXQuad",
-        2.0,
-        4.0,
-        4,
-        true,
-        10_000);
-
-    public static final BasicFuelRodProductItem DEPLETED_MOX_4X_ROD = new BasicFuelRodProductItem(
-        "depletedFuelRodMOXQuad",
-        "reactorMOXQuadDepleted");
+public class NHItemList {
 
     public static final BasicHeatVentItem BASIC_HEAT_VENT = new BasicHeatVentItem(
         "heatVent",
@@ -268,6 +162,17 @@ public class ItemList {
         0.0,
         2_000_000_000);
 
+    public static final BasicBreederRodItem THORIUM_BREEDER_ROD = new BasicBreederRodItem(
+        "thoriumBreederRod",
+        "reactorThoriumSingle",
+        1_000,
+        1,
+        5_000);
+
+    public static final BasicFuelRodProductItem THORIUM_BREEDER_ROD_FINISHED = new BasicFuelRodProductItem(
+        "thoriumBreederRodFinished",
+        "reactorThoriumSingleDepleted");
+
     public static final MetaCellItem CELLS = new MetaCellItem();
 
     public static void registerItems() {
@@ -305,19 +210,9 @@ public class ItemList {
         REACTOR_PLATING_HEAT_DEBUG.register();
 
         CELLS.register();
-    }
 
-    public static void setupMaterials() {
-        THORIUM_1X_ROD.setSpargeGas(GTMats.NEON.getFluid(1).getFluid(), 2, 8);
-        THORIUM_2X_ROD.setSpargeGas(GTMats.NEON.getFluid(1).getFluid(), 4, 16);
-        THORIUM_4X_ROD.setSpargeGas(GTMats.NEON.getFluid(1).getFluid(), 8, 32);
-
-        URANIUM_1X_ROD.setSpargeGas(GTMats.RADON.getFluid(1).getFluid(), 2, 8);
-        URANIUM_2X_ROD.setSpargeGas(GTMats.RADON.getFluid(1).getFluid(), 4, 16);
-        URANIUM_4X_ROD.setSpargeGas(GTMats.RADON.getFluid(1).getFluid(), 8, 32);
-
-        MOX_1X_ROD.setSpargeGas(GTMats.KRYPTON.getFluid(1).getFluid(), 2, 8);
-        MOX_2X_ROD.setSpargeGas(GTMats.KRYPTON.getFluid(1).getFluid(), 4, 16);
-        MOX_4X_ROD.setSpargeGas(GTMats.KRYPTON.getFluid(1).getFluid(), 8, 32);
+        THORIUM_BREEDER_ROD.register();
+        THORIUM_BREEDER_ROD_FINISHED.register();
+        THORIUM_BREEDER_ROD.setProduct(new ItemStack(THORIUM_BREEDER_ROD_FINISHED, 1));
     }
 }

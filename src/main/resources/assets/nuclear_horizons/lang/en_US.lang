@@ -61,6 +61,8 @@ item.reactorPlatingHeat2.name=Naquadah Reactor Plating
 item.reactorPlatingExplosive.name=Containment Reactor Plating
 item.debugHeatAbsorber.name=Creative Heat Absorber
 item.reactorPlatingHeatDebug.name=Creative Reactor Plating
+item.thoriumBreederRod.name=Thorium Breeding Rod
+item.thoriumBreederRodFinished.name=Thorium Breeding Rod (Finished)
 
 item.cell_distilled_water.name=Distilled Water Cell
 item.cell_coolant.name=Coolant Cell
@@ -91,6 +93,12 @@ nh_tooltip.fuel_rod.gen_stats=Generate %1$,d * n * (n + 1) HU\nGenerate %2$,d * 
 nh_tooltip.fuel_rod.mox_stats=\nIf the reactor's hull heat is above 50%, the HU output will be multiplied by 2.\nThe EU output will always be multiplied by 1 + %1$f * (Current Heat / Max Heat).
 nh_tooltip.fuel_rod.heat_epilogue=\nIf there are adjacent components which can contain heat, heat will be spread among them evenly.\nOtherwise, heat will be added to the reactor hull.
 
+nh_tooltip.breeder.stored_neutrons=Stored Neutrons: %1$,d/%2$,d
+nh_tooltip.breeder.produces=Produces: %1$,d x %2$s
+nh_tooltip.breeder.desc=Place next to Fuel Rods in a reactor to irradiate this breeder rod.
+nh_tooltip.breeder.heat_mult=Increases breeding speed by %2$,d% for every %1$,d reactor hull heat.
+
+nh_tooltip.rod.lifetime=Remaining lifetime: %1$,ds / %2$,ds
 nh_tooltip.mover.reactor_xfer=Transfer up to %d HU between the reactor and itself.
 nh_tooltip.exchanger.comp_xfer=Transfer up to %d HU between its neighbours and itself.
 nh_tooltip.vent.void_self=Dissipate up to %d HU from itself.

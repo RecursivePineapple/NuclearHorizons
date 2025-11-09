@@ -329,21 +329,26 @@ public class TileReactorCore extends TileEntity
             if (this.tickCounter % REACTOR_TICK_SPEED == 0) {
                 boolean wasActive = isActive;
 
+                this.isActive = false;
+
                 // There isn't a reasonable way to power the internals of a fluid nuke, so don't bother checking them
                 // If they are receiving power, it's almost certainly not intentional
                 if (!this.isFluid) {
-                    this.isActive = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                    if (getEnableSignal(xCoord, yCoord, zCoord)) {
+                        this.isActive = true;
+                    } else {
+                        for (var dir : DirectionUtil.values()) {
+                            Block block = worldObj.getBlock(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord);
 
-                    for (var dir : DirectionUtil.values()) {
-                        Block block = worldObj.getBlock(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord);
+                            if (block != BlockList.REACTOR_CHAMBER) continue;
 
-                        if (block != BlockList.REACTOR_CHAMBER) continue;
-
-                        this.isActive |= worldObj.isBlockIndirectlyGettingPowered(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord);
+                            if (getEnableSignal(dir.offsetX + xCoord, dir.offsetY + yCoord, dir.offsetZ + zCoord)) {
+                                isActive = true;
+                                break;
+                            }
+                        }
                     }
-                }
-
-                if (this.isFluid) {
+                } else {
                     boolean anyActive = false, anyInhibiting = false;
 
                     for (var block : reactorBlocks) {
@@ -352,11 +357,7 @@ public class TileReactorCore extends TileEntity
                         anyInhibiting |= state == ReactorEnableState.Inhibiting;
                     }
 
-                    isActive |= anyActive;
-
-                    if (anyInhibiting) {
-                        isActive = false;
-                    }
+                    isActive = anyActive && !anyInhibiting;
                 }
 
                 this.doHeatTick();
@@ -381,6 +382,18 @@ public class TileReactorCore extends TileEntity
                 }
             }
         }
+    }
+
+    private boolean getEnableSignal(int x, int y, int z) {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            Block block = worldObj.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+            if (block instanceof IReactorSensor) continue;
+
+            if (worldObj.getIndirectPowerLevelTo(x, y, z, dir.ordinal()) > 0) return true;
+        }
+
+        return false;
     }
 
     private void spawnSmoke(int x, int y, int z) {

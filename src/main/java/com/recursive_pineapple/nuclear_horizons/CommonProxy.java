@@ -4,7 +4,7 @@ import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ForeignItems;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
@@ -28,7 +28,7 @@ public class CommonProxy {
 
         Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
-        ItemList.registerItems();
+        NHItemList.registerItems();
         BlockList.registerBlocks();
         FluidList.registerFluids();
 
@@ -52,9 +52,11 @@ public class CommonProxy {
 
         ReprocessingRecipes.registerRecipes();
         FuelProcessingRecipes.registerRecipes();
+        ChemicalRecipes.registerRecipes();
         CoolantRecipes.registerRecipes();
         FuelRodRecipes.registerRecipes();
         ComponentRecipes.registerRecipes();
+        MiscRecipes.registerRecipes();
     }
 
     // register server commands in this event handler (Remove if not needed)

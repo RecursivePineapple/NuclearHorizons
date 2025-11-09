@@ -1,5 +1,7 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items;
 
+import static gregtech.api.enums.ItemList.Neutron_Reflector;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
@@ -12,7 +14,6 @@ import javax.annotation.Nullable;
 import gregtech.api.enums.ItemList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -36,75 +37,28 @@ import gregtech.api.items.ItemRadioactiveCellIC;
 public class ForeignItems {
 
     public static void registerForeignReactorItems() {
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_He_1.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_He_3.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_He_6.getItem());
+        for (ItemList container : ItemList.values()) {
+            if (!container.hasBeenSet()) continue;
 
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_NaK_1.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_NaK_3.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_NaK_6.getItem());
+            Item item = container.getItem();
 
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_Sp_1.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_Sp_2.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_Sp_3.getItem());
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.Reactor_Coolant_Sp_6.getItem());
+            if (item instanceof ItemCoolantCellIC coolantCell) {
+                ComponentRegistry.registerAdapter(coolantCell, new GTCoolantCellAdapter(coolantCell));
+                continue;
+            }
 
-        registerCoolantCell((ItemCoolantCellIC) gregtech.api.enums.ItemList.neutroniumHeatCapacitor.getItem());
+            if (item instanceof ItemBreederCell breederCell) {
+                ComponentRegistry.registerAdapter(breederCell, new GTBreederCellAdapter(breederCell));
+                continue;
+            }
 
-        Item iridiumReflector = gregtech.api.enums.ItemList.Neutron_Reflector.getItem();
+            if (item instanceof ItemRadioactiveCellIC radioactiveCell) {
+                ComponentRegistry.registerAdapter(item, new GTRadioactiveCellAdapter(radioactiveCell));
+            }
+        }
+
+        Item iridiumReflector = Neutron_Reflector.getItem();
         ComponentRegistry.registerAdapter(iridiumReflector, new ForeignNeutronReflectorItem(iridiumReflector));
-
-        registerBreederCell((ItemBreederCell) ItemList.RodGlowstone.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodUranium4.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodMOX4.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodThorium4.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah4.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadria.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah4.getItem());
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodTiberium4.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodNaquadah32.getItem()); // The core
-
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium4.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium4.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedUranium4.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium2.getItem());
-        registerFuelRod((ItemRadioactiveCellIC) ItemList.RodExcitedPlutonium4.getItem());
-    }
-
-    public static void registerCoolantCell(ItemCoolantCellIC coolantCell) {
-        ComponentRegistry.registerAdapter(coolantCell, new GTCoolantCellAdapter(coolantCell));
-    }
-
-    public static void registerBreederCell(ItemBreederCell breederCell) {
-        ComponentRegistry.registerAdapter(breederCell, new GTBreederCellAdapter(breederCell));
-    }
-
-    public static void registerFuelRod(ItemRadioactiveCellIC item) {
-        ComponentRegistry.registerAdapter(item, new GTRadioactiveCellAdapter(item));
     }
 
     private static <T> Object getField(@Nonnull T object, String name) {
@@ -290,110 +244,6 @@ public class ForeignItems {
         }
 
         public GTRadioactiveCellAdapter setSpargeGas(Fluid fluid, int min, int max) {
-            this.spargeGas = fluid;
-            this.spargeMin = min;
-            this.spargeMax = max;
-            return this;
-        }
-    }
-
-    private static class GGItemFuelRodAdapter implements IBasicFuelRod, IComponentAdapterFactory {
-
-        private final ItemRadioactiveCellIC item;
-        private final int numberOfCells;
-        private final float Power;
-        private final int Heat;
-        private final float HeatBonus;
-        private final ItemStack result;
-        private Fluid spargeGas;
-        private int spargeMin, spargeMax;
-
-        public GGItemFuelRodAdapter(ItemRadioactiveCellIC item) {
-            this.item = item;
-            numberOfCells = (int) getField(item, "aCellcount");
-            Power = (float) getField(item, "aEnergy");
-            Heat = (int) getField(item, "aHeat");
-            HeatBonus = (float) getField(item, "aHeatBonus");
-            result = (ItemStack) getField(item, "result");
-        }
-
-        @Override
-        public boolean canAdaptItem(@Nonnull ItemStack itemStack) {
-            return itemStack.getItem() == item;
-        }
-
-        @Override
-        public @Nonnull IComponentAdapter getAdapter(@Nonnull ItemStack itemStack, @Nonnull IReactorGrid reactor, int x,
-            int y) {
-            return new FuelRodAdapter(reactor, x, y, itemStack, this) {
-
-                @Override
-                protected double getHeatMultiplier() {
-                    return 1.0;
-                }
-
-                @Override
-                protected double getEUMultiplier() {
-                    return 1 + HeatBonus * ((float) reactor.getHullHeat() / (float) reactor.getMaxHullHeat());
-                }
-            };
-        }
-
-        @Override
-        public double getEnergyMult(@Nonnull ItemStack itemStack) {
-            return Power;
-        }
-
-        @Override
-        public double getHeatMult(@Nonnull ItemStack itemStack) {
-            return Heat;
-        }
-
-        @Override
-        public int getRodCount(@Nonnull ItemStack itemStack) {
-            return numberOfCells;
-        }
-
-        @Override
-        public boolean isMox(@Nonnull ItemStack itemStack) {
-            return true;
-        }
-
-        @Override
-        public double getMoxEUCoefficient(@Nonnull ItemStack itemStack) {
-            return HeatBonus;
-        }
-
-        @Override
-        public double getMoxHeatCoefficient(@Nonnull ItemStack itemStack) {
-            return 1.0;
-        }
-
-        @Override
-        public int getRemainingHealth(@Nonnull ItemStack itemStack) {
-            return item.getMaxDamage(itemStack) - item.getDamageOfStack(itemStack);
-        }
-
-        @Override
-        public void applyDamage(@Nonnull ItemStack itemStack, int damage) {
-            item.setDamageForStack(itemStack, item.getDamageOfStack(itemStack) + damage);
-        }
-
-        @Override
-        public @Nullable ItemStack getProduct(@Nonnull ItemStack itemStack) {
-            return result;
-        }
-
-        @Override
-        public @org.jetbrains.annotations.Nullable FluidStack getSpargeGas(@NotNull ItemStack itemStack) {
-            if (spargeGas == null) return null;
-
-            Random rng = ThreadLocalRandom.current();
-
-            return new FluidStack(spargeGas, (int) (spargeMin + (spargeMax - spargeMin) * rng.nextFloat()));
-        }
-
-        public GGItemFuelRodAdapter setSpargeGas(Fluid fluid, int min, int max) {
             this.spargeGas = fluid;
             this.spargeMin = min;
             this.spargeMax = max;

@@ -7,12 +7,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.ItemList;
-
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.Ic2Items;
@@ -32,7 +32,7 @@ public class ComponentRecipes {
                 Materials.Copper.getPlates(1),
                 Materials.Aluminium.getPlates(2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L))
-            .itemOutputs(new ItemStack(ItemList.BASIC_HEAT_EXCHANGER, 1))
+            .itemOutputs(new ItemStack(NHItemList.BASIC_HEAT_EXCHANGER, 1))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -42,9 +42,9 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(21),
                 Materials.Silver.getPlates(2),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2),
-                new ItemStack(ItemList.BASIC_HEAT_EXCHANGER, 1))
+                new ItemStack(NHItemList.BASIC_HEAT_EXCHANGER, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.REACTOR_HEAT_EXCHANGER, 1))
+            .itemOutputs(new ItemStack(NHItemList.REACTOR_HEAT_EXCHANGER, 1))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -55,10 +55,10 @@ public class ComponentRecipes {
                 Materials.Lapis.getPlates(2),
                 Materials.Diamond.getPlates(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2L),
-                new ItemStack(ItemList.BASIC_HEAT_EXCHANGER, 1),
-                new ItemStack(ItemList.BASIC_HEAT_EXCHANGER, 1))
+                new ItemStack(NHItemList.BASIC_HEAT_EXCHANGER, 1),
+                new ItemStack(NHItemList.BASIC_HEAT_EXCHANGER, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.ADVANCED_HEAT_EXCHANGER, 1))
+            .itemOutputs(new ItemStack(NHItemList.ADVANCED_HEAT_EXCHANGER, 1))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -67,9 +67,9 @@ public class ComponentRecipes {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 Materials.Gold.getPlates(2),
-                new ItemStack(ItemList.BASIC_HEAT_EXCHANGER, 1))
+                new ItemStack(NHItemList.BASIC_HEAT_EXCHANGER, 1))
             .fluidInputs(Materials.StainlessSteel.getMolten(72))
-            .itemOutputs(new ItemStack(ItemList.COMPONENT_HEAT_EXCHANGER, 1))
+            .itemOutputs(new ItemStack(NHItemList.COMPONENT_HEAT_EXCHANGER, 1))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -79,9 +79,9 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(21),
                 Materials.Aluminium.getPlates(2),
                 gregtech.api.enums.ItemList.Electric_Motor_LV.get(1L),
-                new ItemStack(Item.getItemById(101), 2))
+                GTModHandler.getModItem("dreamcraft", "item.SteelBars", 2))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
+            .itemOutputs(new ItemStack(NHItemList.BASIC_HEAT_VENT, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -91,9 +91,9 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(22),
                 Materials.Silver.getPlates(2),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2),
-                new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
+                new ItemStack(NHItemList.BASIC_HEAT_VENT, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.REACTOR_HEAT_VENT, 1))
+            .itemOutputs(new ItemStack(NHItemList.REACTOR_HEAT_VENT, 1))
             .duration(15 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
@@ -102,10 +102,10 @@ public class ComponentRecipes {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 Ic2Items.industrialDiamond,
-                new ItemStack(ItemList.BASIC_HEAT_VENT, 1),
-                new ItemStack(Item.getItemById(101), 2)
-            )
-            .itemOutputs(new ItemStack(ItemList.ADVANCED_HEAT_VENT, 1))
+                new ItemStack(NHItemList.BASIC_HEAT_VENT, 1),
+                GTModHandler.getModItem("dreamcraft", "item.StainlessSteelBars", 4))
+            .fluidInputs()
+            .itemOutputs(new ItemStack(NHItemList.ADVANCED_HEAT_VENT, 1))
             .duration(15 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
@@ -114,10 +114,10 @@ public class ComponentRecipes {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(21),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2),
-                new ItemStack(Item.getItemById(101), 2),
-                new ItemStack(ItemList.BASIC_HEAT_VENT, 1))
+                GTModHandler.getModItem("dreamcraft", "item.StainlessSteelBars", 4),
+                new ItemStack(NHItemList.BASIC_HEAT_VENT, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.COMPONENT_HEAT_VENT, 1))
+            .itemOutputs(new ItemStack(NHItemList.COMPONENT_HEAT_VENT, 1))
             .duration(15 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
@@ -126,9 +126,9 @@ public class ComponentRecipes {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(22),
                 Materials.Gold.getPlates(2),
-                new ItemStack(ItemList.ADVANCED_HEAT_VENT, 1))
+                new ItemStack(NHItemList.ADVANCED_HEAT_VENT, 1))
             .fluidInputs(Materials.StainlessSteel.getMolten(72))
-            .itemOutputs(new ItemStack(ItemList.OVERCLOCKED_HEAT_VENT, 1))
+            .itemOutputs(new ItemStack(NHItemList.OVERCLOCKED_HEAT_VENT, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -139,7 +139,7 @@ public class ComponentRecipes {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 2),
                 new ItemStack(Ic2Items.advancedAlloy.getItem(), 2))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.REACTOR_PLATING, 1))
+            .itemOutputs(new ItemStack(NHItemList.REACTOR_PLATING, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -150,9 +150,9 @@ public class ComponentRecipes {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Copper, 2),
                 Materials.Copper.getPlates(1),
                 Materials.Silver.getPlates(1),
-                new ItemStack(ItemList.REACTOR_PLATING, 1))
+                new ItemStack(NHItemList.REACTOR_PLATING, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.REACTOR_PLATING_HEAT, 1))
+            .itemOutputs(new ItemStack(NHItemList.REACTOR_PLATING_HEAT, 1))
             .duration(30 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
@@ -162,9 +162,9 @@ public class ComponentRecipes {
                 GTUtility.getIntegratedCircuit(23),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 2),
                 new ItemStack(Ic2Items.advancedAlloy.getItem(), 2),
-                new ItemStack(ItemList.REACTOR_PLATING, 1))
+                new ItemStack(NHItemList.REACTOR_PLATING, 1))
             .fluidInputs()
-            .itemOutputs(new ItemStack(ItemList.REACTOR_PLATING_EXPLOSIVE, 1))
+            .itemOutputs(new ItemStack(NHItemList.REACTOR_PLATING_EXPLOSIVE, 1))
             .duration(30 * SECONDS)
             .eut(256)
             .addTo(assemblerRecipes);
