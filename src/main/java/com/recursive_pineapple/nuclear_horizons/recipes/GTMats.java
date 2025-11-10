@@ -1363,6 +1363,10 @@ public class GTMats {
     //#endregion
 
     //#region src/main/java/com/recursive_pineapple/nuclear_horizons/reactors/items/material/MaterialsChemical.java
+    public static final MaterialWrapper DISTILLED_WATER = MaterialWrapper.of(() -> MaterialsChemical.DISTILLED_WATER);
+    public static final MaterialWrapper COOLANT = MaterialWrapper.of(() -> MaterialsChemical.COOLANT);
+    public static final MaterialWrapper HOT_COOLANT = MaterialWrapper.of(() -> MaterialsChemical.HOT_COOLANT);
+    public static final MaterialWrapper HOT_LEAD = MaterialWrapper.of(() -> MaterialsChemical.HOT_LEAD);
     public static final MaterialWrapper TRIBUTYL_PHOSPHATE = MaterialWrapper.of(() -> MaterialsChemical.TRIBUTYL_PHOSPHATE);
     public static final MaterialWrapper PHOSPHORYL_CHLORIDE = MaterialWrapper.of(() -> MaterialsChemical.PHOSPHORYL_CHLORIDE);
     public static final MaterialWrapper DILUTED_NITRIC_ACID = MaterialWrapper.of(() -> MaterialsChemical.DILUTED_NITRIC_ACID);

@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
@@ -17,28 +16,26 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.ReactorPlatingAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IReactorPlating;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+public class BasicReactorPlatingItem extends NHItem implements IReactorPlating, IComponentAdapterFactory {
 
-public class BasicReactorPlatingItem extends Item implements IReactorPlating, IComponentAdapterFactory {
-
-    private final String name;
     private final double explosionRadiusMultiplier;
     private final int maxHeatIncrease;
 
     public BasicReactorPlatingItem(String name, String textureName, double explosionRadiusMultiplier,
         int maxHeatIncrease) {
-        setUnlocalizedName(name);
+        super(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
 
-        this.name = name;
         this.explosionRadiusMultiplier = explosionRadiusMultiplier;
         this.maxHeatIncrease = maxHeatIncrease;
     }
 
-    public void register() {
-        GameRegistry.registerItem(this, name);
+    @Override
+    public void registerPreInit() {
+        super.registerPreInit();
         ComponentRegistry.registerAdapter(this, this);
     }
 

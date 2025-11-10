@@ -7,9 +7,50 @@ import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.M
 import static com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear.rgb;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.Werkstoff.Types;
 import gregtech.api.enums.TextureSet;
 
 public class MaterialsChemical {
+
+    public static final Werkstoff DISTILLED_WATER = new Werkstoff(
+        rgb(0x24849a),
+        "Distilled Water",
+        process("H↓2O"),
+        DEFAULT_STATS,
+        Types.COMPOUND,
+        FLUID,
+        MaterialIDs.DISTILLED_WATER.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff COOLANT = new Werkstoff(
+        rgb(0x342fd2),
+        "Coolant",
+        process("?H↓2O?"),
+        DEFAULT_STATS,
+        Types.COMPOUND,
+        FLUID,
+        MaterialIDs.COOLANT.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff HOT_COOLANT = new Werkstoff(
+        rgb(0xd2435a),
+        "Hot Coolant",
+        process("?H↓2O?"),
+        new Werkstoff.Stats().setElektrolysis(false).setMeltingPoint(250 + 273),
+        Types.COMPOUND,
+        FLUID,
+        MaterialIDs.HOT_COOLANT.id,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff HOT_LEAD = new Werkstoff(
+        rgb(0x6d0c39),
+        "Hot Lead",
+        process("Pb"),
+        new Werkstoff.Stats().setElektrolysis(false).setMeltingPoint(1500 + 273),
+        Types.COMPOUND,
+        FLUID,
+        MaterialIDs.HOT_LEAD.id,
+        TextureSet.SET_FLUID);
 
     public static final Werkstoff TRIBUTYL_PHOSPHATE = new Werkstoff(
         new short[] { 92, 175, 214 },

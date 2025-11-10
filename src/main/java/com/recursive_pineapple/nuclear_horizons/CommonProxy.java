@@ -2,14 +2,18 @@ package com.recursive_pineapple.nuclear_horizons;
 
 import com.recursive_pineapple.nuclear_horizons.networking.PacketDispatcher;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
-import com.recursive_pineapple.nuclear_horizons.reactors.fluids.FluidList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.ForeignItems;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.simulator.SimulationItems;
-import com.recursive_pineapple.nuclear_horizons.recipes.*;
-
+import com.recursive_pineapple.nuclear_horizons.recipes.ChemicalRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.ComponentRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.CoolantRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.FuelProcessingRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.FuelRodRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.MiscRecipes;
+import com.recursive_pineapple.nuclear_horizons.recipes.ReprocessingRecipes;
 import com.recursive_pineapple.nuclear_horizons.utils.NHStructureChannels;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -28,9 +32,8 @@ public class CommonProxy {
 
         Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
-        NHItemList.registerItems();
+        NHItemList.registerPreInit();
         BlockList.registerBlocks();
-        FluidList.registerFluids();
 
         MaterialsNuclear.init();
         MaterialsChemical.init();
@@ -41,12 +44,14 @@ public class CommonProxy {
         PacketDispatcher.registerPackets();
 
         NHStructureChannels.register();
+
+        NHItemList.registerInit();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
-        FluidList.registerContainers();
-        FluidList.registerCoolants();
+        NHItemList.registerPostInit();
+
         SimulationItems.registerSimulationItems();
         ForeignItems.registerForeignReactorItems();
 

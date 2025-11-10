@@ -347,9 +347,9 @@ public class Simulator {
                             }
 
                             // may be set to null by the component itself, or to e.g. a depleted fuel rod
-                            if (contents[index] == null || contents[index].getItem() != compConfig.item) {
+                            if (contents[index] == null || !ItemStack.areItemStacksEqual(contents[index], compConfig.stack)) {
                                 currentComponent.replaceCount++;
-                                contents[index] = new ItemStack(compConfig.item);
+                                contents[index] = compConfig.stack;
                             }
                         }
                     }

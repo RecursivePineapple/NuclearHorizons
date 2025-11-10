@@ -13,7 +13,7 @@ public class MaterialsNuclear {
     public static final Werkstoff.Stats RADIO_STATS = new Werkstoff.Stats().setElektrolysis(false).setRadioactive(true);
 
     public static final Werkstoff NATURAL_URANIUM = new Werkstoff(
-        new short[] { 49, 138, 34 },
+        rgb(0x318A22),
         "Natural Uranium",
         process("??U??"),
         DEFAULT_STATS,
@@ -33,7 +33,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff DEPLETED_URANIUM_HEXAFLUORIDE = new Werkstoff(
-        new short[] { 57, 190, 33 },
+        rgb(0x39BE21),
         "Depleted Uranium Hexafluoride",
         process("?↑238UF↓6?"),
         DEFAULT_STATS,
@@ -43,7 +43,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff ENRICHED_URANIUM_HEXAFLUORIDE = new Werkstoff(
-        new short[] { 84, 242, 55 },
+        rgb(0x54F237),
         "Enriched Uranium Hexafluoride",
         process("?↑235UF↓6?"),
         RADIO_STATS,
@@ -53,7 +53,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff ENRICHED_URANIUM_FUEL = new Werkstoff(
-        new short[] { 92, 214, 92 },
+        rgb(0x5CD65C),
         "Enriched Uranium Fuel",
         process("?UO↓2?"),
         RADIO_STATS,
@@ -63,7 +63,7 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff ENRICHED_THORIUM_FUEL = new Werkstoff(
-        new short[] { 0, 77, 0 },
+        rgb(0x004D00),
         "Enriched Thorium Fuel",
         process("?(UO↓2)(ThO↓2)?"),
         RADIO_STATS,
@@ -83,7 +83,7 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff DEPLETED_URANIUM_FUEL = new Werkstoff(
-        new short[] { 41, 163, 41 },
+        rgb(0x29A329),
         "Depleted Uranium Fuel",
         process("??↑238UO↓2??"),
         RADIO_STATS,
@@ -93,7 +93,7 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff DEPLETED_THORIUM_FUEL = new Werkstoff(
-        new short[] { 0, 122, 0 },
+        rgb(0x007A00),
         "Depleted Thorium Fuel",
         process("??ThO↓2??"),
         RADIO_STATS,
@@ -113,7 +113,7 @@ public class MaterialsNuclear {
         TextureSet.SET_METALLIC);
 
     public static final Werkstoff DEPLETED_URANIUM_FUEL_SOLUTION = new Werkstoff(
-        new short[] { 41, 163, 41 },
+        rgb(0x29A329),
         "Depleted Uranium Fuel Solution",
         process("??(↑238UO↓2)(HNO↓3)??"),
         RADIO_STATS,
@@ -123,7 +123,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff DEPLETED_THORIUM_FUEL_SOLUTION = new Werkstoff(
-        new short[] { 0, 122, 0 },
+        rgb(0x007A09),
         "Depleted Thorium Fuel Solution",
         process("??(ThO↓2)(HNO↓3)??"),
         RADIO_STATS,
@@ -133,7 +133,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PU_SOLUTION_AQ_PHASE = new Werkstoff(
-        new short[] { 196, 52, 83 },
+        rgb(0xC43453),
         "Mixed Plutonium Solution (Aqueous Phase)",
         process("?(PuO↓2)(NO↓3)↓2?"),
         RADIO_STATS,
@@ -143,7 +143,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff U_SOLUTION_ORG_PHASE = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x8FC435),
         "Mixed Uranium Solution (Organic Phase)",
         process("?(UO↓2)(PO(OC↓4H↓9)↓3)?"),
         RADIO_STATS,
@@ -153,7 +153,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff U238_MIBK_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x679a28),
         "Uranium-238 Enriched Methyl Isobutyl Ketone",
         process("?(↑238UO↓2)((CH↓3)↓2COC↓4H↓9)?"),
         RADIO_STATS,
@@ -163,7 +163,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff U238_WATER_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x587b23),
         "Uranium-238 Enriched Solution",
         process("?(↑238UO↓2)(H↓2O)?"),
         RADIO_STATS,
@@ -173,7 +173,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff U235_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x62c446),
         "Uranium-235 Enriched Solution",
         process("?(↑238UO↓2(NO↓3))(PO(OC↓4H↓9)↓3)?"),
         RADIO_STATS,
@@ -183,7 +183,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff MIXED_PU_SOLIDS = new Werkstoff(
-        new short[] { 196, 52, 83 },
+        rgb(0xC43453),
         "Mixed Plutonyl Nitrate",
         process("?PuO↓2(NO↓3)↓2?"),
         RADIO_STATS,
@@ -193,7 +193,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PU239_MIBK_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x9e2615),
         "Plutonium-239 Enriched Methyl Isobutyl Ketone",
         process("?(↑239PuO↓2(NO↓3))((CH↓3)↓2COC↓4H↓9)?"),
         RADIO_STATS,
@@ -203,7 +203,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PU239_WATER_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0x78141f),
         "Plutonium-239 Enriched Solution",
         process("?(↑239PuO↓2(NO↓3))(H↓2O)?"),
         RADIO_STATS,
@@ -213,7 +213,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PU241_SOLUTION = new Werkstoff(
-        new short[] { 143, 196, 53 },
+        rgb(0xc44d56),
         "Plutonium-241 Enriched Solution",
         process("?(↑241PuO↓2(NO↓3))(H↓2O)?"),
         RADIO_STATS,
@@ -223,7 +223,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff TH_SOLUTION_AQ_PHASE = new Werkstoff(
-        new short[] { 45, 64, 85 },
+        rgb(0x2D4055),
         "Thorium Solution (Aqueous Phase)",
         process("?Th(NO↓3)↓2?"),
         RADIO_STATS,
@@ -233,7 +233,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff URANIUM233_SOLUTION_ORG_PHASE = new Werkstoff(
-        new short[] { 143, 224, 53 },
+        rgb(0x19e01e),
         "Uranium-233 Solution (Organic Phase)",
         process("?↑233U(PO(OC↓4H↓9)↓3)?"),
         RADIO_STATS,
@@ -243,7 +243,7 @@ public class MaterialsNuclear {
         TextureSet.SET_FLUID);
 
     public static final Werkstoff PLUTONYL_239_NITRATE = new Werkstoff(
-        new short[] { 255, 38, 38 },
+        rgb(0xFF2626),
         "Plutonyl-239 Nitrate",
         process("↑239PuO↓2(NO↓3)↓2"),
         RADIO_STATS,
@@ -253,7 +253,7 @@ public class MaterialsNuclear {
         TextureSet.SET_DULL);
 
     public static final Werkstoff PLUTONYL_241_NITRATE = new Werkstoff(
-        new short[] { 227, 1, 1 },
+        rgb(0xE30101),
         "Plutonyl-241 Nitrate",
         process("↑241PuO↓2(NO↓3)↓2"),
         RADIO_STATS,
@@ -263,7 +263,7 @@ public class MaterialsNuclear {
         TextureSet.SET_DULL);
 
     public static final Werkstoff URANYL_233_NITRATE = new Werkstoff(
-        new short[] { 84, 242, 127 },
+        rgb(0x4AF27F),
         "Uranyl-233 Nitrate",
         process("↑233UO↓2(NO↓3)↓2"),
         RADIO_STATS,
@@ -273,7 +273,7 @@ public class MaterialsNuclear {
         TextureSet.SET_DULL);
 
     public static final Werkstoff URANYL_235_NITRATE = new Werkstoff(
-        new short[] { 84, 242, 55 },
+        rgb(0x54F237),
         "Uranyl-235 Nitrate",
         process("↑235UO↓2(NO↓3)↓2"),
         RADIO_STATS,
@@ -300,7 +300,7 @@ public class MaterialsNuclear {
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_233_DIOXIDE.id,
-        TextureSet.SET_DULL);
+        TextureSet.SET_SHINY);
 
     public static final Werkstoff URANIUM_235_DIOXIDE = new Werkstoff(
         rgb(0x75DD16),
@@ -310,7 +310,7 @@ public class MaterialsNuclear {
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_235_DIOXIDE.id,
-        TextureSet.SET_METALLIC);
+        TextureSet.SET_SHINY);
 
     public static final Werkstoff URANIUM_238_DIOXIDE = new Werkstoff(
         rgb(0x39BE21),
@@ -320,7 +320,7 @@ public class MaterialsNuclear {
         Werkstoff.Types.COMPOUND,
         DUST,
         MaterialIDs.URANIUM_238_DIOXIDE.id,
-        TextureSet.SET_DULL);
+        TextureSet.SET_SHINY);
 
 
     public static final Werkstoff UNREFINED_THORIUM_SOLUTION = new Werkstoff(
@@ -342,7 +342,6 @@ public class MaterialsNuclear {
         FLUID,
         MaterialIDs.THORIUM_NITRATE.id,
         TextureSet.SET_SHINY);
-
 
     public static final Werkstoff REFINED_THORIUM = new Werkstoff(
         rgb(0x081a11),

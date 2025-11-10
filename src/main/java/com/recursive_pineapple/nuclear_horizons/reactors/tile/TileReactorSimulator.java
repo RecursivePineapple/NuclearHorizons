@@ -511,7 +511,7 @@ public class TileReactorSimulator extends TileEntity implements ITileWithModular
                                 activeComponentX,
                                 activeComponentY,
                                 comp == null ? I18n.format("nh_gui.sim.results.none")
-                                    : I18n.format(comp.item.getUnlocalizedName()));
+                                    : I18n.format(comp.stack.getDisplayName()));
                         }
 
                         return I18n.format("nh_gui.sim.comp_settings.active", active);

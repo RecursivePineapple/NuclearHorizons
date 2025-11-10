@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,23 +15,20 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.HeatAbsorberAdapter;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IHeatContainer;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
-public class DebugHeatAbsorber extends Item implements IHeatContainer, IComponentAdapterFactory {
-
-    private final String name;
+public class DebugHeatAbsorber extends NHItem implements IHeatContainer, IComponentAdapterFactory {
 
     public DebugHeatAbsorber(String name, String textureName) {
-        this.name = name;
-        setUnlocalizedName(name);
+        super(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(1);
     }
 
-    public void register() {
-        GameRegistry.registerItem(this, name);
+    @Override
+    public void registerPreInit() {
+        super.registerPreInit();
         ComponentRegistry.registerAdapter(this, this);
     }
 

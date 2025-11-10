@@ -61,6 +61,11 @@ public enum MaterialIDs {
     URANIUM_POOR_MIXTURE(58),
     REFINED_THORIUM(59),
     BROMINE_SALT_WATER(60),
+    DISTILLED_WATER(61),
+    COOLANT(62),
+    HOT_COOLANT(63),
+    HOT_LEAD(64),
+    //
     ;
 
     private static final int OFFSET_ID = 14_000;

@@ -17,7 +17,7 @@ public class Config {
     // which currently puts maximum power at just over 600 HU/s
     public static int BWR_STEAM_PER_HU_MULTIPLIER = 320;
     public static int COOLANT_SPECIFIC_HEAT = 1;
-    public static int NAQ_COOLANT_SPECIFIC_HEAT = 8;
+    public static int LEAD_SPECIFIC_HEAT = 8;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

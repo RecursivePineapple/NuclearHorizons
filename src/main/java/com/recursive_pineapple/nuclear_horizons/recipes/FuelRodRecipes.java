@@ -25,7 +25,7 @@ import static gregtech.api.enums.ItemList.RodThorium4;
 import static gregtech.api.enums.ItemList.RodUranium;
 import static gregtech.api.enums.ItemList.RodUranium2;
 import static gregtech.api.enums.ItemList.RodUranium4;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -35,7 +35,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 
@@ -44,99 +43,107 @@ public class FuelRodRecipes {
     public static void registerRecipes() {
         registerCanning();
         registerRecyclingRecipes();
-        registerFakeNukeRecipes();
     }
 
     public static void registerCanning() {
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(1),
                 new ItemStack(Loaders.advancedFuelRod, 1),
                 ENRICHED_URANIUM_FUEL.getDust(4))
             .itemOutputs(RodUranium.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
                 new ItemStack(Loaders.advancedFuelRod, 2),
                 ENRICHED_URANIUM_FUEL.getDust(8))
             .itemOutputs(RodUranium2.get(1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(4),
                 new ItemStack(Loaders.advancedFuelRod, 4),
                 ENRICHED_URANIUM_FUEL.getDust(16))
             .itemOutputs(RodUranium4.get(1))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Loaders.advancedFuelRod, 1),
-                ENRICHED_THORIUM_FUEL.getDust(2))
+                GTUtility.getIntegratedCircuit(1),
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1),
+                ENRICHED_THORIUM_FUEL.getDust(4))
             .itemOutputs(RodThorium.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Loaders.advancedFuelRod, 2),
-                ENRICHED_THORIUM_FUEL.getDust(4))
+                GTUtility.getIntegratedCircuit(2),
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(2),
+                ENRICHED_THORIUM_FUEL.getDust(8))
             .itemOutputs(RodThorium2.get(1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Loaders.advancedFuelRod, 4),
-                ENRICHED_THORIUM_FUEL.getDust(8))
+                GTUtility.getIntegratedCircuit(4),
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(4),
+                ENRICHED_THORIUM_FUEL.getDust(16))
             .itemOutputs(RodThorium4.get(1))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(1),
                 new ItemStack(Loaders.advancedFuelRod, 1),
                 ENRICHED_MOX_FUEL.getDust(4))
             .itemOutputs(RodMOX.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
                 new ItemStack(Loaders.advancedFuelRod, 2),
                 ENRICHED_MOX_FUEL.getDust(8))
             .itemOutputs(RodMOX2.get(1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(4),
                 new ItemStack(Loaders.advancedFuelRod, 4),
                 ENRICHED_MOX_FUEL.getDust(16))
             .itemOutputs(RodMOX4.get(1))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Loaders.advancedFuelRod, 1),
-                REFINED_THORIUM.getDust(1))
-            .itemOutputs(new ItemStack(NHItemList.THORIUM_BREEDER_ROD, 1))
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1),
+                REFINED_THORIUM.getDust(2))
+            .itemOutputs(NHItemList.THORIUM_BREEDER_ROD.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(cannerRecipes);
+            .addTo(assemblerRecipes);
     }
 
     public static void registerRecyclingRecipes() {
@@ -145,7 +152,7 @@ public class FuelRodRecipes {
             .itemOutputs(
                 DEPLETED_URANIUM_FUEL.getDust(4),
                 new ItemStack(Loaders.advancedFuelRod, 1))
-            .duration(20 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
@@ -171,7 +178,7 @@ public class FuelRodRecipes {
             .itemInputs(DepletedRodThorium.get(1))
             .itemOutputs(
                 DEPLETED_THORIUM_FUEL.getDust(4),
-                new ItemStack(Loaders.advancedFuelRod, 1))
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
@@ -180,7 +187,7 @@ public class FuelRodRecipes {
             .itemInputs(DepletedRodThorium2.get(1))
             .itemOutputs(
                 DEPLETED_THORIUM_FUEL.getDust(8),
-                new ItemStack(Loaders.advancedFuelRod, 2))
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(2))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
@@ -189,7 +196,7 @@ public class FuelRodRecipes {
             .itemInputs(DepletedRodThorium4.get(1))
             .itemOutputs(
                 DEPLETED_THORIUM_FUEL.getDust(16),
-                new ItemStack(Loaders.advancedFuelRod, 4))
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(4))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
@@ -222,29 +229,12 @@ public class FuelRodRecipes {
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(NHItemList.THORIUM_BREEDER_ROD_FINISHED, 1))
+            .itemInputs(NHItemList.THORIUM_BREEDER_ROD_FINISHED.get(1))
             .itemOutputs(
-                new ItemStack(Loaders.advancedFuelRod, 1),
+                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1),
                 new ItemStack(ModItems.dustProtactinium233, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
-    }
-
-    private static void registerFakeNukeRecipes() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(NHItemList.THORIUM_BREEDER_ROD))
-            .itemOutputs(new ItemStack(NHItemList.THORIUM_BREEDER_ROD_FINISHED))
-            .setNEIDesc(
-                GTUtility.breakLines(
-                    GTUtility.translate("GT5U.nei.nuclear.breeder.heat_neutral"),
-                    GTUtility.translate(
-                        "GT5U.nei.nuclear.breeder.reactor_hull_heat",
-                        NHItemList.THORIUM_BREEDER_ROD.heatDivisor,
-                        NHItemList.THORIUM_BREEDER_ROD.heatMultiplier),
-                    GTUtility.translate("GT5U.nei.nuclear.breeder.required_pulse", NHItemList.THORIUM_BREEDER_ROD.maxNeutrons)))
-            .duration(0)
-            .eut(0)
-            .addTo(RecipeMaps.ic2NuclearFakeRecipes);
     }
 }

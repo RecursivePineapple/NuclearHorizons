@@ -1,17 +1,18 @@
 package com.recursive_pineapple.nuclear_horizons.reactors.items.basic;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 
+import com.gtnewhorizon.gtnhlib.util.data.ItemStackSupplier;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
@@ -19,33 +20,54 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.BreederRodAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBreederRod;
-import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTUtility;
 
-public class BasicBreederRodItem extends Item implements IBreederRod, IComponentAdapterFactory {
+public class BasicBreederRodItem extends NHItem implements IBreederRod, IComponentAdapterFactory {
 
-    private final String name;
     public final int heatDivisor;
     public final int heatMultiplier;
     public final int maxNeutrons;
 
     @Nullable
-    private ItemStack product;
+    private ItemStackSupplier product;
 
     public BasicBreederRodItem(String name, String textureName, int heatDivisor, int heatMultiplier, int maxNeutrons) {
-        setUnlocalizedName(name);
+        super(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(maxNeutrons);
 
-        this.name = name;
         this.heatDivisor = heatDivisor;
         this.heatMultiplier = heatMultiplier;
         this.maxNeutrons = maxNeutrons;
     }
 
-    public void register() {
-        GameRegistry.registerItem(this, name);
+    @Override
+    public void registerPreInit() {
+        super.registerPreInit();
         ComponentRegistry.registerAdapter(this, this);
+    }
+
+    @Override
+    public void registerInit() {
+        super.registerInit();
+
+        Objects.requireNonNull(product, "Breeder rods must have a product: " + name);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1))
+            .itemOutputs(product.get())
+            .setNEIDesc(
+                GTUtility.breakLines(
+                    GTUtility.translate("GT5U.nei.nuclear.breeder.heat_neutral"),
+                    GTUtility.translate("GT5U.nei.nuclear.breeder.reactor_hull_heat", heatDivisor, heatMultiplier),
+                    GTUtility.translate("GT5U.nei.nuclear.breeder.required_pulse", maxNeutrons)))
+            .duration(0)
+            .eut(0)
+            .addTo(RecipeMaps.ic2NuclearFakeRecipes);
     }
 
     @Override
@@ -76,7 +98,7 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
 
     @Override
     public ItemStack getProduct(@Nonnull ItemStack itemStack) {
-        return product;
+        return Objects.requireNonNull(product).get();
     }
 
     @Override
@@ -104,8 +126,9 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
         return heatMultiplier;
     }
 
-    public void setProduct(@Nullable ItemStack product) {
+    public BasicBreederRodItem setProduct(@Nullable ItemStackSupplier product) {
         this.product = product;
+        return this;
     }
 
     @Override
@@ -116,9 +139,9 @@ public class BasicBreederRodItem extends Item implements IBreederRod, IComponent
         desc.add(I18n.format("nh_tooltip.breeder.stored_neutrons", getStoredNeutrons(itemStack), this.maxNeutrons));
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            var product = this.product;
+            if (this.product != null) {
+                ItemStack product = this.product.get();
 
-            if (product != null) {
                 desc.add(I18n.format("nh_tooltip.breeder.produces", product.stackSize, product.getDisplayName()));
             }
 

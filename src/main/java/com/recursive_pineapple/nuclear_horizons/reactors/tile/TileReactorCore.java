@@ -1004,8 +1004,7 @@ public class TileReactorCore extends TileEntity
             }
 
             // cache this because it will be called several times a second
-            if ((coolantCache == null || coolantCache.cold != this.coolantTank.getFluid()
-                .getFluid())) {
+            if ((coolantCache == null || coolantCache.cold.getFluid() != this.coolantTank.getFluid().getFluid())) {
                 if (this.coolantTank.getFluidAmount() == 0) {
                     coolantCache = null;
                 } else {
@@ -1021,46 +1020,29 @@ public class TileReactorCore extends TileEntity
 
             this.roundedHeat += airHeat * Config.FLUID_NUKE_HU_MULTIPLIER;
 
-            int consumedCoolant = getConsumableCoolant();
-            this.roundedHeat -= consumedCoolant * coolantCache.specificHeatCapacity;
-            this.addedHeat += consumedCoolant * coolantCache.specificHeatCapacity;
+            hotCoolantTank.setCapacity(this.coolantCache.outputTankMult * 10_000);
 
-            // for BWRs, convert distilled water to a configured amount of steam instead of the same quantity of hot
-            // coolant
-            if (this.coolantCache.cold.getName().equals("distilled_water")) {
-                this.coolantTank.drain(consumedCoolant, true);
-                this.hotCoolantTank.setCapacity(200_000);
-                this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, consumedCoolant * Config.BWR_STEAM_PER_HU_MULTIPLIER), true);
-            } else {
-                this.coolantTank.drain(consumedCoolant, true);
-                this.hotCoolantTank.setCapacity(10_000);
-                this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, consumedCoolant), true);
-            }
+            int availableInputs = coolantTank.getFluidAmount() / this.coolantCache.cold.amount;
+            int availableOutputs = (hotCoolantTank.getCapacity() - hotCoolantTank.getFluidAmount()) / this.coolantCache.hot.amount;
+
+            int possibleConversions = Math.min(availableInputs, availableOutputs);
+
+            int possibleHU = possibleConversions * this.coolantCache.specificHeatCapacity;
+
+            int convertedHU = Math.min(roundedHeat / this.coolantCache.specificHeatCapacity * this.coolantCache.specificHeatCapacity, possibleHU);
+
+            this.roundedHeat -= convertedHU;
+            this.addedHeat += convertedHU;
+
+            int conversions = convertedHU / this.coolantCache.specificHeatCapacity;
+            int depletedCoolant = conversions * coolantCache.cold.amount;
+            int heatedCoolant = conversions * coolantCache.hot.amount;
+
+            this.coolantTank.drain(depletedCoolant, true);
+            this.hotCoolantTank.fill(new FluidStack(coolantCache.hot, heatedCoolant), true);
         }
 
         return 0;
-    }
-
-    private int getConsumableCoolant() {
-        int heatableCoolant = Math.min(
-            this.coolantTank.getFluidAmount(),
-            this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount());
-
-        int consumedCoolant;
-
-        if (this.coolantCache.cold.getName().equals("distilled_water")) {
-            // BWR
-            consumedCoolant = Math.min(
-                roundedHeat / coolantCache.specificHeatCapacity,
-                Math.min(
-                    this.coolantTank.getFluidAmount(),
-                    (this.hotCoolantTank.getCapacity() - this.hotCoolantTank.getFluidAmount()) / Config.BWR_STEAM_PER_HU_MULTIPLIER));
-        } else {
-            // conventional coolants
-            consumedCoolant = Math.min(roundedHeat / coolantCache.specificHeatCapacity, heatableCoolant);
-        }
-
-        return consumedCoolant;
     }
 
     @Override

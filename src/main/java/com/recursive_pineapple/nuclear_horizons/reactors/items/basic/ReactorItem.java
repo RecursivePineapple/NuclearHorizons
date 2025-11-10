@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
@@ -19,25 +18,23 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
+import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItem;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+public abstract class ReactorItem extends NHItem implements IComponentAdapterFactory {
 
-public abstract class ReactorItem extends Item implements IComponentAdapterFactory {
-
-    protected final String name;
     protected final String damageField;
 
     public ReactorItem(String name, String textureName, String damageField, int maxHealth) {
-        setUnlocalizedName(name);
+        super(name);
         setTextureName(NuclearHorizons.MODID + ":" + textureName);
         setMaxDamage(maxHealth);
 
-        this.name = name;
         this.damageField = damageField;
     }
 
-    public void register() {
-        GameRegistry.registerItem(this, name);
+    @Override
+    public void registerPreInit() {
+        super.registerPreInit();
         ComponentRegistry.registerAdapter(this, this);
     }
 

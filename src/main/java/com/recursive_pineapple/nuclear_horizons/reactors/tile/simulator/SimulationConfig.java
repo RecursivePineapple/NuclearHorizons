@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,13 +22,12 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
-
 import io.netty.buffer.ByteBuf;
 
 public class SimulationConfig implements IItemHandlerModifiable {
 
     // spotless:off
-    
+
     public boolean
         pulsed = false,
         automated = true,
@@ -81,12 +79,12 @@ public class SimulationConfig implements IItemHandlerModifiable {
                 continue;
             }
 
-            Integer componentId = SimulationItems.getSimulationItemId(c.item);
+            Integer componentId = SimulationItems.getSimulationItemId(c.stack);
 
             if (componentId == null) {
                 storage.store(0, 72);
                 NuclearHorizons.LOG.warn(
-                    "Could not save reactor item " + c.item
+                    "Could not save reactor item " + c.stack
                         + " into config code because it does not have a simulation item ID");
                 continue;
             }
@@ -94,7 +92,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
             if (componentId > 72) {
                 storage.store(0, 72);
                 NuclearHorizons.LOG.warn(
-                    "Could not save reactor item " + c.item
+                    "Could not save reactor item " + c.stack
                         + " into config code because its simulation item ID was greater than 72");
                 continue;
             }
@@ -190,9 +188,9 @@ public class SimulationConfig implements IItemHandlerModifiable {
                         }
                     }
 
-                    compConfig.item = SimulationItems.getSimulationItem(componentId);
+                    compConfig.stack = SimulationItems.getSimulationItem(componentId);
 
-                    if (compConfig.item == null) {
+                    if (compConfig.stack == null) {
                         NuclearHorizons.LOG.warn("Could not find simulation item with component id " + componentId);
                         continue;
                     }
@@ -283,7 +281,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
                             return null;
                         }
 
-                        Integer id = SimulationItems.getSimulationItemId(c.item);
+                        Integer id = SimulationItems.getSimulationItemId(c.stack);
 
                         if (id == null) {
                             return null;
@@ -321,9 +319,9 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
             var comp = new SimComponentConfig();
 
-            comp.item = SimulationItems.getSimulationItem(c.getItem());
+            comp.stack = SimulationItems.getSimulationItem(c.getItem());
 
-            if (comp.item == null) {
+            if (comp.stack == null) {
                 config.components[c.getIndex()] = null;
                 continue;
             }
@@ -358,7 +356,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
             if (c != null) {
                 var dest = new SimComponentConfig();
 
-                dest.item = c.item;
+                dest.stack = c.stack;
                 dest.hasAutomation = c.hasAutomation;
                 dest.initialHeat = c.initialHeat;
                 dest.replacementThreshold = c.replacementThreshold;
@@ -382,7 +380,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
             components[slot] = null;
         }
 
-        return withResults(new ItemStack(item.item), slot);
+        return withResults(item.stack, slot);
     }
 
     @Override
@@ -427,7 +425,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
             components[slot] = null;
         } else {
             var config = new SimComponentConfig();
-            config.item = stack.getItem();
+            config.stack = stack.copy();
 
             components[slot] = config;
         }
@@ -514,7 +512,7 @@ public class SimulationConfig implements IItemHandlerModifiable {
 
     public static class SimComponentConfig {
 
-        public Item item;
+        public ItemStack stack;
         public boolean hasAutomation;
         public int initialHeat;
         public int replacementThreshold;
