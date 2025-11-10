@@ -70,7 +70,6 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTUtility.getIntegratedCircuit;
@@ -213,36 +212,36 @@ public class ChemicalRecipes {
                 CURIUM_IV_OXIDE.getDust(1),
                 CALIFORNIUM_IV_OXIDE.getDust(1))
             .outputChances(1500, 2750, 1000)
-            .duration(2 * MINUTES)
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(URANIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
             .itemOutputs(
-                CERIUMDIOXIDE.getDust(1),
-                ZIRCONIUM.getDust(1),
+                LANTHANIDE_WASTE_MIXTURE.getDust(1),
                 GALLIUM.getDust(1),
-                LUTETIUM.getDust(1),
+                ZIRCONIUM.getDust(1),
                 BARIUM.getDust(1),
-                LANTHANIDE_WASTE_MIXTURE.getDust(1))
-            .outputChances(500, 750, 2500, 250, 750, 2500)
-            .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
+                CERIUMDIOXIDE.getDust(1),
+                LUTETIUM.getDust(1))
+            .outputChances(2500, 2500, 750, 750, 500, 250)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(THORIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
             .itemOutputs(
-                CAESIUM.getDust(1),
-                ZIRCONIUM.getDust(1),
                 LUTETIUM.getDust(1),
-                BARIUM.getDust(1),
+                ZIRCONIUM.getDust(1),
+                CAESIUM.getDust(1),
                 NIOBIUM.getDust(1),
+                BARIUM.getDust(1),
                 STRONTIUM.getDust(1))
-            .outputChances(1250, 1000, 3000, 1500, 1750, 1250)
-            .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
+            .outputChances(9000, 7500, 4500, 1750, 1500, 1250)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -255,7 +254,7 @@ public class ChemicalRecipes {
                 EUROPIUMIIIOXIDE.getDust(1),
                 HOLMIUM.getDust(1))
             .outputChances(6500, 4500, 8000, 5000, 4000, 3000)
-            .duration(2 * MINUTES)
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(centrifugeRecipes);
 

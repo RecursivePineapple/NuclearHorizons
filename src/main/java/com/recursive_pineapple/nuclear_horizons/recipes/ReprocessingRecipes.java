@@ -105,7 +105,6 @@ public class ReprocessingRecipes {
                 TRIBUTYL_PHOSPHATE.getFluid(500),
                 KEROSENE.getFluid(500))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1), PLUTONIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
-            .outputChances(2500, 1250)
             .fluidOutputs(
                 U_SOLUTION_ORG_PHASE.getFluid(1000),
                 PU_SOLUTION_AQ_PHASE.getFluid(2000))
@@ -121,7 +120,6 @@ public class ReprocessingRecipes {
             .itemInputs(DEPLETED_THORIUM_FUEL.getDust(1), getIntegratedCircuit(1))
             .fluidOutputs(DEPLETED_THORIUM_FUEL_SOLUTION.getFluid(1000))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1))
-            .outputChances(750)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -132,7 +130,6 @@ public class ReprocessingRecipes {
             .itemInputs(DEPLETED_THORIUM_FUEL.getDust(1), getIntegratedCircuit(2))
             .fluidOutputs(DEPLETED_THORIUM_FUEL_SOLUTION.getFluid(1000))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1))
-            .outputChances(750)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -187,7 +184,6 @@ public class ReprocessingRecipes {
                 TRIBUTYL_PHOSPHATE.getFluid(1000),
                 KEROSENE.getFluid(1000))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1), URANIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
-            .outputChances(2500, 1250)
             .fluidOutputs(
                 U_SOLUTION_ORG_PHASE.getFluid(2000),
                 PU_SOLUTION_AQ_PHASE.getFluid(1000))
