@@ -1,14 +1,13 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.system.material.Werkstoff;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
+
+import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -28,7 +27,8 @@ public interface MaterialWrapper {
 
     FluidStack getGas(int amount);
 
-    interface GTMatSupplier extends Supplier<Materials> { }
+    interface GTMatSupplier extends Supplier<Materials> {
+    }
 
     static MaterialWrapper of(GTMatSupplier gt) {
         Lazy<Materials> mat = new Lazy<>(gt);
@@ -42,36 +42,43 @@ public interface MaterialWrapper {
 
             @Override
             public ItemStack getCells(int amount) {
-                return mat.get().getCells(amount);
+                return mat.get()
+                    .getCells(amount);
             }
 
             @Override
             public ItemStack getDust(int amount) {
-                return mat.get().getDust(amount);
+                return mat.get()
+                    .getDust(amount);
             }
 
             @Override
             public ItemStack getDustTiny(int amount) {
-                return mat.get().getDustTiny(amount);
+                return mat.get()
+                    .getDustTiny(amount);
             }
 
             @Override
             public FluidStack getFluid(int amount) {
-                FluidStack stack = mat.get().getFluid(amount);
+                FluidStack stack = mat.get()
+                    .getFluid(amount);
 
                 if (stack != null) return stack;
 
-                return mat.get().getMolten(amount);
+                return mat.get()
+                    .getMolten(amount);
             }
 
             @Override
             public FluidStack getGas(int amount) {
-                return mat.get().getGas(amount);
+                return mat.get()
+                    .getGas(amount);
             }
         };
     }
 
-    interface BWMatSupplier extends Supplier<Werkstoff> { }
+    interface BWMatSupplier extends Supplier<Werkstoff> {
+    }
 
     static MaterialWrapper of(BWMatSupplier bw) {
         Lazy<Werkstoff> mat = new Lazy<>(bw);
@@ -85,32 +92,38 @@ public interface MaterialWrapper {
 
             @Override
             public ItemStack getCells(int amount) {
-                return mat.get().get(OrePrefixes.cell, amount);
+                return mat.get()
+                    .get(OrePrefixes.cell, amount);
             }
 
             @Override
             public ItemStack getDust(int amount) {
-                return mat.get().get(OrePrefixes.dust, amount);
+                return mat.get()
+                    .get(OrePrefixes.dust, amount);
             }
 
             @Override
             public ItemStack getDustTiny(int amount) {
-                return mat.get().get(OrePrefixes.dustTiny, amount);
+                return mat.get()
+                    .get(OrePrefixes.dustTiny, amount);
             }
 
             @Override
             public FluidStack getFluid(int amount) {
-                return mat.get().getFluidOrGas(amount);
+                return mat.get()
+                    .getFluidOrGas(amount);
             }
 
             @Override
             public FluidStack getGas(int amount) {
-                return mat.get().getFluidOrGas(amount);
+                return mat.get()
+                    .getFluidOrGas(amount);
             }
         };
     }
 
-    interface GTPPMatSupplier extends Supplier<Material> { }
+    interface GTPPMatSupplier extends Supplier<Material> {
+    }
 
     static MaterialWrapper of(GTPPMatSupplier gtpp) {
         Lazy<Material> mat = new Lazy<>(gtpp);
@@ -124,22 +137,26 @@ public interface MaterialWrapper {
 
             @Override
             public ItemStack getCells(int amount) {
-                return mat.get().getCell(amount);
+                return mat.get()
+                    .getCell(amount);
             }
 
             @Override
             public ItemStack getDust(int amount) {
-                return mat.get().getDust(amount);
+                return mat.get()
+                    .getDust(amount);
             }
 
             @Override
             public ItemStack getDustTiny(int amount) {
-                return mat.get().getTinyDust(amount);
+                return mat.get()
+                    .getTinyDust(amount);
             }
 
             @Override
             public FluidStack getFluid(int amount) {
-                return mat.get().getFluidStack(amount);
+                return mat.get()
+                    .getFluidStack(amount);
             }
 
             @Override
@@ -150,6 +167,7 @@ public interface MaterialWrapper {
     }
 
     class Mols {
+
         public int mols;
 
         public Mols(int mols) {

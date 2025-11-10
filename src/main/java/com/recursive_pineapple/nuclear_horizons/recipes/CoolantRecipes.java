@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.recursive_pineapple.nuclear_horizons.Config;
 import com.recursive_pineapple.nuclear_horizons.reactors.fluids.CoolantRegistry;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
@@ -56,8 +57,8 @@ public class CoolantRecipes {
             .eut(TierEU.RECIPE_IV)
             .addTo(vacuumFreezerRecipes);
 
-
-        CoolantRegistry.registerCoolant(COOLANT.getFluid(1), HOT_COOLANT.getFluid(1), Config.COOLANT_SPECIFIC_HEAT, 1, true);
+        CoolantRegistry
+            .registerCoolant(COOLANT.getFluid(1), HOT_COOLANT.getFluid(1), Config.COOLANT_SPECIFIC_HEAT, 1, true);
         CoolantRegistry.registerCoolant(
             FluidRegistry.getFluidStack("ic2coolant", 1),
             FluidRegistry.getFluidStack("ic2hotcoolant", 1),
@@ -65,7 +66,8 @@ public class CoolantRecipes {
             1,
             false);
 
-        CoolantRegistry.registerCoolant(DISTILLED_WATER.getFluid(1), FluidRegistry.getFluidStack("steam", 160), 1, 20, true);
+        CoolantRegistry
+            .registerCoolant(DISTILLED_WATER.getFluid(1), FluidRegistry.getFluidStack("steam", 160), 1, 20, true);
 
         CoolantRegistry.registerCoolant(LEAD.getFluid(1), HOT_LEAD.getFluid(1), Config.LEAD_SPECIFIC_HEAT, 1, true);
     }

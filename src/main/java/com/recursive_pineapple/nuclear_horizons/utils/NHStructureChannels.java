@@ -4,11 +4,11 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
-import gregtech.api.enums.Mods;
+
 import gregtech.api.structure.IStructureChannels;
-import gregtech.common.misc.GTStructureChannels;
 
 public enum NHStructureChannels implements IStructureChannels {
+
     FLUID("fluid", "Reactor Type (1=Fluid)"),
     CHAMBERS("chambers", "Reactor Chamber Count");
 

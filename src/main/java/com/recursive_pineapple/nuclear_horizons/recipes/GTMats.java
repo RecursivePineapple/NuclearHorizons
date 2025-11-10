@@ -1,5 +1,6 @@
 package com.recursive_pineapple.nuclear_horizons.recipes;
 
+// spotless:off
 import bartworks.system.material.WerkstoffLoader;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;
@@ -1554,3 +1555,4 @@ public class GTMats {
     public static final MaterialWrapper UF6F2 = MaterialWrapper.of(() -> MaterialsNuclides.UF6F2);
     //#endregion
 }
+// spotless:on

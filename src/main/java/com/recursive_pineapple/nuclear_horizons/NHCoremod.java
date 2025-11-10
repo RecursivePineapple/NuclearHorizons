@@ -7,6 +7,7 @@ import java.util.Set;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.recursive_pineapple.nuclear_horizons.mixins.Mixins;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 public class NHCoremod implements IFMLLoadingPlugin, IEarlyMixinLoader {

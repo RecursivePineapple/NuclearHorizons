@@ -6,11 +6,14 @@ import gregtech.api.util.CustomGlyphs;
 
 public class MaterialsNuclear {
 
-    public static final Werkstoff.GenerationFeatures DUST = new Werkstoff.GenerationFeatures().disable().onlyDust();
-    public static final Werkstoff.GenerationFeatures FLUID = new Werkstoff.GenerationFeatures().disable().addCells();
+    public static final Werkstoff.GenerationFeatures DUST = new Werkstoff.GenerationFeatures().disable()
+        .onlyDust();
+    public static final Werkstoff.GenerationFeatures FLUID = new Werkstoff.GenerationFeatures().disable()
+        .addCells();
     public static final Werkstoff.Stats DEFAULT_STATS = new Werkstoff.Stats().setElektrolysis(false);
     public static final Werkstoff.Stats SYNTH = new Werkstoff.Stats().setElektrolysis(true);
-    public static final Werkstoff.Stats RADIO_STATS = new Werkstoff.Stats().setElektrolysis(false).setRadioactive(true);
+    public static final Werkstoff.Stats RADIO_STATS = new Werkstoff.Stats().setElektrolysis(false)
+        .setRadioactive(true);
 
     public static final Werkstoff NATURAL_URANIUM = new Werkstoff(
         rgb(0x318A22),
@@ -28,7 +31,9 @@ public class MaterialsNuclear {
         process("??UF↓6??"),
         RADIO_STATS,
         Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable().onlyDust().addCells(),
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addCells(),
         MaterialIDs.NATURAL_URANIUM_HEXAFLUORIDE.id,
         TextureSet.SET_FLUID);
 
@@ -321,7 +326,6 @@ public class MaterialsNuclear {
         DUST,
         MaterialIDs.URANIUM_238_DIOXIDE.id,
         TextureSet.SET_SHINY);
-
 
     public static final Werkstoff UNREFINED_THORIUM_SOLUTION = new Werkstoff(
         rgb(0x393b32),

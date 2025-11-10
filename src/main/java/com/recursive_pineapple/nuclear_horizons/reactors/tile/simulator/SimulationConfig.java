@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.ComponentRegistry;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
+
 import io.netty.buffer.ByteBuf;
 
 public class SimulationConfig implements IItemHandlerModifiable {

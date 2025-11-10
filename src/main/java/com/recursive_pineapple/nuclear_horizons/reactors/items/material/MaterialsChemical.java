@@ -36,7 +36,8 @@ public class MaterialsChemical {
         rgb(0xd2435a),
         "Hot Coolant",
         process("?H↓2O?"),
-        new Werkstoff.Stats().setElektrolysis(false).setMeltingPoint(250 + 273),
+        new Werkstoff.Stats().setElektrolysis(false)
+            .setMeltingPoint(250 + 273),
         Types.COMPOUND,
         FLUID,
         MaterialIDs.HOT_COOLANT.id,
@@ -46,7 +47,8 @@ public class MaterialsChemical {
         rgb(0x6d0c39),
         "Hot Lead",
         process("Pb"),
-        new Werkstoff.Stats().setElektrolysis(false).setMeltingPoint(1500 + 273),
+        new Werkstoff.Stats().setElektrolysis(false)
+            .setMeltingPoint(1500 + 273),
         Types.COMPOUND,
         FLUID,
         MaterialIDs.HOT_LEAD.id,
@@ -120,7 +122,8 @@ public class MaterialsChemical {
         new short[] { 225, 245, 225 },
         "Hot Lithium Tetrafluoroberyllate",
         process("Li↓2BeF↓4"),
-        new Werkstoff.Stats().setElektrolysis(false).setBoilingPoint(1700),
+        new Werkstoff.Stats().setElektrolysis(false)
+            .setBoilingPoint(1700),
         Werkstoff.Types.COMPOUND,
         FLUID,
         MaterialIDs.HOT_LITHIUM_TETRAFLUOROBERYLLATE.id,

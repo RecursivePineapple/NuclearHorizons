@@ -3,9 +3,6 @@ package com.recursive_pineapple.nuclear_horizons;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;
-
-import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;

@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.recursive_pineapple.nuclear_horizons.reactors.tile.TileReactorCore;
-
 import com.recursive_pineapple.nuclear_horizons.utils.DirectionUtil;
+
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 

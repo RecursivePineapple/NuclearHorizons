@@ -31,6 +31,7 @@ gtppStyle=[
 out=[
     "package com.recursive_pineapple.nuclear_horizons.recipes;",
     "",
+    "// spotless:off",
     "import bartworks.system.material.WerkstoffLoader;",
     "import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsNuclear;",
     "import com.recursive_pineapple.nuclear_horizons.reactors.items.material.MaterialsChemical;",
@@ -86,6 +87,7 @@ for (p, regex) in [*gtStyle, *bwStyle, *gtppStyle]:
     out.append("    //#endregion")
 
 out.append("}")
+out.append("// spotless:on")
 
 with open("src/main/java/com/recursive_pineapple/nuclear_horizons/recipes/GTMats.java", "w") as file:
     for line in out:

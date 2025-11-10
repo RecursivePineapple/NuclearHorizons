@@ -15,6 +15,7 @@ import com.recursive_pineapple.nuclear_horizons.recipes.FuelRodRecipes;
 import com.recursive_pineapple.nuclear_horizons.recipes.MiscRecipes;
 import com.recursive_pineapple.nuclear_horizons.recipes.ReprocessingRecipes;
 import com.recursive_pineapple.nuclear_horizons.utils.NHStructureChannels;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

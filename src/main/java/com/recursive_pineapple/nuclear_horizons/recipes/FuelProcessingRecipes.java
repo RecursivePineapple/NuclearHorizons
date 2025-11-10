@@ -135,7 +135,11 @@ public class FuelProcessingRecipes {
         // Impurity centrifuging
         GTValues.RA.stdBuilder()
             .itemInputs(THORIUM_ORE_IMPURITIES.getDust(1))
-            .itemOutputs(SILICONDIOXIDE.getDust(1), ALUMINIUMOXIDE.getDust(1), MAGNETITE.getDust(1), RAREEARTH.getDust(1))
+            .itemOutputs(
+                SILICONDIOXIDE.getDust(1),
+                ALUMINIUMOXIDE.getDust(1),
+                MAGNETITE.getDust(1),
+                RAREEARTH.getDust(1))
             .outputChances(7500, 4500, 6000, 2500)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)

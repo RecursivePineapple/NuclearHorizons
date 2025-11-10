@@ -207,10 +207,7 @@ public class ChemicalRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(TRANSURANIC_WASTE_MIXTURE.getDust(1))
-            .itemOutputs(
-                AMERICIUM_IV_OXIDE.getDust(1),
-                CURIUM_IV_OXIDE.getDust(1),
-                CALIFORNIUM_IV_OXIDE.getDust(1))
+            .itemOutputs(AMERICIUM_IV_OXIDE.getDust(1), CURIUM_IV_OXIDE.getDust(1), CALIFORNIUM_IV_OXIDE.getDust(1))
             .outputChances(1500, 2750, 1000)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

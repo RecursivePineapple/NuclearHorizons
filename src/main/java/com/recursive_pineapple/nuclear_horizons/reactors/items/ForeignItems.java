@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -29,6 +28,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignHe
 import com.recursive_pineapple.nuclear_horizons.reactors.items.foreign.ForeignNeutronReflectorItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCell;
 import gregtech.api.items.ItemCoolantCellIC;

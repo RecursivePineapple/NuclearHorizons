@@ -25,7 +25,10 @@ public class MetaItem extends NHItem {
         setHasSubtypes(true);
         setMaxDamage(0);
 
-        int max = Arrays.stream(IDMetaItem.values()).mapToInt(x -> x.ID).max().getAsInt();
+        int max = Arrays.stream(IDMetaItem.values())
+            .mapToInt(x -> x.ID)
+            .max()
+            .getAsInt();
 
         icons = new IIcon[max + 1];
         metaItems = new IDMetaItem[max + 1];
@@ -37,7 +40,8 @@ public class MetaItem extends NHItem {
 
         for (IDMetaItem id : IDMetaItem.values()) {
             metaItems[id.ID] = id;
-            id.container.get().set(new ItemStack(this, 1, id.ID));
+            id.container.get()
+                .set(new ItemStack(this, 1, id.ID));
         }
     }
 

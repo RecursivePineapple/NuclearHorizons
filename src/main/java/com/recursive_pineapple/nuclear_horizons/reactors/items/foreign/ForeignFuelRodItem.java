@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,7 +17,6 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAd
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapterFactory;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.FuelRodAdapter;
-import com.recursive_pineapple.nuclear_horizons.reactors.items.basic.BasicFuelRodItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBasicFuelRod;
 
 public class ForeignFuelRodItem implements IBasicFuelRod, IComponentAdapterFactory {

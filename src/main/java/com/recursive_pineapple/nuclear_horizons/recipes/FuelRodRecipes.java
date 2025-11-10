@@ -32,6 +32,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import net.minecraft.item.ItemStack;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
+
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
@@ -137,9 +138,7 @@ public class FuelRodRecipes {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1),
-                REFINED_THORIUM.getDust(2))
+            .itemInputs(NHItemList.EMPTY_FUEL_ROD_BASIC.get(1), REFINED_THORIUM.getDust(2))
             .itemOutputs(NHItemList.THORIUM_BREEDER_ROD.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -149,90 +148,70 @@ public class FuelRodRecipes {
     public static void registerRecyclingRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodUranium.get(1))
-            .itemOutputs(
-                DEPLETED_URANIUM_FUEL.getDust(4),
-                new ItemStack(Loaders.advancedFuelRod, 1))
+            .itemOutputs(DEPLETED_URANIUM_FUEL.getDust(4), new ItemStack(Loaders.advancedFuelRod, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodUranium2.get(1))
-            .itemOutputs(
-                DEPLETED_URANIUM_FUEL.getDust(8),
-                new ItemStack(Loaders.advancedFuelRod, 2))
+            .itemOutputs(DEPLETED_URANIUM_FUEL.getDust(8), new ItemStack(Loaders.advancedFuelRod, 2))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodUranium4.get(1))
-            .itemOutputs(
-                DEPLETED_URANIUM_FUEL.getDust(16),
-                new ItemStack(Loaders.advancedFuelRod, 4))
+            .itemOutputs(DEPLETED_URANIUM_FUEL.getDust(16), new ItemStack(Loaders.advancedFuelRod, 4))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodThorium.get(1))
-            .itemOutputs(
-                DEPLETED_THORIUM_FUEL.getDust(4),
-                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1))
+            .itemOutputs(DEPLETED_THORIUM_FUEL.getDust(4), NHItemList.EMPTY_FUEL_ROD_BASIC.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodThorium2.get(1))
-            .itemOutputs(
-                DEPLETED_THORIUM_FUEL.getDust(8),
-                NHItemList.EMPTY_FUEL_ROD_BASIC.get(2))
+            .itemOutputs(DEPLETED_THORIUM_FUEL.getDust(8), NHItemList.EMPTY_FUEL_ROD_BASIC.get(2))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodThorium4.get(1))
-            .itemOutputs(
-                DEPLETED_THORIUM_FUEL.getDust(16),
-                NHItemList.EMPTY_FUEL_ROD_BASIC.get(4))
+            .itemOutputs(DEPLETED_THORIUM_FUEL.getDust(16), NHItemList.EMPTY_FUEL_ROD_BASIC.get(4))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodMOX.get(1))
-            .itemOutputs(
-                DEPLETED_MOX_FUEL.getDust(4),
-                new ItemStack(Loaders.advancedFuelRod, 1))
+            .itemOutputs(DEPLETED_MOX_FUEL.getDust(4), new ItemStack(Loaders.advancedFuelRod, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodMOX2.get(1))
-            .itemOutputs(
-                DEPLETED_MOX_FUEL.getDust(8),
-                new ItemStack(Loaders.advancedFuelRod, 2))
+            .itemOutputs(DEPLETED_MOX_FUEL.getDust(8), new ItemStack(Loaders.advancedFuelRod, 2))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(DepletedRodMOX4.get(1))
-            .itemOutputs(
-                DEPLETED_MOX_FUEL.getDust(16),
-                new ItemStack(Loaders.advancedFuelRod, 4))
+            .itemOutputs(DEPLETED_MOX_FUEL.getDust(16), new ItemStack(Loaders.advancedFuelRod, 4))
             .duration(80 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(NHItemList.THORIUM_BREEDER_ROD_FINISHED.get(1))
-            .itemOutputs(
-                NHItemList.EMPTY_FUEL_ROD_BASIC.get(1),
-                new ItemStack(ModItems.dustProtactinium233, 1))
+            .itemOutputs(NHItemList.EMPTY_FUEL_ROD_BASIC.get(1), new ItemStack(ModItems.dustProtactinium233, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(thermalCentrifugeRecipes);

@@ -100,14 +100,9 @@ public class ReprocessingRecipes {
         // Treat dissolved fuel waste with TBP and kerosene
         GTValues.RA.stdBuilder()
             .itemInputs(DEPLETED_MOX_FUEL.getDust(9))
-            .fluidInputs(
-                NITRICACID.getFluid(2000),
-                TRIBUTYL_PHOSPHATE.getFluid(500),
-                KEROSENE.getFluid(500))
+            .fluidInputs(NITRICACID.getFluid(2000), TRIBUTYL_PHOSPHATE.getFluid(500), KEROSENE.getFluid(500))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1), PLUTONIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
-            .fluidOutputs(
-                U_SOLUTION_ORG_PHASE.getFluid(1000),
-                PU_SOLUTION_AQ_PHASE.getFluid(2000))
+            .fluidOutputs(U_SOLUTION_ORG_PHASE.getFluid(1000), PU_SOLUTION_AQ_PHASE.getFluid(2000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerNonCellRecipes);
@@ -140,9 +135,7 @@ public class ReprocessingRecipes {
                 DEPLETED_THORIUM_FUEL_SOLUTION.getFluid(8000),
                 TRIBUTYL_PHOSPHATE.getFluid(8000),
                 KEROSENE.getFluid(8000))
-            .itemOutputs(
-                THORIUM_FISSION_PRODUCT_MIXTURE.getDust(1),
-                new ItemStack(ModItems.dustProtactinium233, 1))
+            .itemOutputs(THORIUM_FISSION_PRODUCT_MIXTURE.getDust(1), new ItemStack(ModItems.dustProtactinium233, 1))
             .fluidOutputs(URANIUM233_SOLUTION_ORG_PHASE.getFluid(11000), TH_SOLUTION_AQ_PHASE.getFluid(13000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -179,14 +172,9 @@ public class ReprocessingRecipes {
         // Treat dissolved fuel waste with TBP and kerosene
         GTValues.RA.stdBuilder()
             .itemInputs(DEPLETED_URANIUM_FUEL.getDust(9))
-            .fluidInputs(
-                NITRICACID.getFluid(1000),
-                TRIBUTYL_PHOSPHATE.getFluid(1000),
-                KEROSENE.getFluid(1000))
+            .fluidInputs(NITRICACID.getFluid(1000), TRIBUTYL_PHOSPHATE.getFluid(1000), KEROSENE.getFluid(1000))
             .itemOutputs(TRANSURANIC_WASTE_MIXTURE.getDust(1), URANIUM_FISSION_PRODUCT_MIXTURE.getDust(1))
-            .fluidOutputs(
-                U_SOLUTION_ORG_PHASE.getFluid(2000),
-                PU_SOLUTION_AQ_PHASE.getFluid(1000))
+            .fluidOutputs(U_SOLUTION_ORG_PHASE.getFluid(2000), PU_SOLUTION_AQ_PHASE.getFluid(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerNonCellRecipes);

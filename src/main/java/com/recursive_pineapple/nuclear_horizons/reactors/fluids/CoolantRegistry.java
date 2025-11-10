@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.recursive_pineapple.nuclear_horizons.NuclearHorizons;
 import com.recursive_pineapple.nuclear_horizons.reactors.blocks.BlockList;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -24,8 +25,7 @@ import gregtech.nei.RecipeDisplayInfo;
 
 public class CoolantRegistry {
 
-    public static final UITexture REACTOR_PROGRESS = UITexture
-        .fullImage(NuclearHorizons.MODID, "gui/reactor_progress");
+    public static final UITexture REACTOR_PROGRESS = UITexture.fullImage(NuclearHorizons.MODID, "gui/reactor_progress");
 
     public static class CoolantSpecificHeat extends RecipeMetadataKey<Integer> {
 
@@ -43,8 +43,7 @@ public class CoolantRegistry {
         }
     }
 
-    public static final RecipeMap<RecipeMapBackend> reactorCoolant = RecipeMapBuilder
-        .of("nh.recipe.coolant")
+    public static final RecipeMap<RecipeMapBackend> reactorCoolant = RecipeMapBuilder.of("nh.recipe.coolant")
         .maxIO(0, 0, 1, 1)
         .progressBar(REACTOR_PROGRESS)
         .neiHandlerInfo(builder -> builder.setDisplayStack(new ItemStack(BlockList.REACTOR_CHAMBER)))
@@ -69,7 +68,8 @@ public class CoolantRegistry {
      * @param hot                  The heated output coolant
      * @param specificHeatCapacity The amount of HU that can be stored in one mB of coolant
      */
-    public static void registerCoolant(FluidStack cold, FluidStack hot, int specificHeatCapacity, int outputTankMult, boolean registerLHE) {
+    public static void registerCoolant(FluidStack cold, FluidStack hot, int specificHeatCapacity, int outputTankMult,
+        boolean registerLHE) {
         Objects.requireNonNull(cold);
         Objects.requireNonNull(hot);
         if (specificHeatCapacity <= 0) throw new IllegalArgumentException("specificHeatCapacity");
@@ -94,8 +94,10 @@ public class CoolantRegistry {
             double baseThreshold = 0.2;
 
             LHECoolantRegistry.registerCoolant(
-                cold.getFluid().getName(),
-                hot.getFluid().getName(),
+                cold.getFluid()
+                    .getName(),
+                hot.getFluid()
+                    .getName(),
                 baseMultiplier * specificHeatCapacity,
                 baseThreshold / specificHeatCapacity);
         }

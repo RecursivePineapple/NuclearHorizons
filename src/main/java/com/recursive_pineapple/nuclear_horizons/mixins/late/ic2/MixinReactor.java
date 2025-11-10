@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IComponentAdapter;
 import com.recursive_pineapple.nuclear_horizons.reactors.components.IReactorGrid;
+
 import ic2.core.block.invslot.InvSlotReactor;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 
@@ -30,8 +31,10 @@ public abstract class MixinReactor implements IReactorGrid {
 
     @Shadow
     public abstract int getHeat();
+
     @Shadow
     public abstract void setHeat(int heat);
+
     @Shadow
     public abstract int addHeat(int delta);
 

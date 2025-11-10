@@ -22,6 +22,7 @@ import com.recursive_pineapple.nuclear_horizons.reactors.components.adapters.Bre
 import com.recursive_pineapple.nuclear_horizons.reactors.items.HeatUtils;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItem;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.interfaces.IBreederRod;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
@@ -98,7 +99,8 @@ public class BasicBreederRodItem extends NHItem implements IBreederRod, ICompone
 
     @Override
     public ItemStack getProduct(@Nonnull ItemStack itemStack) {
-        return Objects.requireNonNull(product).get();
+        return Objects.requireNonNull(product)
+            .get();
     }
 
     @Override

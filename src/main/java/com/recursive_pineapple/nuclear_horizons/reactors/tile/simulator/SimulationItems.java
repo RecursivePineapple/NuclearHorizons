@@ -66,6 +66,7 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.gtnhlib.util.data.ItemId;
 import com.recursive_pineapple.nuclear_horizons.reactors.items.NHItemList;
+
 import gregtech.api.enums.ItemList;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
@@ -73,7 +74,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 public class SimulationItems {
 
     private static final Int2ObjectOpenHashMap<ItemStack> reactorItemsById = new Int2ObjectOpenHashMap<>();
-    private static final Object2IntOpenCustomHashMap<ItemStack> reactorItemIdsByItem = new Object2IntOpenCustomHashMap<>(ItemId.STACK_ITEM_META_STRATEGY);
+    private static final Object2IntOpenCustomHashMap<ItemStack> reactorItemIdsByItem = new Object2IntOpenCustomHashMap<>(
+        ItemId.STACK_ITEM_META_STRATEGY);
 
     public static void registerSimulationItem(int id, NHItemList item) {
         reactorItemsById.put(id, item.get(1));
